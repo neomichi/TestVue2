@@ -1,0 +1,15 @@
+*.suo
+*.user
+*.sln
+*.vs
+appsettings.json
+project.lock.json
+project.json
+src/WebApplication9/Properties/
+src/logs/
+src/HelloApp/wwwroot/upload/
+src/HelloApp/wwwroot/logs/
+src/Web/bin/
+src/Web/wwwroot/img/static/
+src/Web/obj/
+src/Web/obj
