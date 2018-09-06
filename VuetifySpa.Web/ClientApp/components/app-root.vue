@@ -1,18 +1,12 @@
 ﻿<template>
-
-    <v-app>      
+    <v-app>
         <nav-menu></nav-menu>
-        <v-content>
-            <v-container fluid fill-height>
-                <v-layout justify-center align-center>
+      
+            
                     <router-view></router-view>
-                </v-layout>
-            </v-container>
-        </v-content>
-        <v-footer :fixed="fixed" color="cyan" app>
-            <v-spacer></v-spacer>
-            <span class="white--text">&copy; 2018</span>
-        </v-footer>
+                   
+         
+
     </v-app>
 
 
@@ -27,9 +21,11 @@
     import Vuex from 'vuex'
     import 'vuetify/dist/vuetify.min.css'
     import 'material-design-icons-iconfont/dist/material-design-icons.scss'
+    import VueProgressiveImage from 'vue-progressive-image'
     import { fail } from 'assert';
 
-    Vue.use(Vuetify)
+    Vue.use(Vuetify, VueProgressiveImage)
+    
     Vue.component('nav-menu', NavMenu);
     //Vue.use(VeeValidate, { locale: 'ru' });
     //Validator.localize('ru', VeeValidateMessagesRu);

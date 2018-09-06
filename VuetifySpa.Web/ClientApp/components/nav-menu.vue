@@ -22,7 +22,9 @@
                 v-on:click="drawer=!drawer" 
                 class="hidden-md-and-up" >
             </v-toolbar-side-icon>
-            <v-toolbar-title>У нас хорошо</v-toolbar-title>
+            <v-toolbar-title >
+                <router-link to="/" tag="span" class="pointer" >У нас хорошо</router-link>
+            </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn v-for="route in routes" v-bind:key="route.title" v-bind:to="route.path"  flat> {{route.display }}</v-btn>
@@ -58,5 +60,8 @@
     }
 </script>
 
-<style>
+<style scoped>
+    .pointer {
+        cursor:pointer;
+    }
 </style>
