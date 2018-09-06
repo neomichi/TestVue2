@@ -8,3 +8,5 @@ VuetifySpa\.Web/bin/
 \.vs/
 
 VuetifySpa\.Web/obj/
+
+VuetifySpa\.Web/node_modules/
