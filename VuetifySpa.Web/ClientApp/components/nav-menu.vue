@@ -36,12 +36,14 @@
 
 <script>
     import { routes } from '../routes'
+    import { anotherRoutes } from '../routes'
 
 
     export default {
         data() {
             return {
                 routes,
+                anotherRoutes,
                 drawer: false,
             }
         },

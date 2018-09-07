@@ -1,12 +1,12 @@
 ﻿<template>
     <v-app>
-        <nav-menu></nav-menu>
-      
-            
-                    <router-view></router-view>
-                   
-         
 
+        <nav-menu></nav-menu>
+        <v-content>
+            <v-container fluid>
+                <router-view></router-view>
+            </v-container>
+        </v-content>
     </v-app>
 
 
@@ -27,8 +27,7 @@
     Vue.use(Vuetify, VueProgressiveImage)
     
     Vue.component('nav-menu', NavMenu);
-    //Vue.use(VeeValidate, { locale: 'ru' });
-    //Validator.localize('ru', VeeValidateMessagesRu);
+    
     Vue.component('counter-example', CounterExample);
     Vue.component('fetch-data', FetchData);
     Vue.component('home-page', HomePage);
