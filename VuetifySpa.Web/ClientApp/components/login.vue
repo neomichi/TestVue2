@@ -22,6 +22,7 @@
                                           v-validate="'required|min:6|max:20'"
                                           :error-messages="errors.collect('password')"
                                           data-vv-name="password"
+                                          data-vv-as="пароль"
                                           required
                                           v-model="login.password" name="password" label="Пароль" type="password"></v-text-field>
 
@@ -64,6 +65,7 @@
                                           v-validate="'required|min:6|max:20'"
                                           :error-messages="errors.collect('password')"
                                           data-vv-name="password"
+                                          data-vv-as="пароль"
                                           autocomplete="off"
                                           required
                                           prepend-icon="lock" label="Пароль" name="password" type="password"></v-text-field>
@@ -73,6 +75,7 @@
                                           :error-messages="errors.collect('repassword')"
                                           data-vv-name="repassword"
                                           autocomplete="off"
+                                          data-vv-as="повторить пароль"
                                           required prepend-icon="lock" label="Повторите пароль" type="password"></v-text-field>
 
                         </v-card-text>
@@ -94,9 +97,11 @@
     import Vue from 'vue'
     import VeeValidate from 'vee-validate'
     import { fail } from 'assert';
-
+    import { HasEmptyJson } from "../app.js"
+    import { isNullOrEmpty } from "../app.js"
+    import VeeValidateRu from 'vee-validate/dist/locale/ru'
     Vue.use(VeeValidate);
-    //Validator.localize('ru', VeeValidateMessagesRu);
+    
 
     export default {
         $_veeValidate: {
@@ -104,7 +109,7 @@
         },
         data() {
             return {
-                loginPage: false,
+                loginPage: true,
                 login: {
                     email: '',
                     password: '',
@@ -118,8 +123,18 @@
                 },
             }
         },
+        computed: {
+            authUser: function () {
+                cache: false;
+                var user = this.$store.getters.GetUser;
+                if (!HasEmptyJson(user)) {
+                    this.$refs.authModal.hide();
+                }
+                return user;
+            },
+        },
         mounted() {
-            this.$validator.localize('en', this.dictionary)
+            this.$validator.localize('ru', VeeValidateRu)
         },
         methods: {
             onSubmit() {
