@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VuetifySpa.Data.Models
 {
-    public class ApplicationUserLogin : IdentityUserLogin<Int64>
+    public class ApplicationUserLogin : IdentityUserLogin<Guid>
     {
 
     }

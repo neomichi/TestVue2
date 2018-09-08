@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VuetifySpa.Data.Models
 {
-    public class ApplicationRoleClaim : IdentityRoleClaim<Int64>
+    public class ApplicationRoleClaim : IdentityRoleClaim<Guid>
     {
     }
 }

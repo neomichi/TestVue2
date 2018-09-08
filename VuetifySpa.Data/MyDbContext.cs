@@ -10,7 +10,7 @@ namespace VuetifySpa.Data
 {
 
 
-    public class MyDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Int64> 
+    public class MyDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid> 
        
     {
         public MyDbContext(DbContextOptions<MyDbContext> options)

@@ -2,16 +2,25 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace VuetifySpa.Data.Models
 {
-    public class ApplicationUser : IdentityUser<Int64>
+    public class ApplicationUser : IdentityUser<Guid>
     {
         [PersonalData]
+        [MaxLength(160)]
         public string FirstName { get; set; }
         [PersonalData]
+        [MaxLength(160)]
         public string LastName { get; set; }
+
+        [MaxLength(160)]
+        public string AvatarUrl { get; set; }
+
+        public int Wallet { get; set; } = 0;
+
     }
 }

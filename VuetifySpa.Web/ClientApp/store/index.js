@@ -67,7 +67,8 @@ const actions = ({
         axios.put('/api/account', {
             email: obj.data.email,
             password: obj.data.password,
-            fio: obj.data.fio
+            firstName: obj.data.firstName,
+            lastName: obj.data.lastName
         }).then((status) => {
             commit(REGISTER_SET_STATUS, status.data);
         }).catch((authError) => {

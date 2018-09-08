@@ -31,6 +31,7 @@
     Vue.component('counter-example', CounterExample);
     Vue.component('fetch-data', FetchData);
     Vue.component('home-page', HomePage);
+    
     export default {
         data: () => ({
            

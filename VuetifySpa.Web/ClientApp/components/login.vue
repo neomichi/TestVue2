@@ -3,66 +3,88 @@
     <v-container fluid fill-height>
         <v-layout align-center justify-center>
             <v-flex xs12 sm8 md6>
-                <form id="LoginRegForm" @submit.prevent="onSubmit">
-                    <v-card v-if="loginPage" class="elevation-12">
+
+                <v-card v-if="loginPage" class="elevation-12">
+                    <form id="login" @submit.prevent="onSubmit">
                         <v-toolbar dark color="primary">
                             <v-toolbar-title>Форма входа</v-toolbar-title>
                             <v-spacer></v-spacer>
                         </v-toolbar>
                         <v-card-text>
-                            <v-form>
-                                <v-text-field prepend-icon="email" 
-                                           v-validate="'required|email'"   
-                                           :error-messages="errors.collect('email')"
-                                           data-vv-name="email"
-                                           required       
-                                           v-model="login.email" name="email" label="Email" type="text"></v-text-field>
-                                <v-text-field prepend-icon="lock" 
-                                               v-validate="'required|min:6|max:20'"   
-                                           :error-messages="errors.collect('password')"
-                                           data-vv-name="password"
-                                           required   
-                                              v-model="login.password" name="password" label="Пароль" type="password"></v-text-field>
-                            </v-form>
+
+                            <v-text-field prepend-icon="email"
+                                          v-validate="'required|email'"
+                                          :error-messages="errors.collect('email')"
+                                          data-vv-name="email"
+                                          required
+                                          v-model="login.email" name="email" label="Email" type="text"></v-text-field>
+                            <v-text-field prepend-icon="lock"
+                                          v-validate="'required|min:6|max:20'"
+                                          :error-messages="errors.collect('password')"
+                                          data-vv-name="password"
+                                          required
+                                          v-model="login.password" name="password" label="Пароль" type="password"></v-text-field>
+
                         </v-card-text>
+
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn v-on:click="loginPage=!loginPage" color="yellow">регистрация</v-btn>
-                            <v-btn color="primary">войти</v-btn>
+                            <v-btn tag="a" v-on:click="loginPage=!loginPage" color="yellow">регистрация</v-btn>
+                            <v-btn type="submin" color="primary">войти</v-btn>
                         </v-card-actions>
-                    </v-card>
-                    <v-card v-if="!loginPage" class="elevation-12">
+                    </form>
+                </v-card>
+                <v-card v-if="!loginPage" class="elevation-12">
+                    <form id="reg" @submit.prevent="onSubmit">
                         <v-toolbar dark color="primary">
                             <v-toolbar-title>Форма регистрации</v-toolbar-title>
                             <v-spacer></v-spacer>
                         </v-toolbar>
                         <v-card-text>
-                            <v-form>
-                                <v-text-field v-model="reg.email"
-                                               v-validate="'required|email'"   
-                                           :error-messages="errors.collect('email')"
-                                           data-vv-name="email"
-                                           required   prepend-icon="email" name="email" label="Email" type="text"></v-text-field>
-                                <v-text-field v-model="reg.password" 
-                                                v-validate="'required|min:6|max:20'"   
-                                           :error-messages="errors.collect('password')"
-                                           data-vv-name="password"
-                                           required 
-                                              prepend-icon="lock" name="password" label="Пароль" type="password"></v-text-field>
-                                <v-text-field v-model="reg.repassword" 
-                                              v-validate="'required|confirmed:password'"   
-                                           :error-messages="errors.collect('repassword')"
-                                           data-vv-name="repassword"
-                                           required prepend-icon="lock" name="repassword" label="Повторите пароль" type="password"></v-text-field>
-                            </v-form>
+
+                            <v-text-field v-model="reg.email"
+                                          v-validate="'required|email|max:120'"
+                                          :error-messages="errors.collect('email')"
+                                          data-vv-name="email"
+                                          autocomplete="off"
+                                          required prepend-icon="email" name="email" label="Email"></v-text-field>
+                            <v-text-field v-model="reg.firstName"
+                                          v-validate="'required|min:3|max:60'"
+                                          :error-messages="errors.collect('firstName')"
+                                          autocomplete="off"
+                                          data-vv-as="имя"
+                                          required prepend-icon="email" name="firstName" label="Имя"></v-text-field>
+                            <v-text-field v-model="reg.lastName"
+                                          v-validate="'required|min:3|max:60'"
+                                          :error-messages="errors.collect('lastName')"
+                                          autocomplete="off"
+                                          data-vv-as="фамилия"
+                                          required prepend-icon="email" name="lastName" label="Фамилия"></v-text-field>
+                            <v-text-field v-model="reg.password"
+                                          v-validate="'required|min:6|max:20'"
+                                          :error-messages="errors.collect('password')"
+                                          data-vv-name="password"
+                                          autocomplete="off"
+                                          required
+                                          prepend-icon="lock" label="Пароль" name="password" type="password"></v-text-field>
+
+                            <v-text-field v-model="reg.repassword"
+                                          v-validate="'required|confirmed:password'"
+                                          :error-messages="errors.collect('repassword')"
+                                          data-vv-name="repassword"
+                                          autocomplete="off"
+                                          required prepend-icon="lock" label="Повторите пароль" type="password"></v-text-field>
+
                         </v-card-text>
+
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn v-on:click="loginPage=!loginPage" color="yellow">войти</v-btn>
-                            <v-btn color="primary">регистрация</v-btn>
+                            <v-btn tag="a" v-on:click="loginPage=!loginPage" color="yellow">войти</v-btn>
+                            <v-btn type="submit" color="primary">регистрация</v-btn>
                         </v-card-actions>
-                    </v-card>
-                </form>
+                    </form>
+                </v-card>
+
             </v-flex>
         </v-layout>
     </v-container>
@@ -71,28 +93,46 @@
 <script>
     import Vue from 'vue'
     import VeeValidate from 'vee-validate'
+    import { fail } from 'assert';
 
-    Vue.use(VeeValidate, { locale: 'ru' });
+    Vue.use(VeeValidate);
     //Validator.localize('ru', VeeValidateMessagesRu);
 
     export default {
+        $_veeValidate: {
+            validator: 'new'
+        },
         data() {
             return {
-                loginPage: true,
+                loginPage: false,
                 login: {
                     email: '',
                     password: '',
                 },
                 reg: {
                     email: '',
+                    firstName: '',
+                    lastName: '',
                     password: '',
-                    repassword: '',                    
+                    repassword: '',
                 },
             }
         },
+        mounted() {
+            this.$validator.localize('en', this.dictionary)
+        },
         methods: {
-            submit() {
-                
+            onSubmit() {
+                console.log("-");
+                this.$validator.validateAll().then((result) => {
+
+                    if (result) {
+                        var formName = this.loginPage ? 'loginAuth' : 'regAuth';
+                        var formData = this.loginPage ? this.login : this.reg;
+                        console.log(formName);
+                        this.$store.dispatch(formName, { data: formData });
+                    }
+                });
             }
         }
     }
