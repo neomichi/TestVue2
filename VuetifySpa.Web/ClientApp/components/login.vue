@@ -48,19 +48,19 @@
                                           :error-messages="errors.collect('email')"
                                           data-vv-name="email"
                                           autocomplete="off"
-                                          required prepend-icon="email" name="email" label="Email"></v-text-field>
+                                          required prepend-icon="email" name="reg_email" label="Email"></v-text-field>
                             <v-text-field v-model="reg.firstName"
                                           v-validate="'required|min:3|max:60'"
                                           :error-messages="errors.collect('firstName')"
                                           autocomplete="off"
                                           data-vv-as="имя"
-                                          required prepend-icon="email" name="firstName" label="Имя"></v-text-field>
+                                          required prepend-icon="email" name="reg_firstName" label="Имя"></v-text-field>
                             <v-text-field v-model="reg.lastName"
                                           v-validate="'required|min:3|max:60'"
                                           :error-messages="errors.collect('lastName')"
                                           autocomplete="off"
                                           data-vv-as="фамилия"
-                                          required prepend-icon="email" name="lastName" label="Фамилия"></v-text-field>
+                                          required prepend-icon="email" name="reg_lastName" label="Фамилия"></v-text-field>
                             <v-text-field v-model="reg.password"
                                           v-validate="'required|min:6|max:20'"
                                           :error-messages="errors.collect('password')"
@@ -68,22 +68,22 @@
                                           data-vv-as="пароль"
                                           autocomplete="off"
                                           required
-                                          prepend-icon="lock" label="Пароль" name="password" type="password"></v-text-field>
+                                          prepend-icon="lock" label="Пароль" name="reg_password" type="password"></v-text-field>
 
                             <v-text-field v-model="reg.repassword"
-                                          v-validate="'required|confirmed:password'"
+                                          v-validate="'required|confirmed:reg_password'"
                                           :error-messages="errors.collect('repassword')"
                                           data-vv-name="repassword"
                                           autocomplete="off"
                                           data-vv-as="повторить пароль"
-                                          required prepend-icon="lock" label="Повторите пароль" type="password"></v-text-field>
+                                          required prepend-icon="lock" name="reg_repassword" label="Повторите пароль" type="password"></v-text-field>
 
                         </v-card-text>
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn tag="a" v-on:click="loginPage=!loginPage" color="yellow">войти</v-btn>
-                            <v-btn type="submit" color="primary">регистрация</v-btn>
+                            <v-btn type="submit" color="primary" :loading="loading" :disable="loading">регистрация</v-btn>
                         </v-card-actions>
                     </form>
                 </v-card>
@@ -111,19 +111,22 @@
             return {
                 loginPage: true,
                 login: {
-                    email: '',
-                    password: '',
+                    email: 'test@test.ru',
+                    password: '!Qwe123',
                 },
                 reg: {
-                    email: '',
-                    firstName: '',
-                    lastName: '',
-                    password: '',
-                    repassword: '',
+                    email: 'test@test.ru',
+                    firstName: 'Вася',
+                    lastName: 'Иванов',
+                    password: '!Qwe123',
+                    repassword: '!Qwe123',
                 },
             }
         },
         computed: {
+            loading: function () {
+                return this.$store.getters.getloading;
+            },
             authUser: function () {
                 cache: false;
                 var user = this.$store.getters.GetUser;
@@ -145,7 +148,13 @@
                         var formName = this.loginPage ? 'loginAuth' : 'regAuth';
                         var formData = this.loginPage ? this.login : this.reg;
                         console.log(formName);
-                        this.$store.dispatch(formName, { data: formData });
+                        this.$store.dispatch(formName, { data: formData })
+                            .then(() => {
+                                console.log("успех");
+                            })
+                            .cath((error) => {
+                                console.log(error);
+                            })
                     }
                 });
             }

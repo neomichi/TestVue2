@@ -31,8 +31,7 @@ namespace VuetifySpa.Web.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                var user= _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));
-                
+                var user= _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));                
 
                 return Json(user);
             }
