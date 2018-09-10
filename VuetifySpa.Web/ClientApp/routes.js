@@ -6,16 +6,25 @@ import Car from 'components/car'
 import AdminCarList from 'components/admin/admin-car-list'
 import AdminHome from 'components/admin/admin-home'
 import GridData from 'components/grid-data'
+import { fail } from 'assert';
+
+
+
+
 
 export const routes = [
     { path: '/', component: HomePage, display: 'Home', style: 'glyphicon glyphicon-th-list' },
     { path: '/grid', component: GridData, display: 'таблица заказов' },
     { path: '/counter', component: CounterExample,   display: 'Counter', style: 'glyphicon glyphicon-th-list' },
     { path: '/fetch-data', component: FetchData, display: 'Fetch data', style: 'glyphicon glyphicon-th-list' },
-    { path: '/login', component: LoginPage, display: 'login', style: 'glyphicon glyphicon-th-list' },
-    
-    
 ]
+
+export const userRoutes = [
+    { path: '/login', name:'login', component: LoginPage, display: 'войти', props: { loginPage: true }, style: 'glyphicon glyphicon-th-list' },
+    { path: '/register', name: 'register',  component: LoginPage, display: 'регистрация', props: { loginPage: false }, style: 'glyphicon glyphicon-th-list' },
+
+]
+
 
 export const anotherRoutes = [
     { path: '/car/details/:id', name: 'car', component: Car, display: 'car' },

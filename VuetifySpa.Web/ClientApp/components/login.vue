@@ -1,5 +1,4 @@
 ﻿<template>
-
     <v-container fluid fill-height>
         <v-layout align-center justify-center>
             <v-flex xs12 sm8 md6>
@@ -29,9 +28,13 @@
                         </v-card-text>
 
                         <v-card-actions>
+
                             <v-spacer></v-spacer>
-                            <v-btn tag="a" v-on:click="loginPage=!loginPage" color="yellow">регистрация</v-btn>
                             <v-btn type="submin" color="primary">войти</v-btn>
+                         
+                               
+                            <v-btn tag="a" v-on:click="router.push({ name: 'register' })" color="yellow"> перейти к регистрации</v-btn>
+
                         </v-card-actions>
                     </form>
                 </v-card>
@@ -82,7 +85,7 @@
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn tag="a" v-on:click="loginPage=!loginPage" color="yellow">войти</v-btn>
+                            <v-btn tag="a" v-on:click="router.push({ name: 'login' })" color="yellow">войти c email и паролем</v-btn>
                             <v-btn type="submit" color="primary" :loading="loading" :disable="loading">регистрация</v-btn>
                         </v-card-actions>
                     </form>
@@ -107,9 +110,16 @@
         $_veeValidate: {
             validator: 'new'
         },
+        props: {
+            GetAuthFunc: Function,
+            loginPage: {
+                type: Boolean,
+                default: false,
+            }
+        },
         data() {
             return {
-                loginPage: true,
+                
                 login: {
                     email: 'test@test.ru',
                     password: '!Qwe123',
@@ -126,35 +136,36 @@
         computed: {
             loading: function () {
                 return this.$store.getters.getloading;
-            },
-            authUser: function () {
-                cache: false;
-                var user = this.$store.getters.GetUser;
-                if (!HasEmptyJson(user)) {
-                    this.$refs.authModal.hide();
-                }
-                return user;
-            },
+            }           
         },
         mounted() {
             this.$validator.localize('ru', VeeValidateRu)
         },
         methods: {
-            onSubmit() {
-                console.log("-");
+
+
+            onSubmit() {              
                 this.$validator.validateAll().then((result) => {
 
                     if (result) {
                         var formName = this.loginPage ? 'loginAuth' : 'regAuth';
                         var formData = this.loginPage ? this.login : this.reg;
-                        console.log(formName);
-                        this.$store.dispatch(formName, { data: formData })
-                            .then(() => {
+
+                        //var action = this.loginPage ? { name: 'loginAuth', data: this.login }
+                        //    : { name: 'regAuth', data: this.reg }
+                       
+                   this.$store.dispatch(formName, { data: formData })
+                            .then((res) => {
                                 console.log("успех");
+                               // console.log(res);
+                              // console.log(this.$store.getters.GetUser);
                             })
-                            .cath((error) => {
-                                console.log(error);
+                            .catch((error) => {
+                                console.log("error");
                             })
+                       
+                   
+                       
                     }
                 });
             }

@@ -12,7 +12,7 @@ using VuetifySpa.Web.Models;
 namespace VuetifySpa.Web.Controllers
 {
     [Produces("application/json")]
-    [Route("api/account")]
+    [Route("api/data")]
     public class DataController : Controller
     {
         private MyDbContext _db;

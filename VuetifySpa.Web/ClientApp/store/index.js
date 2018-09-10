@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { HasEmptyJson } from "../app.js"
 
 Vue.use(Vuex)
 
@@ -23,15 +24,11 @@ const state = {
 }
 // GETTERS
 const getters = {
-    GetUser: state => {
-        if (!state.authUser) {
-            axios.get('/api/account')
-                .then((response) => {
-                    state.authUser = response.data;
-                });
-
-        }
-        return state.authUser;
+    GetUser: state => {   
+        return (async () => {          
+            state.authUser=await axios.get('/api/account');           
+        })();        
+       
     },
     getloading: state => {
         return state.loading;
@@ -52,6 +49,9 @@ const mutations = {
         state.counter = obj.counter
     },
     [LOGIN_SET_STATUS](state, obj) {
+        console.log("---");
+        console.log(obj);
+      
         state.authUser = obj;
     },
     [REGISTER_SET_STATUS](state, obj) {
@@ -89,15 +89,23 @@ const actions = ({
         commit(MAIN_SET_COUNTER, obj)
     },
     async loginAuth({ commit }, obj) {
-        const user = await axios.post('/api/account', {
-            email: obj.data.email,
-            password: obj.data.password,
-        }).then((status) => {
-            commit(LOGIN_SET_STATUS, status.data);
-        }).catch((authError) => {
+        commit(CLEAR_ERROR);
+        commit(SET_LOADING, true);
+        try {      
+            console.log(0);
+            let user = await axios.post('/api/account', {
+                email: obj.data.email,
+                password: obj.data.password,
+            })
+            console.log(1)
+  
 
-        });
-
+            commit(SET_LOADING, false);
+            commit(LOGIN_SET_STATUS, user);
+        } catch (error) {
+            commit(SET_LOADING, false);
+            commit(ERROR_LOADING, error.message);
+        }
     },
     async regAuth({ commit }, obj) {
         commit(CLEAR_ERROR);
@@ -112,20 +120,26 @@ const actions = ({
             commit(SET_LOADING, false);
             commit(REGISTER_SET_STATUS, user.data);
         }
-        catch (authError) {
+        catch (error) {
             commit(SET_LOADING, false);
-            commit(ERROR_LOADING, authError.message);
+            commit(ERROR_LOADING, error.message);
         }
 
     },
-    logOut({ commit }, obj) {
+    async logOut({ commit }, obj) {
+        commit(CLEAR_ERROR);
+        commit(SET_LOADING, true);
+        try {
+            const user = await axios.delete('/api/account')
+            commit(LOGOUT_SET_STATUS, status.data);
+            commit(SET_LOADING, false);
+        }
+        catch (error) {
 
-        axios.delete('/api/account')
-            .then((status) => {
-                commit(LOGOUT_SET_STATUS, status.data);
-            }).catch((authError) => {
+            commit(SET_LOADING, false);
+            commit(ERROR_LOADING, error.message);
 
-            });
+        }
     },
 })
 

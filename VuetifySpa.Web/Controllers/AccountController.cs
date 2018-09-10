@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -27,15 +28,15 @@ namespace VuetifySpa.Web.Controllers
 
         // GET: api/Default1/5
         [HttpGet]
-        public JsonResult Get()
+        public IActionResult Get()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                var user= _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));                
+                var user= _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));              
 
                 return Json(user);
             }
-            return Json("");
+           return NotFound(new { message = "user not found" });
         }
 
         //// POST: api/Default1
@@ -55,7 +56,7 @@ namespace VuetifySpa.Web.Controllers
                     }
                 }
             }
-            return Json("false");
+            return NotFound(new { message = "user not found" });
         }
 
         // PUT: api/Default1/5
@@ -76,16 +77,26 @@ namespace VuetifySpa.Web.Controllers
                 await _signInManager.SignInAsync(appUser, isPersistent: user.isPersistent);
                 return Json(responseUser);
             }
-            return Json("false");
+            return NotFound(new { message = "user not found" });
         }
 
         //// DELETE: api/ApiWithActions/5
-        //[HttpDelete]
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        //    return Ok();
-        //}
+        [HttpDelete]
+        public  IActionResult Logout()
+        {
+
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                var user = _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));
+                if (user != null)
+                {
+                    _db.Users.Remove(user);
+                    _db.SaveChanges();
+                    return Ok();
+                }            
+            }
+            return NotFound(new { message = "user not Authenticated" });
+        }
 
         //private async Task<IActionResult> SignHelper(User user)
         //{
