@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VuetifySpa.Web.Models
+namespace VuetifySpa.Data.ViewModel
 {
     public class RegisterUserView
     {

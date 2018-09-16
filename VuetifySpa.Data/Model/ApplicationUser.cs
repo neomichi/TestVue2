@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using VuetifySpa.Data.ViewModel;
 
 namespace VuetifySpa.Data.Models
 {
@@ -21,6 +22,19 @@ namespace VuetifySpa.Data.Models
         public string AvatarUrl { get; set; }
 
         public int Wallet { get; set; } = 0;
+
+        public RegisterUserView GetRegisterUser()
+        {
+            return new RegisterUserView
+            {
+                FirstName =FirstName,
+                LastName = LastName,
+                Email = Email,
+                AvatarUrl = AvatarUrl,
+                Wallet = Wallet
+
+            };
+        }
 
     }
 }

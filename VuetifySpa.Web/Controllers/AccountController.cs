@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VuetifySpa.Data;
 using VuetifySpa.Data.Models;
-using VuetifySpa.Web.Models;
+using VuetifySpa.Data.ViewModel;
+
 
 namespace VuetifySpa.Web.Controllers
 {
@@ -34,7 +35,7 @@ namespace VuetifySpa.Web.Controllers
             {
                 var user= _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));              
 
-                return Json(user);
+                return Json(user.GetRegisterUser());
             }
            return NotFound(new { message = "user not found" });
         }
@@ -43,6 +44,7 @@ namespace VuetifySpa.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]AuthLoginView authLoginView)
         {
+            await Task.Delay(1000); //для крутости
 
             if (ModelState.IsValid)
             {
@@ -52,7 +54,7 @@ namespace VuetifySpa.Web.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, authLoginView.Password, authLoginView.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        Json(user);
+                       return Json(user.GetRegisterUser());
                     }
                 }
             }
@@ -63,6 +65,9 @@ namespace VuetifySpa.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody]RegisterUserView user)
         {
+
+            await Task.Delay(1000); //для крутости
+
             if (ModelState.IsValid)
             {
                 var appUser = new ApplicationUser
@@ -75,7 +80,7 @@ namespace VuetifySpa.Web.Controllers
                 };
                 var responseUser = await _signInManager.UserManager.CreateAsync(appUser, user.Password);
                 await _signInManager.SignInAsync(appUser, isPersistent: user.isPersistent);
-                return Json(responseUser);
+                return Json(appUser.GetRegisterUser());
             }
             return NotFound(new { message = "user not found" });
         }
@@ -97,7 +102,6 @@ namespace VuetifySpa.Web.Controllers
             }
             return NotFound(new { message = "user not Authenticated" });
         }
-
         //private async Task<IActionResult> SignHelper(User user)
         //{
         //    if (user != null)
@@ -115,5 +119,7 @@ namespace VuetifySpa.Web.Controllers
         //    }
         //    return Json("");
         //}
+
+        
     }
 }

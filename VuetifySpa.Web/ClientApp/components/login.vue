@@ -30,7 +30,7 @@
                         <v-card-actions>
 
                             <v-spacer></v-spacer>
-                            <v-btn type="submin" color="primary">войти</v-btn>
+                            <v-btn type="submin" color="primary" :loading="loading" :disable="loading">войти</v-btn>
                          
                                
                             <v-btn tag="a" v-on:click="router.push({ name: 'register' })" color="yellow"> перейти к регистрации</v-btn>
@@ -135,8 +135,14 @@
         },
         computed: {
             loading: function () {
-                return this.$store.getters.getloading;
-            }           
+                cache: false;
+                return this.$store.getters.Getloading;
+            },
+            getUser() {
+                cache: false;
+                console.log("update state")
+                return this.$store.getters.GetAuthUser;
+            },
         },
         mounted() {
             this.$validator.localize('ru', VeeValidateRu)
@@ -153,17 +159,14 @@
 
                         //var action = this.loginPage ? { name: 'loginAuth', data: this.login }
                         //    : { name: 'regAuth', data: this.reg }
-                       
-                   this.$store.dispatch(formName, { data: formData })
-                            .then((res) => {
-                                console.log("успех");
-                               // console.log(res);
-                              // console.log(this.$store.getters.GetUser);
+                  
+                        this.$store.dispatch(formName, { data: formData })
+                            .then(() => {                    
+                                console.log("egok");
                             })
                             .catch((error) => {
-                                console.log("error");
-                            })
-                       
+                                console.log(error);
+                            });                  
                    
                        
                     }

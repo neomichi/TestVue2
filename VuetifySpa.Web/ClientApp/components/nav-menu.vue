@@ -78,13 +78,11 @@
         },
         computed: {
             authUser: function () {
-                cache: false;
-                var user = this.$store.getters.GetUser.then(x => {
-                    console.log(x);
-                })
-            
-
-                console.log(HasEmptyJson)
+                cache: false;               
+                console.log("update state")
+                var user = this.$store.getters.GetAuthUser;
+           
+               
                 return false;
             },
         },

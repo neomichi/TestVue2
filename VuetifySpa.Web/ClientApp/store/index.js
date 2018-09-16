@@ -24,19 +24,28 @@ const state = {
 }
 // GETTERS
 const getters = {
-    GetUser: state => {   
-        return (async () => {          
-            state.authUser=await axios.get('/api/account');           
-        })();        
-       
+    GetAuthUser: state => { 
+
+
+        var authUser = state.authUser;       
+        if (!HasEmptyJson(authUser)) {
+            //false
+            axios.get('/api/account').then((res) => {
+                console.log('getters load')
+                console.log(res);
+                return res.data;
+            })            
+            
+        } 
+        return authUser;
     },
-    getloading: state => {
+    Getloading: state => {
         return state.loading;
     },
-    getError: state => {
+    GetError: state => {
         return state.error;
     },
-    clearError: state => {
+    ClearError: state => {
         return state.error = null;
     }
 
@@ -48,10 +57,7 @@ const mutations = {
     [MAIN_SET_COUNTER](state, obj) {
         state.counter = obj.counter
     },
-    [LOGIN_SET_STATUS](state, obj) {
-        console.log("---");
-        console.log(obj);
-      
+    [LOGIN_SET_STATUS](state, obj) {       
         state.authUser = obj;
     },
     [REGISTER_SET_STATUS](state, obj) {
@@ -75,50 +81,47 @@ const mutations = {
 
 // ACTIONS
 const actions = ({
-    setLoading({ commit }, obj) {
+    SET_LOADING({commit}, obj) {
         commit(SET_LOADING, obj)
     },
-    setError({ commit }, obj) {
+    ERROR_LOADING({commit}, obj) {
         commit(ERROR_LOADING, obj)
     },
-    clearError({ commit }, obj) {
+    CLEAR_ERROR({commit}, obj) {
         commit(CLEAR_ERROR, obj)
     },
 
-    setCounter({ commit }, obj) {
+    setCounter({commit}, obj) {
         commit(MAIN_SET_COUNTER, obj)
     },
     async loginAuth({ commit }, obj) {
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
-        try {      
-            console.log(0);
-            let user = await axios.post('/api/account', {
+        try {
+            const authUser = await axios.post('/api/account', {
                 email: obj.data.email,
                 password: obj.data.password,
-            })
-            console.log(1)
-  
-
+            });
+            console.log('-ok');
             commit(SET_LOADING, false);
-            commit(LOGIN_SET_STATUS, user);
+            commit(LOGIN_SET_STATUS, authUser);
         } catch (error) {
             commit(SET_LOADING, false);
-            commit(ERROR_LOADING, error.message);
+            commit(CLEAR_ERROR, error.message);
         }
     },
     async regAuth({ commit }, obj) {
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const user = await axios.put('/api/account', {
+            const authUser = await axios.put('/api/account', {
                 email: obj.data.email,
                 password: obj.data.password,
                 firstName: obj.data.firstName,
                 lastName: obj.data.lastName
             });
             commit(SET_LOADING, false);
-            commit(REGISTER_SET_STATUS, user.data);
+            commit(REGISTER_SET_STATUS, authUser);
         }
         catch (error) {
             commit(SET_LOADING, false);
@@ -130,7 +133,7 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const user = await axios.delete('/api/account')
+            const authUser = await axios.delete('/api/account')
             commit(LOGOUT_SET_STATUS, status.data);
             commit(SET_LOADING, false);
         }

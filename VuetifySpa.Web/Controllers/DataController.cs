@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VuetifySpa.Data;
 using VuetifySpa.Data.Models;
-using VuetifySpa.Web.Models;
+using VuetifySpa.Data.ViewModel;
+
 
 namespace VuetifySpa.Web.Controllers
 {
