@@ -140,7 +140,7 @@
             },
             getUser() {
                 cache: false;
-                console.log("update state")
+               
                 return this.$store.getters.GetAuthUser;
             },
         },
@@ -161,12 +161,12 @@
                         //    : { name: 'regAuth', data: this.reg }
                   
                         this.$store.dispatch(formName, { data: formData })
-                            .then(() => {                    
-                                console.log("egok");
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            });                  
+                            //.then(() => {                    
+                            //    console.log(error);
+                            //})
+                            //.catch((error) => {
+                            //    console.log(error);
+                            //});                  
                    
                        
                     }

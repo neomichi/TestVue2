@@ -12,7 +12,7 @@ sync(store, router)
 Vue.use(axios)
 
 export function HasEmptyJson(obj) {      
-   return Object.keys(obj).length === 0;    
+    return typeof (obj) == 'undefined' || Object.keys(obj).length === 0;    
 }
 export function isNullOrEmpty(str) {    
         return str === null || str.match(/^ *$/) !== null;

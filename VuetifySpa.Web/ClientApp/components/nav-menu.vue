@@ -39,24 +39,20 @@
                 <v-btn v-for="route in routes" v-bind:key="route.title" v-bind:to="route.path" flat> {{route.display }}</v-btn>
             </v-toolbar-items>
             <v-spacer></v-spacer>
-            
-            <v-toolbar-items v-if="authUser"  class="hidden-sm-and-down">
-                <v-btn tag="span" flat>
-                    Noname {{authUser}}
-                </v-btn>             
+
+            <v-toolbar-items v-if="authUser" class="hidden-sm-and-down">
+                <v-btn tag="span"  class="pointer" flat>
+                    {{authUser.firstName}}  {{authUser.lastName}}
+                </v-btn>
             </v-toolbar-items>
-            <v-toolbar-items  v-if="authUser"  class="hidden-sm-and-down">
+            <v-toolbar-items v-if="authUser" class="hidden-sm-and-down">
                 <v-spacer></v-spacer>
                 <v-btn icon>
                     <v-avatar>
-                        <img src="https://randomuser.me/api/portraits/men/1.jpg">
+                        <img :src="authUser.avatarUrl" />
                     </v-avatar>
                 </v-btn>
             </v-toolbar-items>
-
-
-
-
         </v-toolbar>
 </div>
 
@@ -70,20 +66,18 @@
 
     export default {
         data() {
-            return {               
-                routes: routes.concat(userRoutes),
+            return {
                 anotherRoutes,
                 drawer: false,
             }
         },
         computed: {
+            routes: function() {
+                return (this.authUser) ? routes:routes.concat(userRoutes)  ;
+            },
             authUser: function () {
-                cache: false;               
-                console.log("update state")
-                var user = this.$store.getters.GetAuthUser;
-           
-               
-                return false;
+                cache: false;            
+                return this.$store.getters.GetAuthUser; 
             },
         },
         methods: {

@@ -19,6 +19,7 @@
     import NavMenu from './nav-menu'
     import HomePage from './home-page'
     import Vuex from 'vuex'
+    import store from '../store'
     import 'vuetify/dist/vuetify.min.css'
     import 'material-design-icons-iconfont/dist/material-design-icons.scss'
     import VueProgressiveImage from 'vue-progressive-image'
@@ -46,10 +47,13 @@
             title: 'Vuetify.js'
 
         }),
-
+        created: function() {
+            store.dispatch('UpdateAuth');        
+        },
         props: {
             source: String
         },
+       
         methods: {
 
         }

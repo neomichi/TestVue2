@@ -27,12 +27,13 @@ namespace VuetifySpa.Data.Models
         {
             return new RegisterUserView
             {
-                FirstName =FirstName,
+                FirstName = FirstName,
                 LastName = LastName,
                 Email = Email,
-                AvatarUrl = AvatarUrl,
-                Wallet = Wallet
-
+                AvatarUrl = string.IsNullOrWhiteSpace(AvatarUrl) ? "/img/account.jpg" : AvatarUrl,
+                Wallet = Wallet,
+                Password="",
+               
             };
         }
 
