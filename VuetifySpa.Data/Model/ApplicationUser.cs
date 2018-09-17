@@ -27,6 +27,7 @@ namespace VuetifySpa.Data.Models
         {
             return new RegisterUserView
             {
+                Id=Id,
                 FirstName = FirstName,
                 LastName = LastName,
                 Email = Email,

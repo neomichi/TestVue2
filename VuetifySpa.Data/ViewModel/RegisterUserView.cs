@@ -8,6 +8,7 @@ namespace VuetifySpa.Data.ViewModel
 {
     public class RegisterUserView
     {
+        public Guid Id { get; set; }
         [Required]
         [MaxLength(64)]
         public string Email { get; set; }
