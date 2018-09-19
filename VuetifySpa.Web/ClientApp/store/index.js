@@ -75,7 +75,7 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const authUser = await axios.post('/api/account', {
+            const authUser = await axios.post('/api/auth', {
                 email: obj.data.email,
                 password: obj.data.password,
             });
@@ -90,7 +90,7 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const authUser = await axios.put('/api/account', {
+            const authUser = await axios.put('/api/auth', {
                 email: obj.data.email,
                 password: obj.data.password,
                 firstName: obj.data.firstName,
@@ -109,8 +109,8 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const authUser = await axios.delete('/api/account')
-            commit(LOGOUT_SET_STATUS, status.data);
+            const authUser = await axios.delete('/api/auth');
+            commit(LOGOUT_SET_STATUS, "");
             commit(SET_LOADING, false);
         }
         catch (error) {
@@ -124,7 +124,7 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const authUser = await axios.get('/api/account')
+            const authUser = await axios.get('/api/auth')
             console.log(authUser);
             commit(LOGIN_REGISTER_UPDATE_SET_STATUS, authUser);
             commit(SET_LOADING, false);

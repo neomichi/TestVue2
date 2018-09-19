@@ -15,7 +15,6 @@ import VeeValidate from 'vee-validate';
 
 import VeeValidateMessagesRu from "vee-validate/dist/locale/ru";
 
-Vue.use(VeeValidate);
 Vue.use(VueRouter);
 Vue.use(VeeValidate);
 

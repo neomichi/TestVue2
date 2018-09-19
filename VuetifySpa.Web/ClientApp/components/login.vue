@@ -161,9 +161,9 @@
                         //    : { name: 'regAuth', data: this.reg }
                   
                         this.$store.dispatch(formName, { data: formData })
-                            //.then(() => {                    
-                            //    console.log(error);
-                            //})
+                            .then(() => {
+                                this.$router.push({ name: 'home' });
+                            });
                             //.catch((error) => {
                             //    console.log(error);
                             //});                  

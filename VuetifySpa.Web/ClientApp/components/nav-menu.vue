@@ -34,7 +34,7 @@
                                  class="hidden-md-and-up">
             </v-toolbar-side-icon>
             <v-toolbar-title>
-                <router-link to="/" tag="span" class="pointer">У нас хорошо</router-link>
+                <router-link to="/" tag="span"  class="pointer">У нас хорошо</router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
@@ -42,18 +42,16 @@
             </v-toolbar-items>
             <v-spacer></v-spacer>
            
-            <v-toolbar-items v-if="authUser" class="hidden-sm-and-down">
-               
-                   
-              
+            <v-toolbar-items v-if="authUser" class="hidden-sm-and-down"> 
+
                 <v-menu :nudge-width="100" :nudge-bottom="40" :open-on-hover="true">
                     <v-toolbar-title slot="activator">                      
                         <v-btn :to="{ name: 'user', params: { id: authUser.id }}" tag="span" class="pointer" flat>{{authUser.firstName}}  {{authUser.lastName}} </v-btn>                      
                     </v-toolbar-title>                    
-                    <v-list>
-                        <v-list-tile v-for="item in menuItems"
-                                     :key="item"
-                                     @click="">
+                    <v-list light dense>
+                        <v-list-tile style="" v-for="item in menuItems"
+                                     :key="item.id"                                     
+                                     @click="item.eventName">
                             <v-list-tile-title v-text="item.title"></v-list-tile-title>
                         </v-list-tile>
                     </v-list>
@@ -87,10 +85,10 @@
                 anotherRoutes,
                 drawer: false,
                 menuItems: [
-                    { title: 'Click Me' },
-                    { title: 'Click Me' },
-                    { title: 'Click Me' },
-                    { title: 'Click Me2' }
+                    { title: 'Выйти', id: 0, url: '', eventName: this.logout },
+                    //{ title: '1', id: 1, url: 'info', eventName:''},
+                    //{ title: '2', id: 2, url: 'info', eventName:''},
+                    //{ title: '3', id: 3, url: 'info', eventName:''}
                 ],
             }
         },
@@ -107,6 +105,10 @@
             toggleCollapsed: function (event) {
                 this.collapsed = !this.collapsed;
             },
+            logout: function () {
+                this.$store.dispatch('logOut');
+            }
+
         }
     }
 </script>
