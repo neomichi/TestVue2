@@ -38,13 +38,20 @@
 
     import Vue from 'vue'
     import Car from './car'
+    import metaInfo from 'vue-meta'
 
-
-    Vue.component('car', Car);
-
+    Vue.component('car', Car, metaInfo);
+    
     export default {
         data() {
             return {
+                metaInfo: {
+                    title: 'Ура работает',
+                    titleTemplate: '%s - Bay!',
+                    htmlAttrs: {
+                        lang: 'ru',
+                    }
+                },
                 items: [
                     {
                         id: 1,
@@ -82,7 +89,7 @@
             viewCar: function (id) {
                 this.$router.push({ name: 'car', params: { id: id } })
             }
-        }
+        },    
     }
 </script>
 <style>

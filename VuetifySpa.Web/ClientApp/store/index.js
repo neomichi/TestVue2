@@ -25,7 +25,10 @@ const getters = {
     GetAuthUser: state => state.authUser,      
     Getloading: state => state.loading,    
     GetError: state => state.error,
-    ClearError: state =>state.error,   
+    ClearError: state => state.error,
+    GetUserData: async ()=> {
+        return await axios.get('/api/user'); 
+    },
 }
 
 
@@ -34,8 +37,7 @@ const mutations = {
     [MAIN_SET_COUNTER](state, obj) {
         state.counter = obj.counter
     },
-    [LOGIN_REGISTER_UPDATE_SET_STATUS](state, obj) {
-       
+    [LOGIN_REGISTER_UPDATE_SET_STATUS](state, obj) {       
         state.authUser = obj.data;
     },
    
@@ -114,7 +116,6 @@ const actions = ({
             commit(SET_LOADING, false);
         }
         catch (error) {
-
             commit(SET_LOADING, false);
             commit(ERROR_LOADING, error.message);
 
@@ -124,8 +125,7 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const authUser = await axios.get('/api/auth')
-            console.log(authUser);
+            const authUser = await axios.get('/api/auth')           
             commit(LOGIN_REGISTER_UPDATE_SET_STATUS, authUser);
             commit(SET_LOADING, false);
         }

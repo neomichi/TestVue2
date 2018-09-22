@@ -34,23 +34,14 @@
     import 'material-design-icons-iconfont/dist/material-design-icons.scss'
     import VueProgressiveImage from 'vue-progressive-image'
     import { fail } from 'assert'
-    import Meta from 'vue-meta'
-    Vue.use(Vuetify, VueProgressiveImage, Meta)
+ 
+    Vue.use(Vuetify, VueProgressiveImage)
 
     Vue.component('nav-menu', NavMenu);
     Vue.component('home-page', HomePage);
 
     export default {
-        data: () => ({
-            metaInfo: {
-                title: 'Ура работает', 
-                titleTemplate: '%s - Bay!', 
-                htmlAttrs: {
-                    lang: 'ru',                    
-                }
-            },
-
-
+        data: () => ({           
             fixed: true,
             items: [{
                 icon: 'bubble_chart',
@@ -58,12 +49,11 @@
             }],
             miniVariant: false,
             right: true,
-            rightDrawer: false,
-            title: 'Vuetify.js'
+            rightDrawer: false,           
 
         }),
         created: function () {
-            store.dispatch('UpdateAuth');
+            store.dispatch('UpdateAuth'); 
         },
         props: {
             source: String
