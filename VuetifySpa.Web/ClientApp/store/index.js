@@ -6,8 +6,9 @@ Vue.use(Vuex)
 
 // TYPES
 const MAIN_SET_COUNTER = 'MAIN_SET_COUNTER'
-const LOGIN_REGISTER_UPDATE_SET_STATUS = 'LOGIN_REGISTER_UPDATE_SET_STATUS'
+const LOGIN_REGISTER_UPDATE_AUTH_STATUS = 'LOGIN_REGISTER_UPDATE_AUTH_STATUS'
 const LOGOUT_SET_STATUS = 'LOGOUT_SET_STATUS'
+const UPDATE_USER_STATUS = 'UPDATE_USER_STATUS'
 const SET_LOADING = 'SET_LOADING'
 const ERROR_LOADING = 'ERROR_LOADING'
 const CLEAR_ERROR = 'CLEAR_ERROR'
@@ -22,12 +23,12 @@ const state = {
 }
 // GETTERS
 const getters = {
-    GetAuthUser: state => state.authUser,      
-    Getloading: state => state.loading,    
+    GetAuthUser: state => state.authUser,
+    Getloading: state => state.loading,
     GetError: state => state.error,
     ClearError: state => state.error,
-    GetUserData: async ()=> {
-        return await axios.get('/api/user'); 
+    GetUserData: async () => {
+        return await axios.get('/api/user');
     },
 }
 
@@ -37,10 +38,10 @@ const mutations = {
     [MAIN_SET_COUNTER](state, obj) {
         state.counter = obj.counter
     },
-    [LOGIN_REGISTER_UPDATE_SET_STATUS](state, obj) {       
+    [LOGIN_REGISTER_UPDATE_AUTH_STATUS](state, obj) {
         state.authUser = obj.data;
     },
-   
+
     [LOGOUT_SET_STATUS](state, obj) {
         state.authUser = '';
     },
@@ -52,8 +53,11 @@ const mutations = {
     },
     [CLEAR_ERROR](state) {
         state.error = null;
-    }
-  
+    },
+    [UPDATE_USER_STATUS](state, obj) {
+        state.authUser = obj.data;
+    },
+
 
 
 }
@@ -82,7 +86,7 @@ const actions = ({
                 password: obj.data.password,
             });
             commit(SET_LOADING, false);
-            commit(LOGIN_REGISTER_UPDATE_SET_STATUS, authUser);
+            commit(LOGIN_REGISTER_UPDATE_AUTH_STATUS, authUser);
         } catch (error) {
             commit(SET_LOADING, false);
             commit(CLEAR_ERROR, error.message);
@@ -99,7 +103,7 @@ const actions = ({
                 lastName: obj.data.lastName
             });
             commit(SET_LOADING, false);
-            commit(LOGIN_REGISTER_UPDATE_SET_STATUS, authUser);
+            commit(LOGIN_REGISTER_UPDATE_AUTH_STATUS, authUser);
         }
         catch (error) {
             commit(SET_LOADING, false);
@@ -125,8 +129,30 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const authUser = await axios.get('/api/auth')           
-            commit(LOGIN_REGISTER_UPDATE_SET_STATUS, authUser);
+            const authUser = await axios.get('/api/auth')
+            commit(LOGIN_REGISTER_UPDATE_AUTH_STATUS, authUser);
+            commit(SET_LOADING, false);
+        }
+        catch (error) {
+            commit(SET_LOADING, false);
+            commit(ERROR_LOADING, error.message);
+        }
+    },
+    async UpdateUser({ commit }, obj) {
+        commit(CLEAR_ERROR);
+        commit(SET_LOADING, true);
+        try {
+            console.log('UpdateUser');
+            console.log(obj);
+            const authUser = await axios.put('/api/user', {
+                id: obj.data.id,
+                avatarUrl: obj.data.avatarUrl,
+                firstName: obj.data.firstName,
+                lastName: obj.data.lastName,
+                avatarImgType: obj.data.avatarImgType
+            });
+            console.log('UpdateUser');
+            commit(UPDATE_USER_STATUS, authUser);
             commit(SET_LOADING, false);
         }
         catch (error) {

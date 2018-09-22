@@ -2,27 +2,22 @@
     <div>
         <v-container fluid grid-list-lg>
             <v-layout row wrap justify-center>
-                <v-flex xs8 sm4 md3 lg2>
+                <v-flex xs10 sm4 md3 lg2>
                     <v-card elevation-5 height="240">
-                        <div style="padding:10px;">
-                            <v-img max-height="200" alt="" src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-                                   aspect-ratio="1" class="grey lighten-2"></v-img>
-                        </div>
-                        <v-card-text>
 
-                        </v-card-text>
-
-                        <v-layout align-center justify-start fill-height row>
-                            <v-card-actions>
-                                <div>
-                                    <!--<upload-btn color="primary" title="загрузить">
-                                    </upload-btn>-->
-                                </div>
-                            </v-card-actions>
-                        </v-layout>
+                        <v-img :src="user.avatarUrl" max-height="180"  alt="аватар" 
+                               aspect-ratio="1" class="grey lighten-2"></v-img>
 
 
+                        <v-card-actions>
+                            <v-layout align-end justify-center style="margin-top:5px;">
+                           
+                                <upload-btn title="загрузить"  v-bind:fileChangedCallback="uploadFileFunction"  ></upload-btn>
+                            </v-layout>
 
+                        </v-card-actions>
+
+                        
                     </v-card>
                 </v-flex>
                 <v-flex xs12 sm8 md6 lg4>
@@ -34,14 +29,14 @@
                                               :error-messages="errors.collect('user_firstName')"
                                               autocomplete="off"
                                               data-vv-as="имя"
-                                              v-on:change="changeText(this)"
+                                              v-on:change="changeText()"
                                               required prepend-icon="email" name="user_firstName" label="Имя"></v-text-field>
                                 <v-text-field v-model="user.lastName"
                                               v-validate="'required|min:3|max:60'"
                                               :error-messages="errors.collect('user_lastName')"
                                               autocomplete="off"
                                               data-vv-as="фамилия"
-                                              v-on:change="changeText(this)"
+                                              v-on:change="changeText()"
                                               required prepend-icon="email" name="user_lastName" label="Фамилия"></v-text-field>
                             </v-card-text>
 
@@ -49,11 +44,12 @@
 
                                 <v-spacer></v-spacer>
 
-                                <v-btn v-if="IsModification" type="submit" color="primary" :loading="loading" :disable="loading">Сохранить</v-btn>
+                                <v-btn :disabled="IsModification" type="submit" color="primary" :loading="loading" :disable="loading">Сохранить</v-btn>
                             </v-card-actions>
                         </form>
                     </v-card>
                 </v-flex>
+
             </v-layout>
         </v-container>
     </div>
@@ -63,29 +59,30 @@
     import VeeValidate from 'vee-validate'
     import VeeValidateRu from 'vee-validate/dist/locale/ru'
     import axios from 'axios'
-    //import UploadButton from 'vuetify-upload-button';
+    import UploadButton from 'vuetify-upload-button';
     Vue.use(VeeValidate);
     export default {
         $_veeValidate: {
             validator: 'new'
         },
-        //components: {
-        //    'upload-btn': UploadButton
-        //},
+        components: {
+            'upload-btn': UploadButton
+        },
         data() {
             return {
-
+                uploadFileFunction: this.uploadFile,
+                imageFile:"", 
                 def: {
                     avatarUrl: '',
                     firstName: '',
                     lastName: '',
                 },
-
                 user: {
-                    avatarUrl:'',                    
+                    avatarUrl: '',  
                     firstName: '',
                     lastName: '',
                     password: '',
+                    avatarImgType:'',
                     id: this.$route.params.id
                 },
             }
@@ -93,43 +90,59 @@
         computed: {
             loading: function () {
                 cache: false;
+                return this.$store.getters.Getloading;
             },
-            IsModification: function () {
-                return true; //this.user.avatarUrl != this.dev.avatarUrl ||
-                    //this.user.firstName != this.dev.firstName ||
-                    //this.user.lastName != this.dev.lastName;
-                
-            },
+            IsModification: function () {           
+                return !(this.user.firstName != this.def.firstName
+                    || this.user.lastName != this.def.lastName
+                    || this.user.avatarUrl != this.def.avatarUrl)                
 
+            },
         },
         methods: {
-            changeText(el) {
-                console.log(el)
+            changeText() {               
+              
+                
             },
             onSubmit() {
-                his.$validator.validateAll().then((result) => {
+               this.$validator.validateAll().then((result) => {
                     if (result) {
-                        this.$store.dispatch(formName, { data: formData })
+                        this.$store.dispatch('UpdateUser', { data: this.user })
                             .then(() => {
-                                this.$router.push({ name: 'home' });
+                                console.log('ok');
                             });
                     }
                 });
-            }
-
+            },           
+            uploadFile(e) {  
+                var test = /^image\//gm.test(e.type) && e.size < 512 * 1024;
+                
+                if (test) {
+                    this.imageName = e.name
+                    if (this.imageName.lastIndexOf('.') <= 0) {
+                        return
+                    }
+                    const fr = new FileReader()
+                    fr.readAsDataURL(e)
+                    fr.addEventListener('load', () => {
+                        this.user.avatarUrl = fr.result
+                        this.user.avatarImgType = e.name.match(/.(jpg|png|gif)$/gm)[0]
+                    })
+                }               
+            },     
         },
-        //beforeMount: async function () {
-        //    this.$store.getters.GetUserData.then((res) => {                
-        //        this.user.firstName = res.data.firstName;
-        //        this.user.lastName = res.data.lastName;
-        //        //this.user.avatarUrl = res.data.avatarUrl;
+        beforeMount:  function () {
+            this.$store.getters.GetUserData.then((res) => {
+                this.user.firstName = res.data.firstName;
+                this.user.lastName = res.data.lastName;
+                this.user.avatarUrl = res.data.avatarUrl;
 
-        //        this.def.firstName = res.data.firstName;
-        //        this.def.lastName = res.data.lastName;
-        //       // this.def.avatarUrl = res.data.avatarUrl;
-        //    });
-           
-        //}
+                this.def.firstName = res.data.firstName;
+                this.def.lastName = res.data.lastName;
+                this.def.avatarUrl = res.data.avatarUrl;
+            });
+
+        }
 
     }
 </script>
