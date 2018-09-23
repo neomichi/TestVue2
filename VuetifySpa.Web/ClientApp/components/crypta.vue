@@ -4,7 +4,7 @@
             <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md5>
                     <h1>Курс популярных валют к usd</h1>
-                    <h4>парсим с coinmarketcap.com чистым js? слабо?</h4>
+                    <h4>парсим с coinmarketcap.com чистым js</h4>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -49,10 +49,8 @@
         beforeMount: async function () {
             var url = "https://api.coinmarketcap.com/v2/ticker/?limit=10";
             const tableData = await axios.get(url);
-            var table = tableData.data.data;
-            var array = [];
-            for (var row in table) {
-                array.push(table[row]);
+            var table = tableData.data.data;       
+            for (var row in table) {               
                 this.tableData.push(table[row]);
             }
 

@@ -20,14 +20,7 @@ Vue.use(VeeValidate);
 
 
 
-router.beforeEach((to, from, next) => {
- 
-    if (true) {
-        next()
-        return
-    }
-    next('/login')
-})
+
 
 export default router 
     

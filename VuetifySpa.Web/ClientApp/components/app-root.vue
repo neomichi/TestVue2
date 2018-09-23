@@ -13,12 +13,26 @@
                     class="indigo lighten-1 white--text text-xs-center"
                     style="width:100%">
 
-              
+
                 <v-card-text class="white--text">
-                    не без помощи  <a target="_blank" href="https://vuetifyjs.com" style="color:white">Vuetify</a>   &copy;2018 — <strong> Nikolay </strong>
+                 &copy;2018 — <strong> <a target="_blank" href="https://github.com/neomichi" style="color:white">Nikolay</a> with    <a target="_blank" href="https://vuetifyjs.com" style="color:white">Vuetify</a> </strong>
                 </v-card-text>
-            </v-card> 
+            </v-card>
         </v-footer>
+        <template>
+            <v-snackbar v-if="error" :bottom="true"
+                        :multi-line="true"
+                        :timeout="6000"
+                        color="error"
+                        v-on:input="closeError"
+                        :value="true">
+                {{ error }}
+                <v-btn flat dark
+                       v-on:click="closeError">
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </template>
     </v-app>
 
 
@@ -36,7 +50,6 @@
     import { fail } from 'assert'
  
     Vue.use(Vuetify, VueProgressiveImage)
-
     Vue.component('nav-menu', NavMenu);
     Vue.component('home-page', HomePage);
 
@@ -58,9 +71,16 @@
         props: {
             source: String
         },
-
+        computed: {
+            error() {
+                cache: false;
+                return this.$store.getters.GetError;
+            }
+        },
         methods: {
-
+            closeError() {
+                this.$store.dispatch('CLEAR_ERROR');
+            },
         }
     }
 </script>

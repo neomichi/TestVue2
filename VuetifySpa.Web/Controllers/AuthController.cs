@@ -39,7 +39,7 @@ namespace VuetifySpa.Web.Controllers
                     return Json(user.GetRegisterUser());
                 }
             }
-            return NotFound(new { message = "is not authenticated" });
+            return BadRequest("пожалуйста, авторизирутесь");
         }       
 
         //// POST: api/Default1
@@ -51,7 +51,7 @@ namespace VuetifySpa.Web.Controllers
 
             if (!HttpContext.User.Identity.IsAuthenticated)
             {
-                message = "не верная комбинация";
+                message = "неверная комбинация";
                 if (ModelState.IsValid)
                 {
                     var user = await _signInManager.UserManager.FindByEmailAsync(authLoginView.Email);
@@ -65,7 +65,8 @@ namespace VuetifySpa.Web.Controllers
                     }
                 }                
             }
-            return NotFound(new { message });
+            
+            return BadRequest( message );
         }
 
         // PUT: api/Default1/5
@@ -94,7 +95,7 @@ namespace VuetifySpa.Web.Controllers
                     return Json(appUser.GetRegisterUser());
                 }
             }
-            return NotFound(new { message });
+            return BadRequest(message);
         }
 
         //// DELETE: api/ApiWithActions/5
@@ -110,7 +111,7 @@ namespace VuetifySpa.Web.Controllers
                     return Ok();
                 }
             }
-            return NotFound(new { message = "user not Authenticated" });
+            return BadRequest("ошибка");
         }
         //private async Task<IActionResult> SignHelper(User user)
         //{

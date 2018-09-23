@@ -32,15 +32,17 @@ namespace VuetifySpa.Web.Controllers
         [HttpGet]
         public IActionResult Get(Guid id)
         {
+            var message = "пожалуйста,авторизирутесь";
             if (HttpContext.User.Identity.IsAuthenticated)
             {
+                message = "указаный пользователь не найден";
                 var user = _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));
                 if (user != null)
                 {
                     return Json(user.GetRegisterUser());
                 }
             }
-            return NotFound(new { message = "is not authenticated" });
+            return BadRequest(message);
 
         }
 
@@ -65,16 +67,19 @@ namespace VuetifySpa.Web.Controllers
 
             await Task.Delay(1000);
 
-            var filename = string.Format("{0}{1}", userView.Id, userView.AvatarImgType);
-            var filepath = System.IO.Path.Combine(_hostingEnviroment.WebRootPath, @"img\avatar\", filename);
-            var webpath = string.Format("/img/avatar/{0}", filename);            
-            Code.GetImage64Ext(userView.AvatarUrl, filepath);
-            userView.AvatarUrl = webpath;
+            if (userView.AvatarUrl.StartsWith("data:image", StringComparison.OrdinalIgnoreCase))
+            {
+                var filename = string.Format("{0}{1}", userView.Id, userView.AvatarImgType);
+                var filepath = System.IO.Path.Combine(_hostingEnviroment.WebRootPath, @"img\avatar\", filename);
+                var webpath = string.Format("/img/avatar/{0}", filename);
+                Code.GetImage64Ext(userView.AvatarUrl, filepath);
+                userView.AvatarUrl = string.Format("{0}?v={1:yyyyMMddHHmmssff}", webpath,DateTime.Now);
+            }
 
 
             if (ModelState.IsValid)
             {
-                message = "bad data";              
+                message = "плохие данные";              
 
                 var user=_db.Users.SingleOrDefault(x => x.Id == userView.Id);
                 if (user!=null)
@@ -87,10 +92,10 @@ namespace VuetifySpa.Web.Controllers
                     return Json(user);
                 } else
                 {
-                    message = "user is not found";
+                    message = "указаный пользователь не найден";
                 }
             }
-            return NotFound(new { message });
+            return BadRequest(message);
         }
 
         // DELETE api/<controller>/5

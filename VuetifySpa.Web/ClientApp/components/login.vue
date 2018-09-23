@@ -92,7 +92,7 @@
                 </v-card>
 
             </v-flex>
-        </v-layout>
+        </v-layout>     
     </v-container>
 </template>
 
@@ -118,8 +118,7 @@
             }
         },
         data() {
-            return {
-                
+            return {               
                 login: {
                     email: 'test@test.ru',
                     password: '!Qwe123',
@@ -162,16 +161,20 @@
                   
                         this.$store.dispatch(formName, { data: formData })
                             .then(() => {
-                                this.$router.push({ name: 'home' });
+                                if (this.$store.getters.IsAuth) {
+                                    this.$router.push({ name: 'home' });
+                                }    
                             });
-                            //.catch((error) => {
-                            //    console.log(error);
-                            //});                  
-                   
-                       
                     }
                 });
             }
+        },
+        created: function () {        
+            if (this.$route.query.authError != undefined) {               
+                if (!HasEmptyJson(this.$route.query.authError)) {                    
+                    this.$store.dispatch('SET_ERROR', "пожалуйста, авторизируйтесь")
+                }
+            }         
         }
     }
 </script>

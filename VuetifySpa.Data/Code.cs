@@ -9,7 +9,7 @@ namespace VuetifySpa.Data
         public static long ToLong(this Guid val)
         {
             return BitConverter.ToInt64(val.ToByteArray(), 0);
-        }
+        }         
 
         public static void GetImage64Ext(string data64, string path)
         {

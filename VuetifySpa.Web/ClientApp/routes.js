@@ -7,7 +7,7 @@ import GridData from 'components/grid-data'
 import User from 'components/user/user'
 import cryptaData from 'components/crypta'
 import { fail } from 'assert';
-
+import store from './store'
 
 
 
@@ -32,7 +32,17 @@ export const anotherRoutes = [
 ]
 
 export const userRoutes = [    
-    { path: '/user/:id', name: 'user', component: User, display: 'user' },
+    {
+        path: '/user/:id', name: 'user', component: User, display: 'user', beforeEnter: (to, from, next) =>
+        {
+            
+            if (store.getters.IsAuth) {
+                next()
+                return
+            }
+            next('/login?authError=true');
+        }
+    },
 ]
 
 
