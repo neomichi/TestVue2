@@ -12,3 +12,5 @@ VuetifySpa\.Web/obj/
 VuetifySpa\.Web/node_modules/
 
 VuetifySpa\.Web/wwwroot/dist/
+
+VuetifySpa\.Web/appsettings\.json
