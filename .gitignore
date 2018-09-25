@@ -14,3 +14,7 @@ VuetifySpa\.Web/node_modules/
 VuetifySpa\.Web/wwwroot/dist/
 
 VuetifySpa\.Web/appsettings\.json
+
+\.idea/
+
+VuetifySpa\.Web/wwwroot/img/avatar/

@@ -10,7 +10,7 @@ using VuetifySpa.Data;
 namespace VuetifySpa.Data.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20180908071326_Init")]
+    [Migration("20180924083551_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,9 +30,6 @@ namespace VuetifySpa.Data.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<Guid>("RoleId");
 
                     b.HasKey("Id");
@@ -40,8 +37,6 @@ namespace VuetifySpa.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRoleClaim<Guid>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
@@ -53,9 +48,6 @@ namespace VuetifySpa.Data.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
@@ -63,8 +55,6 @@ namespace VuetifySpa.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserClaims");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserClaim<Guid>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
@@ -72,9 +62,6 @@ namespace VuetifySpa.Data.Migrations
                     b.Property<string>("LoginProvider");
 
                     b.Property<string>("ProviderKey");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -85,8 +72,6 @@ namespace VuetifySpa.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserLogins");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserLogin<Guid>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
@@ -95,16 +80,11 @@ namespace VuetifySpa.Data.Migrations
 
                     b.Property<Guid>("RoleId");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<Guid>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -115,16 +95,11 @@ namespace VuetifySpa.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<string>("Value");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserToken<Guid>");
                 });
 
             modelBuilder.Entity("VuetifySpa.Data.Models.ApplicationRole", b =>
@@ -171,10 +146,10 @@ namespace VuetifySpa.Data.Migrations
                     b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName")
-                        .HasMaxLength(160);
+                        .HasMaxLength(120);
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(160);
+                        .HasMaxLength(120);
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -211,56 +186,6 @@ namespace VuetifySpa.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("VuetifySpa.Data.Models.ApplicationRoleClaim", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>");
-
-
-                    b.ToTable("RoleClaims");
-
-                    b.HasDiscriminator().HasValue("ApplicationRoleClaim");
-                });
-
-            modelBuilder.Entity("VuetifySpa.Data.Models.ApplicationUserClaim", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>");
-
-
-                    b.ToTable("UserClaims");
-
-                    b.HasDiscriminator().HasValue("ApplicationUserClaim");
-                });
-
-            modelBuilder.Entity("VuetifySpa.Data.Models.ApplicationUserLogin", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>");
-
-
-                    b.ToTable("UserLogins");
-
-                    b.HasDiscriminator().HasValue("ApplicationUserLogin");
-                });
-
-            modelBuilder.Entity("VuetifySpa.Data.Models.ApplicationUserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>");
-
-
-                    b.ToTable("UserRoles");
-
-                    b.HasDiscriminator().HasValue("ApplicationUserRole");
-                });
-
-            modelBuilder.Entity("VuetifySpa.Data.Models.ApplicationUserToken", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>");
-
-
-                    b.ToTable("UserTokens");
-
-                    b.HasDiscriminator().HasValue("ApplicationUserToken");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

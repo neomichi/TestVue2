@@ -31,6 +31,7 @@ namespace VuetifySpa.Web.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 var user = _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));

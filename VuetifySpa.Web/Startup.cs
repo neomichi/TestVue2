@@ -37,28 +37,33 @@ namespace VuetifySpa.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
             services.AddSingleton<IConfiguration>(Configuration);
             var connectionString = Configuration.GetConnectionString("PostgreSQL");
             services.AddDbContext<MyDbContext>((options => options.UseNpgsql(connectionString)));
-           // services.AddTransient<IDesignTimeDbContextFactory<MyDbContext>, MyDbContextDesignTimeDbContextFactory()>();
-            services.AddTransient<UserManager<ApplicationUser>>();
-            services.AddTransient<RoleManager<ApplicationRole>>();
-            services.AddTransient<SignInManager<IdentityUser>>();
-            services.AddScoped<MyDbContext>();
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                    .AddEntityFrameworkStores<MyDbContext>()
-                    .AddDefaultUI()
-                    .AddDefaultTokenProviders();
 
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<MyDbContext>()
+            
+          
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
+            services.AddTransient<UserManager<ApplicationUser>>();
+            services.AddTransient<RoleManager<ApplicationUser>>();
+
+            // services.AddTransient<IDesignTimeDbContextFactory<MyDbContext>, MyDbContextDesignTimeDbContextFactory()>();
 
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                     .AddControllersAsServices();
+
+            // Add Database Initializer->
+            services.AddScoped<IDbInitializer, DbInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDbInitializer dbInitializer,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +85,8 @@ namespace VuetifySpa.Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            //Generate EF Core Seed
+            //dbInitializer.Initialize().Wait();
 
             app.UseMvc(routes =>
             {

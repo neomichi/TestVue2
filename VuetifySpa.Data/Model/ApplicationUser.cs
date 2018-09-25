@@ -12,10 +12,10 @@ namespace VuetifySpa.Data.Models
     public class ApplicationUser : IdentityUser<Guid>
     {
         [PersonalData]
-        [MaxLength(160)]
+        [MaxLength(120)]
         public string FirstName { get; set; }
-        [PersonalData]
-        [MaxLength(160)]
+    
+        [MaxLength(120)]
         public string LastName { get; set; }
 
         [MaxLength(160)]

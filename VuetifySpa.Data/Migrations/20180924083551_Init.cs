@@ -42,8 +42,8 @@ namespace VuetifySpa.Data.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(maxLength: 160, nullable: true),
-                    LastName = table.Column<string>(maxLength: 160, nullable: true),
+                    FirstName = table.Column<string>(maxLength: 120, nullable: true),
+                    LastName = table.Column<string>(maxLength: 120, nullable: true),
                     AvatarUrl = table.Column<string>(maxLength: 160, nullable: true),
                     Wallet = table.Column<int>(nullable: false)
                 },
@@ -60,8 +60,7 @@ namespace VuetifySpa.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     RoleId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false)
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,8 +81,7 @@ namespace VuetifySpa.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     UserId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false)
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,8 +101,7 @@ namespace VuetifySpa.Data.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,8 +119,7 @@ namespace VuetifySpa.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
-                    RoleId = table.Column<Guid>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false)
+                    RoleId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,8 +145,7 @@ namespace VuetifySpa.Data.Migrations
                     UserId = table.Column<Guid>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Value = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false)
+                    Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

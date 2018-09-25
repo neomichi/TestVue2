@@ -172,7 +172,8 @@
         created: function () {        
             if (this.$route.query.authError != undefined) {               
                 if (!HasEmptyJson(this.$route.query.authError)) {                    
-                    this.$store.dispatch('SET_ERROR', "пожалуйста, авторизируйтесь")
+                    this.$store.dispatch('SET_ERROR', "пожалуйста, авторизируйтесь");
+                   
                 }
             }         
         }
