@@ -25,7 +25,14 @@ namespace VuetifySpa.Data.ViewModel
         [MaxLength(32)]
         public string Password { get; set; }
 
+        [Required]
+        [Compare("Password")]
+        [MaxLength(32)]
+        public string RePassword { get; set; }
+
         public bool isPersistent { get; set; } = false;
+
+        public bool IsAdminRole { get; set; } = false;
 
     }
 }

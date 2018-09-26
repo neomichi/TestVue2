@@ -32,6 +32,10 @@ const getters = {
     },
     IsAuth: state => {        
         return !HasEmptyJson(state.authUser);
+    },
+    IsAdmin: state => {
+        
+        return state;
     }
 }
 

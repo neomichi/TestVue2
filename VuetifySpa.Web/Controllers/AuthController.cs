@@ -19,29 +19,33 @@ namespace VuetifySpa.Web.Controllers
     {
         private MyDbContext _db;
         private SignInManager<ApplicationUser> _signInManager;
+        private readonly IExtensionMethods _extensionMethods;
 
-        public AuthController(MyDbContext db, SignInManager<ApplicationUser> signInManager)
+        public AuthController(MyDbContext db, SignInManager<ApplicationUser> signInManager, IExtensionMethods extensionMethods)
         {
             _db = db;
             _signInManager = signInManager;
+            _extensionMethods = extensionMethods;
+
         }
 
 
         // GET: api/Default1/5
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            
+            var message = "пожалуйста,авторизирутесь";
             if (HttpContext.User.Identity.IsAuthenticated)
             {
+                message = "указаный пользователь не найден";
                 var user = _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));
                 if (user != null)
                 {
-                    return Json(user.GetRegisterUser());
+                    return Json(await _extensionMethods.GetUserRegViewFromUser(user));
                 }
             }
-            return BadRequest("пожалуйста, авторизирутесь");
-        }       
+            return BadRequest(message);
+        }
 
         //// POST: api/Default1
         [HttpPost]
@@ -52,29 +56,25 @@ namespace VuetifySpa.Web.Controllers
 
             if (!HttpContext.User.Identity.IsAuthenticated)
             {
-                message = "неверная комбинация";
+                message = "неверная комбинация email пароль";
                 if (ModelState.IsValid)
                 {
                     var user = await _signInManager.UserManager.FindByEmailAsync(authLoginView.Email);
-                    if (user != null)
+                    var result = await _signInManager.PasswordSignInAsync(user, authLoginView.Password, authLoginView.RememberMe, false);
+                    if (result.Succeeded)
                     {
-                        var result = await _signInManager.PasswordSignInAsync(user, authLoginView.Password, authLoginView.RememberMe, false);
-                        if (result.Succeeded)
-                        {
-                            return Json(user.GetRegisterUser());
-                        }
+                        return Json(await _extensionMethods.GetUserRegViewFromEmail(user.Email));
                     }
-                }                
+                }
             }
-            
-            return BadRequest( message );
+            return BadRequest(message);
         }
 
         // PUT: api/Default1/5
         [HttpPut]
         public async Task<IActionResult> Put([FromBody]RegisterUserView user)
         {
-           
+
             var message = "вы уже авторизированы";
             await Task.Delay(1000);
 
@@ -84,16 +84,20 @@ namespace VuetifySpa.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     var appUser = new ApplicationUser
-                    {
-                        Id = Guid.NewGuid(),
+                    {                      
                         Email = user.Email,
                         UserName = user.Email,
                         FirstName = user.FirstName,
                         LastName = user.LastName
                     };
                     var responseUser = await _signInManager.UserManager.CreateAsync(appUser, user.Password);
-                    await _signInManager.SignInAsync(appUser, isPersistent: user.isPersistent);
-                    return Json(appUser.GetRegisterUser());
+                    if (responseUser.Succeeded)
+                    {
+                        var userdb =  _extensionMethods.GetUserFromEmail(appUser.Email);
+                        await _signInManager.SignInAsync(userdb, isPersistent: user.isPersistent);
+                        return Json(_extensionMethods.GetUserRegViewFromUser(userdb));
+                    } 
+               
                 }
             }
             return BadRequest(message);
@@ -108,12 +112,15 @@ namespace VuetifySpa.Web.Controllers
                 var user = _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));
                 if (user != null)
                 {
-                    await _signInManager.SignOutAsync(); 
+                    await _signInManager.SignOutAsync();
                     return Ok();
                 }
             }
             return BadRequest("ошибка");
         }
+
+
+
         //private async Task<IActionResult> SignHelper(User user)
         //{
         //    if (user != null)
@@ -125,13 +132,28 @@ namespace VuetifySpa.Web.Controllers
         //         new Claim(ClaimTypes.Name, user.Fio),
         //         new Claim(ClaimTypes.Role, user.IsAdmin.ToString())
         //        };
-        //        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+        //        var claimsIdentity = new ClaimsIdentity(claims,  ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
         //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
         //        return Json(user);
         //    }
         //    return Json("");
         //}
 
+        //private async Task SignInAsync(ApplicationUser user, bool isPersistent)
+        //{
+
+
+        //    var identity = await _signInManager.UserManager.CreateIdentityAsync(user);
+
+
+
+        //    identity.AddClaim(new Claim(ClaimTypes.GivenName, your_profile == null ? string.Empty : your_profile.FirstName));
+        //    identity.AddClaim(new Claim(ClaimTypes.Surname, your_profile == null ? string.Empty : your_profile.LastName));
+
+        //    identity
+
+        //    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+        //}
 
     }
 }

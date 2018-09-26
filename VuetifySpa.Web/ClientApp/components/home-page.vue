@@ -25,8 +25,9 @@
                             </v-card-title>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn  v-on:click="viewCar(item.id)" flat color="orange">посмотреть</v-btn>
+                                <v-btn v-on:click="viewCar(item.id)" flat color="orange">посмотреть</v-btn>
                                 <v-btn raised color="primary">купить</v-btn>
+   
                             </v-card-actions>
                         </v-card>
                     </v-flex>

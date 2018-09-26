@@ -5,6 +5,7 @@
             <v-container fluid>
                 <router-view></router-view>
             </v-container>
+         
         </v-content>
         <v-footer dark
                   height="auto" style="width:100%">
@@ -15,7 +16,7 @@
 
 
                 <v-card-text class="white--text">
-                 &copy;2018 — <strong> <a target="_blank" href="https://github.com/neomichi" style="color:white">Nikolay</a> with    <a target="_blank" href="https://vuetifyjs.com" style="color:white">Vuetify</a> </strong>
+                &copy;2018 — <strong> <a target="_blank" href="https://github.com/neomichi" style="color:white">Nikolay</a> with    <a target="_blank" href="https://vuetifyjs.com" style="color:white">Vuetify</a> </strong>
                 </v-card-text>
             </v-card>
         </v-footer>
@@ -27,12 +28,12 @@
                         v-on:input="closeError"
                         :value="true">
                 {{ error }}
-                <v-btn flat dark
-                       v-on:click="closeError">
-                    Close
-                </v-btn>
-            </v-snackbar>
-        </template>
+                    <v-btn flat dark
+                           v-on:click="closeError">
+                        Close
+                    </v-btn>
+                    </v-snackbar>
+</template>
     </v-app>
 
 
@@ -55,6 +56,7 @@
 
     export default {
         data: () => ({           
+            
             fixed: true,
             items: [{
                 icon: 'bubble_chart',
@@ -67,6 +69,7 @@
         }),
         created: function () {
             store.dispatch('UpdateAuth'); 
+     
         },
         props: {
             source: String
@@ -75,7 +78,7 @@
             error() {
                 cache: false;
                 return this.$store.getters.GetError;
-            }
+            },            
         },
         methods: {
             closeError() {

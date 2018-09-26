@@ -33,8 +33,7 @@ namespace VuetifySpa.Data.Models
                 Email = Email,
                 AvatarUrl = string.IsNullOrWhiteSpace(AvatarUrl) ? "/img/account.jpg" : AvatarUrl,
                 Wallet = Wallet,
-                Password="",
-               
+                Password="",               
             };
         }
 

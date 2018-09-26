@@ -31,36 +31,35 @@ namespace VuetifySpa.Data
 
 
         public async Task Initialize()
-        {
-
-            ///////()=>
+        {            
+       
 
             string login = "admin@test.ru";
             string password = "LikeMe123!";
-            ///////
 
-            var user = new ApplicationUser()
-            {
-                UserName = login,
-                Email = login,
-                FirstName = "Ivan",
-                LastName = "Ivanov"
-            };
+            if (!_db.Users.Any(x => x.Email.Equals(login))) { 
 
-            var role = new ApplicationRole()
-            {
-                Name = "Admin",
-                Description = "Admin"
-            };
+                var user = new ApplicationUser()
+                {
+                    UserName = login,
+                    Email = login,
+                    FirstName = "Ivan",
+                    LastName = "Ivanov"
+                };
 
-            await _userManager.CreateAsync(user, password);
-            await _roleManager.CreateAsync(role);
+                var role = new ApplicationRole()
+                {
+                    Name = "Admin",
+                    Description = "Admin"
+                };
 
-            _db.UserRoles.Add(new IdentityUserRole<Guid> { UserId = user.Id, RoleId = role.Id });
-            _db.SaveChanges();
+                await _userManager.CreateAsync(user, password);
+                await _roleManager.CreateAsync(role);
 
+                _db.UserRoles.Add(new IdentityUserRole<Guid> { UserId = user.Id, RoleId = role.Id });
+                _db.SaveChanges();
 
-
+            }
         }
 
 

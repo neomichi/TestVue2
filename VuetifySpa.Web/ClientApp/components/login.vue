@@ -33,10 +33,10 @@
                             <v-btn type="submin" color="primary" :loading="loading" :disable="loading">войти</v-btn>
                          
                                
-                            <v-btn tag="a" v-on:click="router.push({ name: 'register' })" color="yellow"> перейти к регистрации</v-btn>
+                            <v-btn tag="a" v-on:click="$router.push({ name: 'register' })" color="yellow"> регистрация</v-btn>
 
                         </v-card-actions>
-                    </form>
+                    </form> 
                 </v-card>
                 <v-card v-if="!loginPage" class="elevation-12">
                     <form id="reg" @submit.prevent="onSubmit">
@@ -54,16 +54,16 @@
                                           required prepend-icon="email" name="reg_email" label="Email"></v-text-field>
                             <v-text-field v-model="reg.firstName"
                                           v-validate="'required|min:3|max:60'"
-                                          :error-messages="errors.collect('firstName')"
+                                          :error-messages="errors.collect('reg_firstName')"
                                           autocomplete="off"
                                           data-vv-as="имя"
-                                          required prepend-icon="email" name="reg_firstName" label="Имя"></v-text-field>
+                                          required prepend-icon="email" name="reg_firstName" id="reg_firstName" label="Имя"></v-text-field>
                             <v-text-field v-model="reg.lastName"
                                           v-validate="'required|min:3|max:60'"
-                                          :error-messages="errors.collect('lastName')"
+                                          :error-messages="errors.collect('reg_lastName')"
                                           autocomplete="off"
                                           data-vv-as="фамилия"
-                                          required prepend-icon="email" name="reg_lastName" label="Фамилия"></v-text-field>
+                                          required prepend-icon="email" name="reg_lastName" id="reg_lastName"  label="Фамилия"></v-text-field>
                             <v-text-field v-model="reg.password"
                                           v-validate="'required|min:6|max:20'"
                                           :error-messages="errors.collect('password')"
@@ -85,8 +85,8 @@
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn tag="a" v-on:click="router.push({ name: 'login' })" color="yellow">войти c email и паролем</v-btn>
-                            <v-btn type="submit" color="primary" :loading="loading" :disable="loading">регистрация</v-btn>
+                            <v-btn tag="a" v-on:click="$router.push({ name: 'login' })" color="yellow">войти c email и паролем</v-btn>
+                            <v-btn type="submit" color="primary" :loading="loading" :disable="loading">зарегистрироваться</v-btn>
                         </v-card-actions>
                     </form>
                 </v-card>
@@ -120,15 +120,15 @@
         data() {
             return {               
                 login: {
-                    email: 'test@test.ru',
-                    password: '!Qwe123',
+                    email: '',
+                    password: '',
                 },
                 reg: {
-                    email: 'test@test.ru',
-                    firstName: 'Вася',
-                    lastName: 'Иванов',
-                    password: '!Qwe123',
-                    repassword: '!Qwe123',
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    password: '',
+                    repassword: '',
                 },
             }
         },
@@ -173,6 +173,7 @@
             if (this.$route.query.authError != undefined) {               
                 if (!HasEmptyJson(this.$route.query.authError)) {                    
                     this.$store.dispatch('SET_ERROR', "пожалуйста, авторизируйтесь");
+                    this.$route.query.authError = "";
                    
                 }
             }         

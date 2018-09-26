@@ -20,17 +20,19 @@ namespace VuetifySpa.Web.Controllers
         private IHostingEnvironment _hostingEnviroment;
         private MyDbContext _db;
         private SignInManager<ApplicationUser> _signInManager;
+        private readonly IExtensionMethods _extensionMethods;
 
-        public UserController(MyDbContext db, SignInManager<ApplicationUser> signInManager, IHostingEnvironment hostingEnviroment)
+        public UserController(MyDbContext db, IExtensionMethods extensionMethods, SignInManager<ApplicationUser> signInManager, IHostingEnvironment hostingEnviroment)
         {
             _db = db;
             _signInManager = signInManager;
             _hostingEnviroment = hostingEnviroment;
+            _extensionMethods=extensionMethods;
         }
 
         // GET: api/<controller>
         [HttpGet]
-        public IActionResult Get(Guid id)
+        public  async Task<IActionResult> Get(Guid id)
         {
             var message = "пожалуйста,авторизирутесь";
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -38,8 +40,8 @@ namespace VuetifySpa.Web.Controllers
                 message = "указаный пользователь не найден";
                 var user = _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));
                 if (user != null)
-                {
-                    return Json(user.GetRegisterUser());
+                {                  
+                    return Json(await _extensionMethods.GetUserRegViewFromUser(user));
                 }
             }
             return BadRequest(message);
@@ -73,24 +75,25 @@ namespace VuetifySpa.Web.Controllers
                 var filepath = System.IO.Path.Combine(_hostingEnviroment.WebRootPath, @"img\avatar\", filename);
                 var webpath = string.Format("/img/avatar/{0}", filename);
                 Code.GetImage64Ext(userView.AvatarUrl, filepath);
-                userView.AvatarUrl = string.Format("{0}?v={1:yyyyMMddHHmmssff}", webpath,DateTime.Now);
+                userView.AvatarUrl = string.Format("{0}?v={1:yyyyMMddHHmmssff}", webpath, DateTime.Now);
             }
 
 
             if (ModelState.IsValid)
             {
-                message = "плохие данные";              
+                message = "плохие данные";
 
-                var user=_db.Users.SingleOrDefault(x => x.Id == userView.Id);
-                if (user!=null)
-                {                  
+                var user = _db.Users.SingleOrDefault(x => x.Id == userView.Id);
+                if (user != null)
+                {
                     user.FirstName = userView.FirstName;
                     user.LastName = userView.LastName;
                     user.AvatarUrl = userView.AvatarUrl;
                     _db.Update(user);
                     _db.SaveChanges();
                     return Json(user);
-                } else
+                }
+                else
                 {
                     message = "указаный пользователь не найден";
                 }

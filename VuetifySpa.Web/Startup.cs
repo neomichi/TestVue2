@@ -49,6 +49,7 @@ namespace VuetifySpa.Web
                 .AddDefaultTokenProviders();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<ApplicationUser>>();
+            services.AddTransient<IExtensionMethods, ExtensionMethods>();
 
             // services.AddTransient<IDesignTimeDbContextFactory<MyDbContext>, MyDbContextDesignTimeDbContextFactory()>();
 
