@@ -11,6 +11,7 @@ using VuetifySpa.Data;
 using VuetifySpa.Data.Models;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.AspNetCore.Routing;
 
 namespace VuetifySpa.Web
 {
@@ -56,7 +57,8 @@ namespace VuetifySpa.Web
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                     .AddControllersAsServices();
-
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            services.Configure<RouteOptions>(options => options.AppendTrailingSlash = false);
             // Add Database Initializer->
             services.AddScoped<IDbInitializer, DbInitializer>();
         }

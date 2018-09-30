@@ -3,11 +3,12 @@ import VueRouter from 'vue-router'
 import { routes } from './routes'
 import { anotherRoutes } from './routes'
 import { userRoutes } from './routes'
-import { authRoutes} from './routes'
+import { authRoutes } from './routes'
+import { adminRoutes } from './routes'
 
 let router = new VueRouter({
     mode: 'history',
-    routes: routes.concat(anotherRoutes, userRoutes, authRoutes)
+    routes: routes.concat(anotherRoutes, userRoutes, authRoutes,adminRoutes)
 })
 
 

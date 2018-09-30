@@ -34,9 +34,8 @@ const getters = {
         return !HasEmptyJson(state.authUser);
     },
     IsAdmin: state => {
-        
-        return state;
-    }
+        return !HasEmptyJson(state.authUser)  && state.authUser.isAdminRole;
+    },
 }
 
 

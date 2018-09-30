@@ -5,7 +5,7 @@
             <v-container fluid>
                 <router-view></router-view>
             </v-container>
-         
+
         </v-content>
         <v-footer dark
                   height="auto" style="width:100%">
@@ -16,7 +16,10 @@
 
 
                 <v-card-text class="white--text">
-                &copy;2018 — <strong> <a target="_blank" href="https://github.com/neomichi" style="color:white">Nikolay</a> with    <a target="_blank" href="https://vuetifyjs.com" style="color:white">Vuetify</a> </strong>
+                    &copy;2018 — <strong> <a target="_blank" href="https://github.com/neomichi" style="color:white">Nikolay</a> with    <a target="_blank" href="https://vuetifyjs.com" style="color:white">Vuetify</a> </strong>
+
+                    <router-link v-if="isAdmin" to="/admin" tag="a" style="color:wheat;font-weight: bold;"> admin </router-link>
+
                 </v-card-text>
             </v-card>
         </v-footer>
@@ -28,12 +31,11 @@
                         v-on:input="closeError"
                         :value="true">
                 {{ error }}
-                    <v-btn flat dark
-                           v-on:click="closeError">
-                        Close
-                    </v-btn>
-                    </v-snackbar>
-</template>
+                <v-btn v-on:click="closeError()" flat icon color="white">
+                    <v-icon>close</v-icon>
+                </v-btn>
+            </v-snackbar>
+        </template>
     </v-app>
 
 
@@ -49,14 +51,14 @@
     import 'material-design-icons-iconfont/dist/material-design-icons.scss'
     import VueProgressiveImage from 'vue-progressive-image'
     import { fail } from 'assert'
- 
+
     Vue.use(Vuetify, VueProgressiveImage)
     Vue.component('nav-menu', NavMenu);
     Vue.component('home-page', HomePage);
 
     export default {
-        data: () => ({           
-            
+        data: () => ({
+
             fixed: true,
             items: [{
                 icon: 'bubble_chart',
@@ -64,12 +66,12 @@
             }],
             miniVariant: false,
             right: true,
-            rightDrawer: false,           
+            rightDrawer: false,
 
         }),
         created: function () {
-            store.dispatch('UpdateAuth'); 
-     
+            store.dispatch('UpdateAuth');
+
         },
         props: {
             source: String
@@ -78,7 +80,11 @@
             error() {
                 cache: false;
                 return this.$store.getters.GetError;
-            },            
+            },
+            isAdmin() {
+                cache: false;
+                return this.$store.getters.IsAdmin;
+            },
         },
         methods: {
             closeError() {
@@ -86,6 +92,6 @@
             },
         }
     }
-</script>
+</script>   
 <style>
 </style>

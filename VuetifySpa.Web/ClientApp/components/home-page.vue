@@ -14,7 +14,7 @@
             <v-container grid-list-lg>
                 <v-layout row wrap>
                     <v-flex  v-for="item in items" v-bind:key="item.id" xs12 sm6 md3>
-                        <v-card >
+                        <v-card>
                             <v-img style="height:240px;" :src="item.img"
                                    aspect-ratio="2.75"></v-img>
                             <v-card-title primary-title>
@@ -23,12 +23,16 @@
                                     <div>{{item.description}}</div>
                                 </div>
                             </v-card-title>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn v-on:click="viewCar(item.id)" flat color="orange">посмотреть</v-btn>
-                                <v-btn raised color="primary">купить</v-btn>
-   
-                            </v-card-actions>
+                            <v-layout align-center justify-start row fill-height wrap>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+
+                                    <v-btn v-on:click="viewCar(item.id)" flat color="orange">подробнее</v-btn>
+                                    <v-btn raised color="primary">купить</v-btn>
+
+                                    <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-layout>
                         </v-card>
                     </v-flex>
                 </v-layout>
