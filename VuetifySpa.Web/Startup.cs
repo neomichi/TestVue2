@@ -37,11 +37,13 @@ namespace VuetifySpa.Web
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                
             });
-            services.AddSingleton<IConfiguration>(Configuration);
+            
             var connectionString = Configuration.GetConnectionString("PostgreSQL");
-            services.AddDbContext<MyDbContext>((options => options.UseNpgsql(connectionString)));
-
+            services.AddEntityFrameworkNpgsql()
+                .AddDbContext<MyDbContext>((options => options.UseNpgsql(connectionString)));
+            
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<MyDbContext>()
             
@@ -52,7 +54,7 @@ namespace VuetifySpa.Web
             services.AddTransient<RoleManager<ApplicationUser>>();
             services.AddTransient<IExtensionMethods, ExtensionMethods>();
 
-            // services.AddTransient<IDesignTimeDbContextFactory<MyDbContext>, MyDbContextDesignTimeDbContextFactory()>();
+             //services.AddTransient<IDesignTimeDbContextFactory<MyDbContext>, MyDbContextDesignTimeDbContextFactory>();
 
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -89,7 +91,7 @@ namespace VuetifySpa.Web
 
             app.UseAuthentication();
             //Generate EF Core Seed
-            //dbInitializer.Initialize().Wait();
+           // dbInitializer.Initialize().Wait();
 
             app.UseMvc(routes =>
             {

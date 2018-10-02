@@ -120,8 +120,8 @@
         data() {
             return {               
                 login: {
-                    email: '',
-                    password: '',
+                    email: 'admin@test.ru',
+                    password: 'LikeMe123!',
                 },
                 reg: {
                     email: '',

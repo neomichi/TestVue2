@@ -8,6 +8,31 @@ namespace VuetifySpa.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:uuid-ossp", "'uuid-ossp', '', ''");
+
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(maxLength: 120, nullable: true),
+                    CarType = table.Column<string>(maxLength: 120, nullable: true),
+                    Description = table.Column<string>(maxLength: 120, nullable: true),
+                    BirthYear = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    CarCase = table.Column<string>(maxLength: 120, nullable: true),
+                    Status = table.Column<string>(maxLength: 120, nullable: true),
+                    Transmission = table.Column<string>(maxLength: 120, nullable: true),
+                    Color = table.Column<string>(maxLength: 120, nullable: true),
+                    Avatar = table.Column<string>(maxLength: 160, nullable: true),
+                    Motor = table.Column<string>(maxLength: 120, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
@@ -212,6 +237,9 @@ namespace VuetifySpa.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "Roles");

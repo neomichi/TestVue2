@@ -63,28 +63,28 @@
                         title: 'красота номер 1',
                         description: 'красота красиво супер гут 1',
                         promo:false,
-                        img: '/img/ferrari.jpg'
+                        img: '/img/car/ferrari.jpg'
                     },
                     {
                         id: 2,
                         title: 'красота номер 2',
                         description: 'красота красиво супер гут 2',
                         promo: true,
-                        img: '/img/bentley.jpg'
+                        img: '/img/car/bentley.jpg'
                     },             
                     {
                         id: 3,
                         title: 'красота номер 3',
                         description: 'красота красиво супер гут 3',
                         promo: true,
-                        img: '/img/shevrole.jpg'
+                        img: '/img/car/shevrole.jpg'
                     },
                     {
                         id: 4,
                         title: 'красота номер 4',
                         description: 'красота красиво супер гут 4',
                         promo: true,
-                        img: '/img/maserati.jpg'
+                        img: '/img/car/maserati.jpg'
                     },
 
                 ]

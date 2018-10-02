@@ -10,15 +10,16 @@ using VuetifySpa.Data;
 namespace VuetifySpa.Data.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20180924083551_Init")]
+    [Migration("20181002063628_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:PostgresExtension:uuid-ossp", "'uuid-ossp', '', ''")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -100,6 +101,47 @@ namespace VuetifySpa.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("VuetifySpa.Data.Model.Car", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Avatar")
+                        .HasMaxLength(160);
+
+                    b.Property<int>("BirthYear");
+
+                    b.Property<string>("CarCase")
+                        .HasMaxLength(120);
+
+                    b.Property<string>("CarType")
+                        .HasMaxLength(120);
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(120);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(120);
+
+                    b.Property<string>("Motor")
+                        .HasMaxLength(120);
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(120);
+
+                    b.Property<string>("Title")
+                        .HasMaxLength(120);
+
+                    b.Property<string>("Transmission")
+                        .HasMaxLength(120);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("VuetifySpa.Data.Models.ApplicationRole", b =>
