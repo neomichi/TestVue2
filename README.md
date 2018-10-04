@@ -3,4 +3,4 @@ vue2 + vuetify + .net core 2.1.4 + postgres
 
 надеюсь, кто нибудь увидет и поймет, что я знаю C# 
 
-*webpack конфигурацию и eslint делал не я, идеи взял у MarkPiesza
+*webpack и eslint делал не я, идеи взял у MarkPiesza
