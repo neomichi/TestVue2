@@ -1,25 +1,41 @@
 ﻿    <template>     
         <div>
-            <h1>Список техники </h1>
-            <v-data-table :headers="headers"
-                          :items="desserts"
-                          hide-actions
-                          class="elevation-1">
-                <template slot="items" slot-scope="props">
-                    <td>{{ props.item.name }}</td>
-                    <td class="text-xs-right">{{ props.item.calories }}</td>
-                    <td class="text-xs-right">{{ props.item.fat }}</td>
-                    <td class="text-xs-right">{{ props.item.carbs }}</td>
-                    <td class="text-xs-right">{{ props.item.protein }}</td>
-                    <td class="text-xs-right">{{ props.item.iron }}</td>
-                </template>
-            </v-data-table>
+            <v-container fluid fill-height>
+                <v-layout align-center justify-center>
+                    <v-flex xs12>
+                        <h1>Список техники </h1>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+
+            <v-container fluid fill-height>
+                <v-layout align-center justify-center>
+
+
+                    <v-flex xs12>
+                        <v-data-table :headers="headers"
+                                      :items="cars"
+                                      hide-actions
+                                      class="elevation-1">
+                            <template slot="items" slot-scope="props">
+                                <td>{{ props.item.title }}</td>
+                                <td class="text-xs-right">{{ props.item.carType }}</td>
+                                <td class="text-xs-right">{{ props.item.quantity }}</td>
+                                <td class="text-xs-right">{{ props.item.birthYear }}</td>
+                                <td class="text-xs-right">{{ props.item.motor }}</td>
+                                <td class="text-xs-right">{{ props.item.visible }}</td>
+                            </template>
+                        </v-data-table>
+                    </v-flex>
+                </v-layout>
+            </v-container>
         </div>
 </template>
 <script>
     export default {
         data() {
             return {
+                cars:[],
                 headers: [
                     {
                         text: 'название',
@@ -27,11 +43,11 @@
                         sortable: true,
                         value: 'title'
                     },
-                    { text: 'Calories', value: 'calories' },
-                    { text: 'Fat (g)', value: 'fat' },
-                    { text: 'Carbs (g)', value: 'carbs' },
-                    { text: 'Protein (g)', value: 'protein' },
-                    { text: 'Iron (%)', value: 'iron' }
+                    { text: 'тип авто', value: 'carType' },
+                    { text: 'кол-во', value: 'quantity' },
+                    { text: 'дата создания', value: 'birthYear' },
+                    { text: 'тип двигателя', value: 'motor' },
+                    { text: 'видимось', value: 'visible' }
                 ],
                 desserts: [
                     {
@@ -59,6 +75,18 @@
               
             }
         },
+        computed: {            
+        },
+        beforeMount: function () {
+            this.$store.getters.GetCars.then((result) => {
+              
+                this.cars= result.data;
+
+            }) 
+        },
+        methods: {
+           
+        }
     }
 </script>
 <style>

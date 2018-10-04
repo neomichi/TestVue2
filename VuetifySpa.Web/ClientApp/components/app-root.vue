@@ -69,9 +69,10 @@
             rightDrawer: false,
 
         }),
-        created: function () {
-            store.dispatch('UpdateAuth');
-
+        created: ()=> {      
+            var promise = store.dispatch('UpdateAuth').then((u) => {
+               
+            });
         },
         props: {
             source: String

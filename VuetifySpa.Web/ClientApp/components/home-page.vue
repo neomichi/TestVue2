@@ -4,37 +4,39 @@
                 <v-layout row>
                     <v-flex xs12>                       
                         <v-carousel>
-                            <v-carousel-item v-for="item in items"
-                                             :key="item.id"
-                                             :src="item.img"></v-carousel-item>
+                            <v-carousel-item v-for="car in cars"
+                                             :key="car.id"
+                                             :src="car.getImg"></v-carousel-item>
                         </v-carousel>
                     </v-flex>
                 </v-layout>
             </v-container>
             <v-container grid-list-lg>
                 <v-layout row wrap>
-                    <v-flex  v-for="item in items" v-bind:key="item.id" xs12 sm6 md3>
+                    <v-flex v-for="car in cars" v-bind:key="car.id" xs12 sm6 md3>
                         <v-card>
-                            <v-img style="height:240px;" :src="item.img"
+                            <v-img style="height:240px;" :src="car.getImg"
                                    aspect-ratio="2.75"></v-img>
                             <v-card-title primary-title>
                                 <div>
-                                    <h3 class="headline mb-0">{{item.title}}</h3>
-                                    <div>{{item.description}}</div>
+                                    <h3 class="headline mb-0">{{car.title}}</h3>
+                                    <div>{{car.description}}</div>
                                 </div>
                             </v-card-title>
                             <v-layout align-center justify-start row fill-height wrap>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
 
-                                    <v-btn v-on:click="viewCar(item.id)" flat color="orange">подробнее</v-btn>
+                                    <v-btn v-on:click="viewCar(car.id)" flat color="orange">подробнее</v-btn>
                                     <v-btn raised color="primary">купить</v-btn>
 
                                     <v-spacer></v-spacer>
                                 </v-card-actions>
                             </v-layout>
                         </v-card>
+
                     </v-flex>
+                  
                 </v-layout>
             </v-container>
         </div>
@@ -51,49 +53,34 @@
         data() {
             return {
                 metaInfo: {
-                    title: 'Ура работает',
+                    title: '!работает',
                     titleTemplate: '%s - Bay!',
                     htmlAttrs: {
                         lang: 'ru',
                     }
                 },
-                items: [
-                    {
-                        id: 1,
-                        title: 'красота номер 1',
-                        description: 'красота красиво супер гут 1',
-                        promo:false,
-                        img: '/img/car/ferrari.jpg'
-                    },
-                    {
-                        id: 2,
-                        title: 'красота номер 2',
-                        description: 'красота красиво супер гут 2',
-                        promo: true,
-                        img: '/img/car/bentley.jpg'
-                    },             
-                    {
-                        id: 3,
-                        title: 'красота номер 3',
-                        description: 'красота красиво супер гут 3',
-                        promo: true,
-                        img: '/img/car/shevrole.jpg'
-                    },
-                    {
-                        id: 4,
-                        title: 'красота номер 4',
-                        description: 'красота красиво супер гут 4',
-                        promo: true,
-                        img: '/img/car/maserati.jpg'
-                    },
-
-                ]
+                items: [],
+                cars: [],
+            }
+        },
+        beforeMount() {
+            this.$store.getters.GetCars.then(res => {
+                this.cars = res.data;
+            })
+        },
+        computed: {
+            getCar: () => {
+                cache: false;
+                this.$store.getters.GetCars.then(res => {                     
+                  this.cars=res.data;
+                })
+              
             }
         },
         methods: {
             viewCar: function (id) {
                 this.$router.push({ name: 'car', params: { id: id } })
-            }
+            }, 
         },    
     }
 </script>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace VuetifySpa.Data.Model
@@ -26,8 +27,20 @@ namespace VuetifySpa.Data.Model
         [MaxLength(120)]
         public string Color { get; set; }
         [MaxLength(160)]
-        public string Avatar { get; set; }
+        public string Img { get; set; }
+
+        public bool Visible { get; set; } = false;
+
+
         [MaxLength(120)]
         public string Motor { get; set; }
+
+        [NotMapped]
+        public string GetImg
+        {
+            get { return string.IsNullOrWhiteSpace(Img) ? "defalut" : string.Format("/img/car/{0}", Img); }
+        }
+
+        
     }
 }

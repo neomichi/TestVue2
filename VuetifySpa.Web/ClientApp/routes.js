@@ -43,13 +43,14 @@ export const userRoutes = [
 export const adminRoutes = [
     {
         path: '/admin', name: 'adminHome', component: AdminHome, display: 'admin', 
+        beforeEnter: AdminRules,  
         children: [
             { path: 'cars', name: 'adminCarlist', component: AdminCarList, display: 'список машин' },
             { path: 'users', name: 'adminUserlist', component: AdminUserList, display: 'список пользователей' },
             { path: 'orders', name: 'adminOrderlist', component: AdminOrderList, display: 'список заказов' }
 
         ],
-        beforeEnter: AdminRules,        
+         
     }
 ]
 

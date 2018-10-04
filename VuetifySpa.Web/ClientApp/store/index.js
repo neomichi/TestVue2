@@ -34,7 +34,11 @@ const getters = {
         return !HasEmptyJson(state.authUser);
     },
     IsAdmin: state => {
-        return !HasEmptyJson(state.authUser)  && state.authUser.isAdminRole;
+        return !HasEmptyJson(state.authUser) && state.authUser.isAdminRole;
+    },
+    GetCars: async () => {
+         return   await axios.get('/api/car');
+     
     },
 }
 
@@ -128,16 +132,13 @@ const actions = ({
         }
     },
     async UpdateAuth({ commit }) {
-        commit(CLEAR_ERROR);
-        commit(SET_LOADING, true);
+   
         try {
             const authUser = await axios.get('/api/auth')
-            commit(LOGIN_REGISTER_UPDATE_AUTH_STATUS, authUser);
-            commit(SET_LOADING, false);
+            commit(LOGIN_REGISTER_UPDATE_AUTH_STATUS, authUser);          
         }
         catch (error) {
-            commit(SET_LOADING, false);
-            commit(SET_ERROR, error.response.data);
+     
         }
     },
     async UpdateUser({ commit }, obj) {

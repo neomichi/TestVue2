@@ -1,18 +1,24 @@
 import store from './store'
 
-export function AdminRules(to, from, next) {   
-    if (store.getters.IsAdmin) {
-    
-        next()
-        return
-    }
-    next('/login?authError=admin');
+export function AdminRules(to, from, next) {
+
+    var data = store.getters.GetUserData.then((result) => {
+        if (result.data.isAdminRole) {
+
+            next()
+            return
+        }
+        next('/login?authError=admin');
+    })
 }
 
 export function UserRules(to, from, next) {
-    if (store.getters.IsAuth) {
-        next()
-        return
-    }
-    next('/login?authError=user');
+    var data = store.getters.GetUserData.then((result) => {
+        if (result.data) {
+
+            next()
+            return
+        }
+        next('/login?authError=user');
+    })
 }
