@@ -4,7 +4,7 @@
                 <v-layout row>
                     <v-flex xs12>                       
                         <v-carousel>
-                            <v-carousel-item v-for="car in cars"
+                            <v-carousel-item v-for="car in getCar"
                                              :key="car.id"
                                              :src="car.getImg"></v-carousel-item>
                         </v-carousel>
@@ -13,7 +13,7 @@
             </v-container>           
             <v-container fluid>
                 <v-layout align-center justify-space-around row  wrap>
-                    <v-flex v-for="car in cars" v-bind:key="car.id" xs12 sm6 md3 style="padding:8px;">
+                    <v-flex v-for="car in getCar" v-bind:key="car.id" xs12 sm6 md3 style="padding:8px;">
                         <v-card style="align-items:stretch">
                             <v-img style="height:240px;" :src="car.getImg"
                                    aspect-ratio="2.75"></v-img>
@@ -60,21 +60,17 @@
                     }
                 },
                 items: [],
-                cars: [],
+                
             }
         },
+
         beforeMount() {
-            this.$store.getters.GetCars.then(res => {
-                this.cars = res.data;
-            })
+            this.$store.dispatch('UpateCarList');
         },
         computed: {
-            getCar: () => {
+            getCar: function() {
                 cache: false;
-                this.$store.getters.GetCars.then(res => {                     
-                    this.cars=res.data;
-                })
-              
+                return this.$store.state.cars.data
             }
         },
         methods: {

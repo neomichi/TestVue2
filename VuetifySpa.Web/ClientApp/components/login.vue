@@ -161,7 +161,7 @@
                   
                         this.$store.dispatch(formName, { data: formData })
                             .then(() => {
-                                if (this.$store.getters.IsAuth) {
+                                if (this.$store.state.AuthUser) {
                                     this.$router.push({ name: 'home' });
                                 }    
                             });
@@ -172,7 +172,7 @@
         created: function () {        
             if (this.$route.query.authError != undefined) {              
                 console.log('error login');
-                if (!HasEmptyJson(this.$route.query.authError)) {                    
+                if (!HasEmptyJson(this.$store.state.authUser)) {                    
                     this.$store.dispatch('SET_ERROR', "пожалуйста, авторизируйтесь");
                     this.$route.query.authError = "";
                    

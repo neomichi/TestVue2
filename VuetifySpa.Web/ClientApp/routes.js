@@ -8,7 +8,7 @@ import AdminHome from 'components/admin/admin-home'
 import GridData from 'components/grid-data'
 import User from 'components/user/user'
 import cryptaData from 'components/crypta'
-import { AdminRules,UserRules} from './route-rules'
+import { AdminRules, UserRules, AuthRules} from './route-rules'
 
 
 
@@ -21,8 +21,8 @@ export const routes = [
 ]
 
 export const authRoutes = [
-    { path: '/login', name: 'login', component: LoginPage, display: 'войти', props: { loginPage: true }, style: 'glyphicon glyphicon-th-list' },
-    { path: '/register', name: 'register', component: LoginPage, display: 'регистрация', props: { loginPage: false }, style: 'glyphicon glyphicon-th-list' },  
+    { path: '/login', name: 'login', component: LoginPage, display: 'войти', props: { loginPage: true }, style: 'glyphicon glyphicon-th-list', beforeEnter: AuthRules },
+    { path: '/register', name: 'register', component: LoginPage, display: 'регистрация', props: { loginPage: false }, style: 'glyphicon glyphicon-th-list', beforeEnter: AuthRules },  
 ]
 
 

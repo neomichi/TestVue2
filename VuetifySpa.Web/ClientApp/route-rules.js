@@ -1,8 +1,9 @@
 import store from './store'
+import { HasEmptyJson } from "./app.js"
 
 export function AdminRules(to, from, next) {
     console.log('AdminRules');   
-        if (1) {
+        if (store.getters.IsAdmin) {
            
             next()
             return
@@ -11,15 +12,27 @@ export function AdminRules(to, from, next) {
         }
 }
 
-export function UserRules(to, from, next) {
-    console.log('UserRules');
+export function UserRules(to, from, next) {   
     store.dispatch('UpdateAuthUser').then(()=>{      
-        console.log(store.state.authUser);
-        if (1) {           
+        if (!HasEmptyJson(store.state.authUser)) {                  
               next() 
               return
         } else {
         next('/login?authError=user');
+        }
+    });
+}
+
+
+
+export function AuthRules(to, from, next) {
+
+    store.dispatch('UpdateAuthUser').then(() => {          
+        if (HasEmptyJson(store.state.authUser)) {
+            next()
+            return
+        } else {
+            next('/');
         }
     });
 }

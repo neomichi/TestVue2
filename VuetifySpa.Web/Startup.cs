@@ -12,6 +12,7 @@ using VuetifySpa.Data.Models;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace VuetifySpa.Web
 {
@@ -37,7 +38,6 @@ namespace VuetifySpa.Web
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
-                
             });
             
             var connectionString = Configuration.GetConnectionString("PostgreSQL");
@@ -46,15 +46,19 @@ namespace VuetifySpa.Web
             
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<MyDbContext>()
-            
-          
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<ApplicationUser>>();
             services.AddTransient<IExtensionMethods, ExtensionMethods>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "neomichi.coockie";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+                options.SlidingExpiration = true;                
+            });
 
-             //services.AddTransient<IDesignTimeDbContextFactory<MyDbContext>, MyDbContextDesignTimeDbContextFactory>();
+            //services.AddTransient<IDesignTimeDbContextFactory<MyDbContext>, MyDbContextDesignTimeDbContextFactory>();
 
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -75,7 +79,7 @@ namespace VuetifySpa.Web
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true
-                });           
+                });
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -90,8 +94,11 @@ namespace VuetifySpa.Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+               
+               
+                
             //Generate EF Core Seed
-           // dbInitializer.Initialize().Wait();
+            // dbInitializer.Initialize().Wait();
 
             app.UseMvc(routes =>
             {

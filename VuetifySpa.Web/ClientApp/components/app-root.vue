@@ -73,6 +73,7 @@
         created: () => {
 
             store.dispatch('UpdateAuthUser');
+            store.dispatch('UpateCarList');
                     
         },
         props: {

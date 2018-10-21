@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ namespace VuetifySpa.Web.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [Authorize]
     public class UserController : Controller
     {
         private IHostingEnvironment _hostingEnviroment;
@@ -32,6 +34,7 @@ namespace VuetifySpa.Web.Controllers
 
         // GET: api/<controller>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             var message = "пожалуйста, авторизирутесь";

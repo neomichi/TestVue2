@@ -5,15 +5,22 @@
                              left
                              app temporary>
             <v-list dence>
-                <v-list-tile avatar>
+                
+                <v-list-tile avatar v-if="authUser">
                     <v-list-tile-avatar>
-                        <img src="https://randomuser.me/api/portraits/men/85.jpg">
+                        <img :src="authUser.avatarUrl" />
                     </v-list-tile-avatar>
 
                     <v-list-tile-content>
-                        <v-list-tile-title>John Leider</v-list-tile-title>
+                        <v-list-tile-title>{{authUser.firstName}} {{authUser.lastName}} </v-list-tile-title>
                     </v-list-tile-content>
+                    
                 </v-list-tile>
+             
+
+
+              
+
                 <v-list-tile v-for="route in routes"
                              :key="route.display"
                              :to="route.path">
@@ -26,7 +33,13 @@
 
 
                 </v-list-tile>
-
+                <v-list-tile v-if="isAdmin"  to="/admin">
+                      <v-list-tile-action  >
+                      </v-list-tile-action>
+                    <v-list-tile-content >
+                        admin   
+                    </v-list-tile-content>
+                 </v-list-tile>
             </v-list>
         </v-navigation-drawer>
         <v-toolbar dark color="primary">
@@ -34,7 +47,7 @@
                                  class="hidden-md-and-up">
             </v-toolbar-side-icon>
             <v-toolbar-title>
-                <router-link to="/" tag="span" class="pointer">У нас хорошо    {{user}}</router-link>
+                <router-link to="/" tag="span" class="pointer">У нас хорошо {{user}}</router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
@@ -98,7 +111,11 @@
             },           
             authUser:function() {
                 return store.state.authUser;
-            }
+            },
+            isAdmin() {
+                cache: false;
+                return this.$store.getters.IsAdmin;
+            },
            
         },
         methods: {

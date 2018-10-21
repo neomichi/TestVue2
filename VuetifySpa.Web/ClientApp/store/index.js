@@ -12,6 +12,7 @@ const LOGOUT_SET_STATUS = 'LOGOUT_SET_STATUS'
 const SET_LOADING = 'SET_LOADING'
 const SET_ERROR = 'SET_ERROR'
 const CLEAR_ERROR = 'CLEAR_ERROR'
+const SET_CARS_STATUS='SET_CARS_STATUS'
 
 
 // STATE
@@ -19,6 +20,7 @@ const state = {
     authUser: '',
     loading: false,
     error: null,
+    cars:'',
 }
 // GETTERS
 const getters = {    
@@ -29,10 +31,7 @@ const getters = {
     },
     IsAdmin: state => {
         return !HasEmptyJson(state.authUser) && state.authUser.isAdminRole;
-    },
-    GetCars: async () => {
-         return   await axios.get('/api/car');     
-    },
+    },   
 }
 
 
@@ -54,6 +53,9 @@ const mutations = {
     [CLEAR_ERROR](state) {
         state.error = null;
     }, 
+    [SET_CARS_STATUS](state,obj) {
+        state.cars=obj;
+    }
 }
 
 // ACTIONS
@@ -142,6 +144,15 @@ const actions = ({
         }
         catch (error) {
 
+        }
+    },
+    async UpateCarList({commit}) {
+        try {
+            const cars=await axios.get('/api/car');
+            commit(SET_CARS_STATUS, cars);
+        }
+        catch (error) {
+            commit(SET_ERROR, 'не загружается список машин');
         }
     }
 
