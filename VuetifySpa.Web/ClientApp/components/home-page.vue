@@ -10,15 +10,15 @@
                         </v-carousel>
                     </v-flex>
                 </v-layout>
-            </v-container>
-            <v-container grid-list-lg>
-                <v-layout row wrap>
-                    <v-flex v-for="car in cars" v-bind:key="car.id" xs12 sm6 md3>
-                        <v-card>
+            </v-container>           
+            <v-container fluid>
+                <v-layout align-center justify-space-around row  wrap>
+                    <v-flex v-for="car in cars" v-bind:key="car.id" xs12 sm6 md3 style="padding:8px;">
+                        <v-card style="align-items:stretch">
                             <v-img style="height:240px;" :src="car.getImg"
                                    aspect-ratio="2.75"></v-img>
                             <v-card-title primary-title>
-                                <div>
+                                <div style="height:8vw">
                                     <h3 class="headline mb-0">{{car.title}}</h3>
                                     <div>{{car.description}}</div>
                                 </div>
@@ -72,7 +72,7 @@
             getCar: () => {
                 cache: false;
                 this.$store.getters.GetCars.then(res => {                     
-                  this.cars=res.data;
+                    this.cars=res.data;
                 })
               
             }

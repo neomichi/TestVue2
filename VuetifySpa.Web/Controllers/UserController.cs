@@ -32,9 +32,9 @@ namespace VuetifySpa.Web.Controllers
 
         // GET: api/<controller>
         [HttpGet]
-        public  async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get()
         {
-            var message = "пожалуйста,авторизирутесь";
+            var message = "пожалуйста, авторизирутесь";
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 message = "указаный пользователь не найден";
@@ -45,15 +45,8 @@ namespace VuetifySpa.Web.Controllers
                 }
             }
             return BadRequest(message);
-
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         // POST api/<controller>
         [HttpPost]

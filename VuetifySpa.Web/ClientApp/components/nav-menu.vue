@@ -34,7 +34,7 @@
                                  class="hidden-md-and-up">
             </v-toolbar-side-icon>
             <v-toolbar-title>
-                <router-link to="/" tag="span"  class="pointer">У нас хорошо</router-link>
+                <router-link to="/" tag="span" class="pointer">У нас хорошо    {{user}}</router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
@@ -67,23 +67,23 @@
                     </v-avatar>
                 </v-btn>
             </v-toolbar-items>
-        </v-toolbar>
+        </v-toolbar>    
     </div>
-
 </template>
 
 <script>
     import { routes } from '../routes'
-    import { anotherRoutes } from '../routes'
+    import { carRoutes } from '../routes'
     import { userRoutes } from '../routes'
     import { authRoutes } from '../routes'
     import { HasEmptyJson } from "../app.js"
-
-    export default {
+    import store from '../store'
+    export default {       
         data() {
             return {
-                anotherRoutes,
+                carRoutes,
                 drawer: false,
+                user: '',
                 menuItems: [
                     { title: 'Выйти', id: 0, url: '', eventName: this.logout },
                     //{ title: '1', id: 1, url: 'info', eventName:''},
@@ -91,15 +91,15 @@
                     //{ title: '3', id: 3, url: 'info', eventName:''}
                 ],
             }
-        },
+        },      
         computed: {
             routes: function () {
                 return (this.authUser) ? routes : routes.concat(authRoutes);
-            },
-            authUser: function () {
-                cache: false;
-                return this.$store.getters.GetAuthUser;
-            },
+            },           
+            authUser:function() {
+                return store.state.authUser;
+            }
+           
         },
         methods: {
             toggleCollapsed: function (event) {
@@ -109,7 +109,10 @@
                 this.$store.dispatch('logOut');
             }
 
-        }
+        },
+        created: () => {            
+                    
+        },
     }
 </script>
 

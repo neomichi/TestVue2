@@ -1,28 +1,35 @@
-﻿    <template>     
-        <div>
-            <h1>админитратор</h1> 
-          
+﻿<template>
+    <div>
 
-            <v-btn v-for="route in routes" v-bind:key="route.title" v-bind:to="{name:route.name}" flat>
-                {{route.display}}
-            </v-btn>
+            <div class="title align-center justify-start">
+                <h4>админитратор</h4>
+            </div>
 
+            <v-layout align-center justify-center fill-height wrap>
+                <v-btn v-for="route in routes" v-bind:key="route.title" v-bind:to="{name:route.name}" flat>
+                    {{route.display}}
+                </v-btn>
+            </v-layout>
+      
+        <v-layout align-center justify-center row fill-height>
             <router-view></router-view>
-        </div>
+        </v-layout>
+
+    </div>
 </template>
 <script>
     import { adminRoutes } from '../../routes'
     export default {
         data() {
-            return {               
-                
+            return {
+
                 routes: adminRoutes[0].children,
-              
+
             }
         },
-       
-    
+
+
     }
 </script>
-<style>
+<style>   
 </style>

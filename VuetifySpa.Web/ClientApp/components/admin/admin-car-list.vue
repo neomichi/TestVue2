@@ -4,14 +4,12 @@
                 <v-layout align-center justify-center>
                     <v-flex xs12>
                         <h1>Список техники </h1>
-                    </v-flex>
+                    </v-flex>   
                 </v-layout>
             </v-container>
 
-            <v-container fluid fill-height>
+            <v-container fluid>
                 <v-layout align-center justify-center>
-
-
                     <v-flex xs12>
                         <v-data-table :headers="headers"
                                       :items="cars"
@@ -19,11 +17,31 @@
                                       class="elevation-1">
                             <template slot="items" slot-scope="props">
                                 <td>{{ props.item.title }}</td>
-                                <td class="text-xs-right">{{ props.item.carType }}</td>
-                                <td class="text-xs-right">{{ props.item.quantity }}</td>
-                                <td class="text-xs-right">{{ props.item.birthYear }}</td>
-                                <td class="text-xs-right">{{ props.item.motor }}</td>
-                                <td class="text-xs-right">{{ props.item.visible }}</td>
+                                <td class="text-xs-center">{{ props.item.carType }}</td>
+                                <td class="text-xs-center">{{ props.item.quantity }}</td>
+                                <td class="text-xs-center">{{ props.item.birthYear }}</td>
+                                <td class="text-xs-center">{{ props.item.motor }}</td>
+                           
+                                <td class="text-xs-center">
+
+                                    <div class="checkbox-left">
+                                        <v-spacer></v-spacer>
+                                        <v-checkbox :readonly="true"
+                                                    v-model="props.item.visible">
+                                        </v-checkbox>
+                                    </div>
+                                
+                                </td>
+                                <td class="justify-center align-center layout px-0">
+                                    <v-btn flat icon color="indigo" class="mr-2"
+                                           @click="editItem(props.item.id)">
+                                        <v-icon>edit</v-icon>
+                                    </v-btn>
+                                    <v-btn flat icon class="mr-2" color="red"
+                                                    @click="deleteItem(props.item.id)">
+                                        <v-icon>delete</v-icon>
+                                    </v-btn>                                 
+                                </td>
                             </template>
                         </v-data-table>
                     </v-flex>
@@ -39,43 +57,22 @@
                 headers: [
                     {
                         text: 'название',
-                        align: 'left',
+                        align: 'center',
                         sortable: true,
                         value: 'title'
                     },
-                    { text: 'тип авто', value: 'carType' },
-                    { text: 'кол-во', value: 'quantity' },
-                    { text: 'дата создания', value: 'birthYear' },
-                    { text: 'тип двигателя', value: 'motor' },
-                    { text: 'видимось', value: 'visible' }
-                ],
-                desserts: [
-                    {
-                        id: 1,
-                        title: 'красота номер 1',
-                        name: 'name',
-                        description: "description",                 
-                        birthYear: 1990,
-                        quantity: 20,
-                        carcase: 'седан',
-                        state: 'ремонт',
-                        carBox: '1%'
-                    },
-                    {
-                        value: false,
-                        title: 'красота номер 1', 
-                        name: 'name',
-                        description: "description",              
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                        iron: '1%'
-                    },
-                ]           
+                    { align: 'center',text: 'тип авто', value: 'carType' },
+                    { align: 'center', text: 'кол-во', value: 'quantity' },
+                    { align: 'center', text: 'дата создания', value: 'birthYear' },
+                    { align: 'center', text: 'тип двигателя', value: 'motor' },
+                    { align: 'center', text: 'видимось', value: 'visible' },
+                    { text: '', value: 'name', sortable: false }
+                ],                   
               
             }
         },
-        computed: {            
+        computed: {         
+          
         },
         beforeMount: function () {
             this.$store.getters.GetCars.then((result) => {
@@ -85,9 +82,31 @@
             }) 
         },
         methods: {
+            editItem (id) {
+                console.log(id);
+            },
+            deleteItem (id) {
+                console.log(id);
+            }
+
            
         }
     }
 </script>
 <style>
+    @media (min-width: 400px) {
+        .checkbox-left {
+            padding-left: 4vw;
+        }
+    }
+    @media (min-width: 700px) {
+        .checkbox-left {
+            padding-left: 3vw;
+        }
+    }
+    @media (min-width: 1000px) {
+        .checkbox-left {
+            padding-left: 2vw;
+        }
+    }
 </style>

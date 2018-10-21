@@ -26,23 +26,18 @@ namespace VuetifySpa.Web.Controllers
             _db = db;
             _signInManager = signInManager;
             _extensionMethods = extensionMethods;
-
         }
 
 
-        // GET: api/Default1/5
+
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             var message = "пожалуйста,авторизирутесь";
             if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                message = "указаный пользователь не найден";
-                var user = _db.Users.SingleOrDefault(x => x.Email.Equals(HttpContext.User.Identity.Name, StringComparison.OrdinalIgnoreCase));
-                if (user != null)
-                {
-                    return Json(await _extensionMethods.GetUserRegViewFromUser(user));
-                }
+            {               
+
+                return Json(true);
             }
             return BadRequest(message);
         }
@@ -84,7 +79,7 @@ namespace VuetifySpa.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     var appUser = new ApplicationUser
-                    {                      
+                    {
                         Email = user.Email,
                         UserName = user.Email,
                         FirstName = user.FirstName,
@@ -93,11 +88,11 @@ namespace VuetifySpa.Web.Controllers
                     var responseUser = await _signInManager.UserManager.CreateAsync(appUser, user.Password);
                     if (responseUser.Succeeded)
                     {
-                        var userdb =  _extensionMethods.GetUserFromEmail(appUser.Email);
+                        var userdb = _extensionMethods.GetUserFromEmail(appUser.Email);
                         await _signInManager.SignInAsync(userdb, isPersistent: user.isPersistent);
                         return Json(_extensionMethods.GetUserRegViewFromUser(userdb));
-                    } 
-               
+                    }
+
                 }
             }
             return BadRequest(message);

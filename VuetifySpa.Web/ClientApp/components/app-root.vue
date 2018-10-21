@@ -1,5 +1,5 @@
 ﻿<template>
-    <v-app>
+    <v-app>        
         <nav-menu></nav-menu>
         <v-content>
             <v-container fluid>
@@ -52,6 +52,7 @@
     import VueProgressiveImage from 'vue-progressive-image'
     import { fail } from 'assert'
 
+
     Vue.use(Vuetify, VueProgressiveImage)
     Vue.component('nav-menu', NavMenu);
     Vue.component('home-page', HomePage);
@@ -66,13 +67,13 @@
             }],
             miniVariant: false,
             right: true,
-            rightDrawer: false,
+            rightDrawer: false,           
 
         }),
-        created: ()=> {      
-            var promise = store.dispatch('UpdateAuth').then((u) => {
-               
-            });
+        created: () => {
+
+            store.dispatch('UpdateAuthUser');
+                    
         },
         props: {
             source: String
@@ -87,7 +88,7 @@
                 return this.$store.getters.IsAdmin;
             },
         },
-        methods: {
+        methods: {           
             closeError() {
                 this.$store.dispatch('CLEAR_ERROR');
             },

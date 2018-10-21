@@ -3,7 +3,7 @@
         <v-container fluid fill-height>
             <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md5>
-                    <h1>Курс популярных валют к usd</h1>
+                    <h1 style="overflow:hidden">Курс популярных валют к usd</h1>
                     <h4>парсим с coinmarketcap.com чистым js</h4>
                 </v-flex>
             </v-layout>

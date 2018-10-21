@@ -3,14 +3,11 @@ import LoginPage from 'components/login'
 import Car from 'components/car'
 import AdminOrderList from 'components/admin/admin-order-list'
 import AdminUserList from 'components/admin/admin-user-list'
-
 import AdminCarList from 'components/admin/admin-car-list'
 import AdminHome from 'components/admin/admin-home'
 import GridData from 'components/grid-data'
 import User from 'components/user/user'
 import cryptaData from 'components/crypta'
-import { fail } from 'assert';
-import store from './store'
 import { AdminRules,UserRules} from './route-rules'
 
 
@@ -29,7 +26,7 @@ export const authRoutes = [
 ]
 
 
-export const anotherRoutes = [
+export const carRoutes = [
     { path: '/car/details/:id', name: 'car', component: Car, display: 'car' },
 
 ]
@@ -48,7 +45,6 @@ export const adminRoutes = [
             { path: 'cars', name: 'adminCarlist', component: AdminCarList, display: 'список машин' },
             { path: 'users', name: 'adminUserlist', component: AdminUserList, display: 'список пользователей' },
             { path: 'orders', name: 'adminOrderlist', component: AdminOrderList, display: 'список заказов' }
-
         ],
          
     }

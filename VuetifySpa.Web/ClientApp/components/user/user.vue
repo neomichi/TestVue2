@@ -109,7 +109,7 @@
                     if (result) {
                         this.$store.dispatch('UpdateUser', { data: this.user })
                             .then(() => {
-                                console.log('ok');
+                           
                             });
                     }
                 });
@@ -132,16 +132,13 @@
             },     
         },
         beforeMount:  function () {
-            this.$store.getters.GetUserData.then((res) => {
-                this.user.firstName = res.data.firstName;
-                this.user.lastName = res.data.lastName;
-                this.user.avatarUrl = res.data.avatarUrl;
-
-                this.def.firstName = res.data.firstName;
-                this.def.lastName = res.data.lastName;
-                this.def.avatarUrl = res.data.avatarUrl;
-            });
-
+                var res=this.$store.state.authUser;
+                this.user.firstName = res.firstName;
+                this.user.lastName = res.lastName;
+                this.user.avatarUrl = res.avatarUrl;
+                this.def.firstName = res.firstName;
+                this.def.lastName = res.lastName;
+                this.def.avatarUrl = res.avatarUrl;
         }
 
     }

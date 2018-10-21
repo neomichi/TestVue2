@@ -170,7 +170,8 @@
             }
         },
         created: function () {        
-            if (this.$route.query.authError != undefined) {               
+            if (this.$route.query.authError != undefined) {              
+                console.log('error login');
                 if (!HasEmptyJson(this.$route.query.authError)) {                    
                     this.$store.dispatch('SET_ERROR', "пожалуйста, авторизируйтесь");
                     this.$route.query.authError = "";

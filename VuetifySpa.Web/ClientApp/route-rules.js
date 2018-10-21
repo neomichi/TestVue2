@@ -1,24 +1,25 @@
 import store from './store'
 
 export function AdminRules(to, from, next) {
-
-    var data = store.getters.GetUserData.then((result) => {
-        if (result.data.isAdminRole) {
-
+    console.log('AdminRules');   
+        if (1) {
+           
             next()
             return
+        } else {
+        next('/login?authError=admin');  
         }
-        next('/login?authError=admin');
-    })
 }
 
 export function UserRules(to, from, next) {
-    var data = store.getters.GetUserData.then((result) => {
-        if (result.data) {
-
-            next()
-            return
-        }
+    console.log('UserRules');
+    store.dispatch('UpdateAuthUser').then(()=>{      
+        console.log(store.state.authUser);
+        if (1) {           
+              next() 
+              return
+        } else {
         next('/login?authError=user');
-    })
+        }
+    });
 }
