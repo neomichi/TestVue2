@@ -10,7 +10,14 @@ let router = new VueRouter({
     mode: 'history',
     routes: routes.concat(carRoutes, userRoutes, authRoutes,adminRoutes)
 })
+//router.onError(error => {
+   
+//});
 
+//router.beforeResolve((to, from, next) => {
+ 
+
+//});
 
 import VeeValidate from 'vee-validate';
 

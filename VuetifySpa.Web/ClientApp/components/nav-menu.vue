@@ -64,7 +64,7 @@
                     <v-list light dense>
                         <v-list-tile style="" v-for="item in menuItems"
                                      :key="item.id"                                     
-                                     @click="item.eventName">
+                                     @click="item.eventName({ name: 'user', params: { id: authUser.id }})">
                             <v-list-tile-title v-text="item.title"></v-list-tile-title>
                         </v-list-tile>
                     </v-list>
@@ -98,7 +98,8 @@
                 drawer: false,
                 user: '',
                 menuItems: [
-                    { title: 'Выйти', id: 0, url: '', eventName: this.logout },
+                    { title: 'Кабинет', id: 0, url: '', eventName: this.gotoLK },
+                    { title: 'Выйти', id: 1, url: '', eventName: this.logout },
                     //{ title: '1', id: 1, url: 'info', eventName:''},
                     //{ title: '2', id: 2, url: 'info', eventName:''},
                     //{ title: '3', id: 3, url: 'info', eventName:''}
@@ -124,7 +125,11 @@
             },
             logout: function () {
                 this.$store.dispatch('logOut');
+            },
+            gotoLK: function (obj) {
+                this.$router.push(obj);                
             }
+
 
         },
         created: () => {            

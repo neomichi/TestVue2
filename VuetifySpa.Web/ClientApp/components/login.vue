@@ -31,12 +31,12 @@
 
                             <v-spacer></v-spacer>
                             <v-btn type="submin" color="primary" :loading="loading" :disable="loading">войти</v-btn>
-                         
-                               
+
+
                             <v-btn tag="a" v-on:click="$router.push({ name: 'register' })" color="yellow"> регистрация</v-btn>
 
                         </v-card-actions>
-                    </form> 
+                    </form>
                 </v-card>
                 <v-card v-if="!loginPage" class="elevation-12">
                     <form id="reg" @submit.prevent="onSubmit">
@@ -63,7 +63,7 @@
                                           :error-messages="errors.collect('reg_lastName')"
                                           autocomplete="off"
                                           data-vv-as="фамилия"
-                                          required prepend-icon="email" name="reg_lastName" id="reg_lastName"  label="Фамилия"></v-text-field>
+                                          required prepend-icon="email" name="reg_lastName" id="reg_lastName" label="Фамилия"></v-text-field>
                             <v-text-field v-model="reg.password"
                                           v-validate="'required|min:6|max:20'"
                                           :error-messages="errors.collect('password')"
@@ -90,9 +90,8 @@
                         </v-card-actions>
                     </form>
                 </v-card>
-
             </v-flex>
-        </v-layout>     
+        </v-layout>
     </v-container>
 </template>
 
@@ -104,7 +103,7 @@
     import { isNullOrEmpty } from "../app.js"
     import VeeValidateRu from 'vee-validate/dist/locale/ru'
     Vue.use(VeeValidate);
-    
+
 
     export default {
         $_veeValidate: {
@@ -118,7 +117,7 @@
             }
         },
         data() {
-            return {               
+            return {
                 login: {
                     email: 'admin@test.ru',
                     password: 'LikeMe123!',
@@ -130,6 +129,7 @@
                     password: '',
                     repassword: '',
                 },
+                returnUrl: '',
             }
         },
         computed: {
@@ -139,17 +139,28 @@
             },
             getUser() {
                 cache: false;
-               
                 return this.$store.getters.GetAuthUser;
             },
         },
         mounted() {
-            this.$validator.localize('ru', VeeValidateRu)
+            this.$validator.localize('ru', VeeValidateRu)            
+           
+            console.log(this.returnUrl);
+            if (this.$route.query.access != undefined) {
+                var message = "";
+                this.returnUrl = this.$route.query.returnUrl
+                if (this.$route.query.access == 'admin') {
+                    message = "пожалуйста, вы должны авторизоваться под ролью админитратора";
+                } else
+                if (this.$route.query.access == 'user') {
+                    message = "пожалуйста, вы должны авторизоваться";
+                }
+                this.$store.dispatch('SET_ERROR', message);
+  
+            }
         },
         methods: {
-
-
-            onSubmit() {              
+            onSubmit() {
                 this.$validator.validateAll().then((result) => {
 
                     if (result) {
@@ -158,26 +169,23 @@
 
                         //var action = this.loginPage ? { name: 'loginAuth', data: this.login }
                         //    : { name: 'regAuth', data: this.reg }
-                  
-                        this.$store.dispatch(formName, { data: formData })
-                            .then(() => {
-                                if (this.$store.state.AuthUser) {
-                                    this.$router.push({ name: 'home' });
-                                }    
+
+                        var gg = this.$store.dispatch(formName, { data: formData });
+                        gg.then(() => {                              
+                                if (this.$store.state.authUser) {
+                                    var routerName = "home"
+                                    if (!HasEmptyJson(this.$route.query.returnUrl)) {
+                                        routerName = this.$route.query.returnUrl;
+                                    }
+                                    this.$router.push({ name: routerName });
+                                }
                             });
                     }
                 });
             }
         },
-        created: function () {        
-            if (this.$route.query.authError != undefined) {              
-                console.log('error login');
-                if (!HasEmptyJson(this.$store.state.authUser)) {                    
-                    this.$store.dispatch('SET_ERROR', "пожалуйста, авторизируйтесь");
-                    this.$route.query.authError = "";
-                   
-                }
-            }         
+        created: function () {
+
         }
     }
 </script>

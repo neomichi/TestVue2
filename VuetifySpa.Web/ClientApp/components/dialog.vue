@@ -37,11 +37,15 @@
 
 <script>
     export default {
-        props {
+        props: {
+            dialog: {
+             type: Boolean,
+             default: false
+            },
         },
         data() {
             return {
-                dialog: false
+               
             }
         }
     }

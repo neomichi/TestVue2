@@ -31,9 +31,11 @@ namespace VuetifySpa.Data
         public async Task Initialize()
         {            
        
-
+            ///////////////////////////////
             string login = "admin@test.ru";
             string password = "LikeMe123!";
+            ///////////////////////////////
+
 
             if (!_db.Users.Any(x => x.Email.Equals(login))) { 
 
