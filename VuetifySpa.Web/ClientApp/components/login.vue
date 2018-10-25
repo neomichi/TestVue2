@@ -173,11 +173,11 @@
                         var gg = this.$store.dispatch(formName, { data: formData });
                         gg.then(() => {                              
                                 if (this.$store.state.authUser) {
-                                    var routerName = "home"
+                                    var routerPath = "/"
                                     if (!HasEmptyJson(this.$route.query.returnUrl)) {
-                                        routerName = this.$route.query.returnUrl;
+                                        routerPath = this.$route.query.returnUrl;
                                     }
-                                    this.$router.push({ name: routerName });
+                                    this.$router.push(routerPath);
                                 }
                             });
                     }

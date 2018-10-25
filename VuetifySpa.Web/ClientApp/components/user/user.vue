@@ -122,7 +122,7 @@
                     if (this.imageName.lastIndexOf('.') <= 0) {
                         return
                     }
-                    const fr = new FileReader()
+                    var fr = new FileReader()
                     fr.readAsDataURL(e)
                     fr.addEventListener('load', () => {
                         this.user.avatarUrl = fr.result

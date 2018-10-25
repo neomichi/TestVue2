@@ -85,6 +85,8 @@
         methods: {
             createEditCar(id, createOrEdit) {
                 this.$router.push({ name: 'adminEditCar', params: { id: id, createOrEdit: createOrEdit } })
+
+                
             },      
             deleteItem(id) {
                 console.log(id);

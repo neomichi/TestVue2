@@ -3,15 +3,15 @@ import { HasEmptyJson } from "./app.js"
 
 
 export function AdminRules(to, from, next) {
-    console.log('AdminRules');
+  
     var rule = () => store.getters.IsAdmin;
-    return defaultRules(to, from, next, rule, { name: 'login', query: { access: 'admin', returnUrl: to.name } });
+    return defaultRules(to, from, next, rule, { name: 'login', query: { access: 'admin', returnUrl: to.path } });
 }
 
 export function UserRules(to, from, next) {
 
     var rule = () => !HasEmptyJson(store.state.authUser);
-    return defaultRules(to, from, next, rule, { name: 'login', query: { access: 'user', returnUrl: to.name } });
+    return defaultRules(to, from, next, rule, { name: 'login', query: { access: 'user', returnUrl: to.path } });
 }
 
 export function AuthRules(to, from, next) {
