@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VuetifySpa.Data;
 using VuetifySpa.Data.Models;
+using VuetifySpa.Data.Services;
 using VuetifySpa.Data.ViewModel;
 
 
@@ -17,10 +18,12 @@ namespace VuetifySpa.Web.Controllers
     public class CarController : Controller
     {
         private MyDbContext _db;
+        private ICarService _carService;
 
-        public CarController(MyDbContext db)
+        public CarController(MyDbContext db, ICarService carService)
         {
-            _db = db;   
+            _db = db;
+            _carService = carService;
         }
 
 
@@ -53,19 +56,17 @@ namespace VuetifySpa.Web.Controllers
         //    return await SignHelper(user);
         //}
 
-        // PUT: api/Default1/5
-        //[HttpPut]
-        //public async Task<IActionResult> Put([FromBody]RegisterUserView user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var AppUser = new ApplicationUser();
-        //        user.Email = user.Email;
+        //PUT: api/Default1/5
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody]CarView car)
+        {
+            if (ModelState.IsValid)
+            {    
+                return Json(_carService.Update(car));
 
-        //        //_signInManager.SignInAsync()
-        //    }
-        //    return Json("false");
-        //}
+            }
+            return Json("false");
+        }
 
         //// DELETE: api/ApiWithActions/5
         //[HttpDelete]

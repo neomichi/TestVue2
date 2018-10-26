@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using VuetifySpa.Data.Services;
 
 namespace VuetifySpa.Web
 {
@@ -50,7 +51,8 @@ namespace VuetifySpa.Web
                 .AddDefaultTokenProviders();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<ApplicationUser>>();
-            services.AddTransient<IExtensionMethods, ExtensionMethods>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICarService, CarService>();
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "neomichi.coockie";

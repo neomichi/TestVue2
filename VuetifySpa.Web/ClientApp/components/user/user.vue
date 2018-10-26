@@ -80,9 +80,8 @@
                 user: {
                     avatarUrl: '',  
                     firstName: '',
-                    lastName: '',
-                    password: '',
-                    avatarImgType:'',
+                    lastName: '',                  
+                    imgType:'',
                     id: this.$route.params.id
                 },
             }
@@ -126,7 +125,7 @@
                     fr.readAsDataURL(e)
                     fr.addEventListener('load', () => {
                         this.user.avatarUrl = fr.result
-                        this.user.avatarImgType = e.name.match(/.(jpg|png|gif)$/gm)[0]
+                        this.user.imgType = e.name.match(/.(jpg|png|gif)$/gm)[0]
                     })
                 }               
             },     

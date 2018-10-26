@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VuetifySpa.Data;
 using VuetifySpa.Data.Models;
+using VuetifySpa.Data.Services;
 using VuetifySpa.Data.ViewModel;
 
 
@@ -19,13 +20,13 @@ namespace VuetifySpa.Web.Controllers
     {
         private MyDbContext _db;
         private SignInManager<ApplicationUser> _signInManager;
-        private readonly IExtensionMethods _extensionMethods;
+        private readonly IUserService _userService;
 
-        public AuthController(MyDbContext db, SignInManager<ApplicationUser> signInManager, IExtensionMethods extensionMethods)
+        public AuthController(MyDbContext db, SignInManager<ApplicationUser> signInManager, IUserService userService)
         {
             _db = db;
             _signInManager = signInManager;
-            _extensionMethods = extensionMethods;
+            _userService = userService;
         }
 
 
@@ -35,7 +36,7 @@ namespace VuetifySpa.Web.Controllers
         {
             var message = "пожалуйста,авторизирутесь";
             if (HttpContext.User.Identity.IsAuthenticated)
-            {               
+            {              
 
                 return Json(true);
             }
@@ -58,7 +59,7 @@ namespace VuetifySpa.Web.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, authLoginView.Password, authLoginView.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        return Json(await _extensionMethods.GetUserRegViewFromEmail(user.Email));
+                        return Json(await _userService.GetUserViewFromEmail(user.Email));
                     }
                 }
             }
@@ -78,19 +79,18 @@ namespace VuetifySpa.Web.Controllers
                 message = "проверьте правильность заполнения формы";
                 if (ModelState.IsValid)
                 {
-                    var appUser = new ApplicationUser
+                    var dbUser = new ApplicationUser
                     {
                         Email = user.Email,
                         UserName = user.Email,
                         FirstName = user.FirstName,
                         LastName = user.LastName
                     };
-                    var responseUser = await _signInManager.UserManager.CreateAsync(appUser, user.Password);
+                    var responseUser = await _signInManager.UserManager.CreateAsync(dbUser, user.Password);
                     if (responseUser.Succeeded)
-                    {
-                        var userdb = _extensionMethods.GetUserFromEmail(appUser.Email);
-                        await _signInManager.SignInAsync(userdb, isPersistent: user.isPersistent);
-                        return Json(_extensionMethods.GetUserRegViewFromUser(userdb));
+                    {                        
+                        await _signInManager.SignInAsync(dbUser, isPersistent: user.isPersistent);
+                        return Json(await _userService.GetUserViewFromUser(dbUser));
                     }
 
                 }

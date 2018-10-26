@@ -12,31 +12,32 @@ const LOGOUT_SET_STATUS = 'LOGOUT_SET_STATUS'
 const SET_LOADING = 'SET_LOADING'
 const SET_ERROR = 'SET_ERROR'
 const CLEAR_ERROR = 'CLEAR_ERROR'
-const SET_CARS_STATUS='SET_CARS_STATUS'
+const UPDATE_CARS_STATUS = 'UPDATE_CARS_STATUS'
+const ADD_EDIT_CAR_STATUS ='ADD_EDIT_CAR_STATUS'
 
 
 // STATE
-const state = {   
+const state = {
     authUser: '',
     loading: false,
     error: null,
-    cars:'',
+    cars: '',
 }
 // GETTERS
-const getters = {    
+const getters = {
     Getloading: state => state.loading,
-    GetError: state => state.error,    
-    GetUser:  state => {
-        return state.authUser   
+    GetError: state => state.error,
+    GetUser: state => {
+        return state.authUser
     },
     IsAdmin: state => {
         return !HasEmptyJson(state.authUser) && state.authUser.isAdminRole;
-    },   
+    },
 }
 
 
 // MUTATIONS
-const mutations = {    
+const mutations = {
     [LOGIN_REGISTER_UPDATE_USER_STATUS](state, obj) {
         state.authUser = obj.data;
     },
@@ -52,9 +53,9 @@ const mutations = {
     },
     [CLEAR_ERROR](state) {
         state.error = null;
-    }, 
-    [SET_CARS_STATUS](state,obj) {
-        state.cars=obj;
+    },
+    [UPDATE_CARS_STATUS](state, obj) {
+        state.cars = obj;
     }
 }
 
@@ -122,15 +123,16 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const authUser = await axios.put('/api/user', {
+            const authUser = await axios.put('/api/user', {             
                 id: obj.data.id,
                 avatarUrl: obj.data.avatarUrl,
                 firstName: obj.data.firstName,
                 lastName: obj.data.lastName,
-                avatarImgType: obj.data.avatarImgType
+                imgType: obj.data.imgType
             });
-            commit(LOGIN_REGISTER_UPDATE_USER_STATUS, authUser);
             commit(SET_LOADING, false);
+            commit(LOGIN_REGISTER_UPDATE_USER_STATUS, authUser);
+          
         }
         catch (error) {
             commit(SET_LOADING, false);
@@ -139,25 +141,45 @@ const actions = ({
     },
     async UpdateAuthUser({ commit }) {
         try {
-            const authUser = await axios.get('/api/user');            
+            const authUser = await axios.get('/api/user');
             commit(LOGIN_REGISTER_UPDATE_USER_STATUS, authUser);
         }
         catch (error) {
 
         }
     },
-    async UpateCarList({commit}) {
+    async UpateCarList({ commit }) {
         try {
-            const cars=await axios.get('/api/car');
-            commit(SET_CARS_STATUS, cars);
+            const cars = await axios.get('/api/car');
+            commit(UPDATE_CARS_STATUS, cars);
         }
         catch (error) {
             commit(SET_ERROR, 'не загружается список машин');
         }
+    },
+
+    async AddOrEditCar({ commit }, obj) {
+        commit(CLEAR_ERROR);
+        commit(SET_LOADING, true);
+        try {
+            const car = await axios.put('/api/car', {
+                email: obj.data.email,
+                password: obj.data.password,
+                firstName: obj.data.firstName,
+                lastName: obj.data.lastName
+            });
+            commit(SET_LOADING, false);
+            commit(ADD_EDIT_CAR_STATUS, car);
+        }
+        catch (error) {
+            commit(SET_LOADING, false);
+            commit(SET_ERROR, error.response.data);
+        }
+
     }
 
 });
-    
+
 
 
 export default new Vuex.Store({

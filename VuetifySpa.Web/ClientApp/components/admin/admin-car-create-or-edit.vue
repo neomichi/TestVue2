@@ -2,26 +2,26 @@
     <div>
         <v-container fluid fill-height>
             <v-layout align-start justify-center wrap fill-height>
-                <h1> Редактирование модели </h1> {{defaultImg}}
+                <h1> {{CreateOrEdit}} модели  </h1>
             </v-layout>
         </v-container>
         <v-container fluid fill-height>
             <v-layout align-start justify-center wrap fill-height>
-                <v-flex xs12 sm8 md4 lg3 style="margin:0 40px 40px 40px;">
+                <v-flex xs12 sm4 md3 lg3 style="margin:0 40px 40px 40px;">
                     <v-card elevation-5 height="240">
                         <v-img :src="car.getImg" max-height="180" alt="аватар"
                                aspect-ratio="1" class="grey lighten-2"></v-img>
                         <v-card-actions>
                             <v-layout align-end justify-center style="margin-top:5px;">
                                 <v-btn v-if="imgIsChanged" v-on:click="imgReset">отмена</v-btn>
-                                <upload-btn title="загрузить" v-bind:fileChangedCallback="uploadFileFunction"></upload-btn>
+                                <upload-btn  title="загрузить" v-bind:fileChangedCallback="uploadFileFunction"></upload-btn>
                             </v-layout>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
                 <v-flex xs12 sm8 md6 lg5>
                     <v-card elevation-5>
-                        <form id="updateForm" @submit.preven="onSubmit">
+                        <form id="updateCarForm" @submit.preven="onSubmit">
                             <v-card-text>
                                 <v-text-field v-model="car.title"
                                               v-validate="'required|min:1|max:60'"
@@ -103,6 +103,8 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-spacer></v-spacer>
+                                <router-link to="/admin/cars" tag="v-btn" >назад</router-link>
+                             
                                 <v-btn :disabled="IsModification" type="submit" color="primary" :loading="loading" :disable="loading">Сохранить</v-btn>
                                 <!--<v-btn :disabled="IsModification" type="submit" color="primary" :loading="loading" :disable="loading">Сохранить</v-btn>-->
                             </v-card-actions>
@@ -142,6 +144,10 @@
                 cache: false;
                 return this.car.getImg != this.defaultImg;
             },
+            CreateOrEdit() {
+                cache: false;
+               return this.id == '' ? 'Создание' : 'Редактирование';
+            }
         },
         beforeMount: function () {
             var cars = this.$store.state.cars.data;
@@ -154,8 +160,8 @@
             }
         },
         methods: {
-            getCar() {
-
+            getCar1() {
+                console.log(this.$route);
             },
             changeText: () => {
 
@@ -163,8 +169,21 @@
             imgReset() {
                 this.car.getImg = this.defaultImg;
             },
-            uploadFile(e) {             
-                console.log(e);
+            onSubmit() {
+                this.$validator.validateAll().then((result) => {
+                    if (result) {
+
+                        var dbcar = this.car;
+                        dbcar.ImgType = this.carImgType
+
+                        this.$store.dispatch('AddOrEditCar', { data: dbcar })
+                            .then(() => {
+
+                            });
+                    }
+                });
+            },    
+            uploadFile(e) { 
                 var test = /^image\//gm.test(e.type) && e.size < 512 * 1024;
                 if (test) {
                     this.imageName = e.name
@@ -172,11 +191,14 @@
                         return 
                     }
                     var fr = new FileReader()
-                    fr.readAsDataURL(e)
+                    fr.readAsDataURL(e);
                     fr.addEventListener('load', () => {
                         this.car.getImg = fr.result
                         this.carImgType = e.name.match(/.(jpg|png|gif)$/gm)[0]
-                    })
+                        document.getElementById("uploadFile").value = "";                    
+                    });
+                    
+                    
                 }
             },
         }

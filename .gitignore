@@ -20,3 +20,5 @@ VuetifySpa\.Web/appsettings\.json
 VuetifySpa\.Web/wwwroot/img/avatar/
 
 VuetifySpa\.Web/Properties/PublishProfiles/FolderZip\.pubxml
+
+VuetifySpa\.Web/wwwroot/
