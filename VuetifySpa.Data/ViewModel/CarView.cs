@@ -26,7 +26,7 @@ namespace VuetifySpa.Data.ViewModel
         public int Quantity { get; set; }
         [MaxLength(120)]
         [Required]
-        public string CarCase { get; set; }
+        public string CarClass { get; set; }
         [MaxLength(120)]
         [Required]
         public string Status { get; set; }

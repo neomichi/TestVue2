@@ -11,15 +11,17 @@ namespace VuetifySpa.Data.Model
         [MaxLength(120)]
         public string Title { get; set; }
         [MaxLength(120)]
-        public string CarType { get; set; }
+        public string CarClass { get; set; }
         [MaxLength(120)]
-        public string Description { get; set; }     
-
+        public string Description { get; set; } 
+        [Required]
+        public int Mileage { get; set; }
+        [Required]
         public int BirthYear { get; set; }
 
         public int Quantity { get; set; }
         [MaxLength(120)]
-        public string CarCase { get; set; }
+        public string CarType { get; set; }
         [MaxLength(120)]
         public string Status { get; set; }
         [MaxLength(120)]

@@ -21,7 +21,7 @@
                                 </v-card-actions>
                             </v-card>
                         </v-flex>
-                        <v-flex d-flex>
+                        <v-flex d-flex style="margin-top:10px;">
                             <v-layout row>
                                 <v-flex d-flex>
                                     <v-card elevation-5>
@@ -55,7 +55,7 @@
             <v-flex  xs12 sm8 md6 lg5>
                         <v-card elevation-5>
                             <form id="updateCarForm" @submit.prevent="onSubmit">
-                                <v-card-text>  
+                                <v-card-text>
                                     <v-text-field v-model="car.mileage"
                                                   v-validate="'numeric|min_value:1|max_value:500000'"
                                                   :error-messages="errors.collect('car_mileage')"
@@ -63,6 +63,16 @@
                                                   data-vv-as="пробег"
                                                   v-on:change="changeText()"
                                                   required prepend-icon="email" name="car_mileage" label="пробег(км)"></v-text-field>
+
+                                    
+                                    <v-select v-model="car.carClass"
+                                              prepend-icon="email"
+                                              :items="carClass"
+                                              data-vv-as="клас авто"
+                                              v-on:change="changeText()"
+                                              label="клас авто"></v-select>
+
+
 
                                     <v-text-field v-model="car.birthYear"
                                                   v-validate="'numeric|min_value:1990|max_value:2018'"
@@ -79,12 +89,12 @@
                                                   v-on:change="changeText()"
                                                   required prepend-icon="email" name="car_quantity" label="количество"></v-text-field>
                                     <!--<v-text-field v-model="car.carCase"
-                    v-validate="'required|min:1|max:60'"
-                    :error-messages="errors.collect('car_carCase')"
-                    autocomplete="off"
-                    data-vv-as="кузов"
-                    v-on:change="changeText()"
-                    required prepend-icon="email" name="car_carCase" label="тип"></v-text-field>-->
+    v-validate="'required|min:1|max:60'"
+    :error-messages="errors.collect('car_carCase')"
+    autocomplete="off"
+    data-vv-as="кузов"
+    v-on:change="changeText()"
+    required prepend-icon="email" name="car_carCase" label="тип"></v-text-field>-->
                                     <v-select v-model="car.carCase"
                                               prepend-icon="email"
                                               :items="carBodyType"
@@ -98,7 +108,7 @@
                                                   data-vv-as="статус"
                                                   v-on:change="changeText()"
                                                   required prepend-icon="email" name="car_status" label="статус"></v-text-field>
-                                   
+
                                     <v-select v-model="car.transmission"
                                               prepend-icon="email"
                                               :items="carTranmissionType"
@@ -155,6 +165,7 @@
                 carImgType: '',
                 carBodyType: ['Седан', 'Хэтчбек', 'Универсал', 'Лифтбэк', 'Купе', 'Кабриолет', 'Родстер', 'Тарга', 'Внедорожник'],
                 carTranmissionType: ['механическая', 'робот', 'автомат', 'вариатор'],
+                carClass:['легковые','грузовые'],
             }
         },
         components: {
@@ -201,7 +212,7 @@
                 return false;
             },
             uploadFile(e) {
-                var test = /^image\//gm.test(e.type) && e.size < 512 * 1024;
+                var test = /^image\//gm.test(e.type) && e.size < 1024 * 1024;
                 if (test) {
                     this.imageName = e.name
                     if (this.imageName.lastIndexOf('.') <= 0) {

@@ -28,7 +28,7 @@ namespace VuetifySpa.Data.Services
 
         public Car Update(CarView carView)
         {
-            var car= GetToCar(carView);
+            var car= GetCarFromCarView(carView);
 
             if (car.Id == Guid.Empty) {
                 _db.Cars.Add(car);
@@ -40,46 +40,44 @@ namespace VuetifySpa.Data.Services
         }
 
         ///язнаючтонадопеределать
-        CarView GetToCarView(Car car)
+        CarView GetCarViewFromCar(Car car)
         {
             var carview = new CarView
             {
                 Id = car.Id,
                 Status = car.Status,
                 BirthYear = car.BirthYear,
-                CarCase = car.CarCase,
+                CarClass = car.CarClass,
                 CarType = car.CarType,
-                Img = car.CarType,
                 Title = car.Title,
                 Transmission = car.Transmission,
                 Motor = car.Motor,
                 Description = car.Description,
-                Color=car.Color,
-                Quantity=car.Quantity,
-                Visible=car.Visible,
+                Color = car.Color,
+                Quantity = car.Quantity,
+                Visible = car.Visible,
             };
-           
             return carview;
         }
         ///язнаючтонадопеределать
-        Car GetToCar(CarView carView)
+        Car GetCarFromCarView(CarView car)
         {
-            var car = new Car
+            var car1 = new Car
             {
-                Id = carView.Id,
-                Status = carView.Status,
-                BirthYear = carView.BirthYear,
-                CarCase = carView.CarCase,
-                CarType = carView.CarType,           
-                Title = carView.Title,
-                Transmission = carView.Transmission,
-                Motor = carView.Motor,
-                Description = carView.Description,
-                Color = carView.Color,
-                Quantity = carView.Quantity,
-                Visible = carView.Visible,
-            };            
-            return car;
+                Id = car.Id,
+                Status = car.Status,
+                BirthYear = car.BirthYear,
+                CarClass = car.CarClass,
+                CarType = car.CarType,           
+                Title = car.Title,
+                Transmission = car.Transmission,
+                Motor = car.Motor,
+                Description = car.Description,
+                Color = car.Color,
+                Quantity = car.Quantity,
+                Visible = car.Visible,
+            };
+            return car1;
         }
 
     }
