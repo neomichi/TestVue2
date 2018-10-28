@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace VuetifySpa.Data.ViewModel
 {
@@ -11,6 +13,7 @@ namespace VuetifySpa.Data.ViewModel
 
         [MaxLength(120)]
         [Required]
+        [JsonProperty("title")]
         public string Title { get; set; }
         [Required]
         [MaxLength(120)]
@@ -42,7 +45,7 @@ namespace VuetifySpa.Data.ViewModel
         public string Motor { get; set; }
        
         public string GetImg { get; set; }
-
+        
         public string ImgType { get; set; }
 
         public string Img { get; set; }

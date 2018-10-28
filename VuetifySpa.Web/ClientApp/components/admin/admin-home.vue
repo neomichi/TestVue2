@@ -11,9 +11,9 @@
                 </v-btn>
             </v-layout>
       
-        <v-layout align-center justify-center row fill-height>
+        <div align-center justify-center row fill-height>
             <router-view></router-view>
-        </v-layout>
+        </div>
 
     </div>
 </template>

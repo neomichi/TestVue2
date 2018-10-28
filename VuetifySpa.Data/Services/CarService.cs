@@ -32,13 +32,10 @@ namespace VuetifySpa.Data.Services
 
             if (car.Id == Guid.Empty) {
                 _db.Cars.Add(car);
-            } else
-            {
-                _db.Cars.Update(car);
-            }            
-            carView.Img = Code.SaveImage64(carView.Id, carView.GetImg, carView.ImgType, _hostingEnviroment.WebRootPath, "car");
+            }
+            car.Img = Code.SaveImage64(carView.Id, carView.GetImg, carView.ImgType, _hostingEnviroment.WebRootPath, "car");
+            _db.Cars.Update(car);
             _db.SaveChanges();
-
             return car;
         }
 

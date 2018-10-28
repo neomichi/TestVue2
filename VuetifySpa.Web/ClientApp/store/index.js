@@ -56,7 +56,17 @@ const mutations = {
     },
     [UPDATE_CARS_STATUS](state, obj) {
         state.cars = obj;
+    },
+    [ADD_EDIT_CAR_STATUS](state, obj) {
+        for (var i = 0; i < state.cars.data.length; i++) {
+            if (state.cars.data[i].id == obj.data.id) {               
+                state.cars.data[i] = obj.data;               
+                break;
+            }
+        }
+        
     }
+
 }
 
 // ACTIONS
@@ -76,10 +86,12 @@ const actions = ({
         commit(SET_LOADING, true);
 
         try {
+            console.log(obj.data);
             const authUser = await axios.post('/api/auth', {
                 email: obj.data.email,
                 password: obj.data.password,
             });
+           
             commit(SET_LOADING, false);
             commit(LOGIN_REGISTER_UPDATE_USER_STATUS, authUser);
         } catch (error) {
@@ -162,12 +174,8 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-            const car = await axios.put('/api/car', {
-                email: obj.data.email,
-                password: obj.data.password,
-                firstName: obj.data.firstName,
-                lastName: obj.data.lastName
-            });
+            console.log(obj);
+            const car = await axios.put('/api/car', obj.data);
             commit(SET_LOADING, false);
             commit(ADD_EDIT_CAR_STATUS, car);
         }

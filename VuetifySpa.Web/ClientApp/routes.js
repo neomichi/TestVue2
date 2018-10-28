@@ -49,7 +49,7 @@ export const adminRoutes = [
             { path: 'orders', name: 'adminOrderlist', component: AdminOrderList, display: 'список заказов' }
         ],
     },
-    { path: '/admin/:id/create-car', name: 'adminCreateCar', component: AdminCarEditCreate, display: 'создать машинку', beforeEnter: AdminRules },
+    { path: '/admin/create-car', name: 'adminCreateCar', component: AdminCarEditCreate, display: 'создать машинку', beforeEnter: AdminRules },
     { path: '/admin/:id/edit-car', name: 'adminEditCar', component: AdminCarEditCreate, display: 'редактировать машинку', beforeEnter: AdminRules },
     
 

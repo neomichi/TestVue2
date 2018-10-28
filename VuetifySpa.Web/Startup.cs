@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using VuetifySpa.Data.Services;
+using Newtonsoft.Json.Serialization;
 
 namespace VuetifySpa.Web
 {
@@ -64,7 +65,13 @@ namespace VuetifySpa.Web
 
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                    .AddControllersAsServices();
+                    .AddControllersAsServices()
+                    .AddJsonOptions(options =>
+                    {
+                        options.SerializerSettings.ContractResolver =
+                             new CamelCasePropertyNamesContractResolver();
+                    });
+       
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.Configure<RouteOptions>(options => options.AppendTrailingSlash = false);
             // Add Database Initializer->

@@ -58,7 +58,7 @@ namespace VuetifySpa.Web.Controllers
 
         //PUT: api/Default1/5
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]CarView car)
+        public IActionResult Put([FromBody]CarView car)
         {
             if (ModelState.IsValid)
             {    

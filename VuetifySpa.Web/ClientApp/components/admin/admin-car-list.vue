@@ -1,14 +1,14 @@
 ﻿<template>
     <div>
-        <v-container fluid fill-height>
-            <v-layout align-center justify-center>
-                <v-flex xs12>
-                    <h1>Список техники </h1>
-                </v-flex>
-            </v-layout>
-        </v-container>
+        
+        <div style="display:flex;justify-content:flex-end;display: -webkit-flex;">
+            <v-btn v-on:click="createCar" style="margin: 6px 0;flex-basis:200px">Добавить модель</v-btn>
+        </div>
+            
 
-        <v-container fluid>
+          
+
+      
             <v-layout align-center justify-center>
                 <v-flex xs12>
                     <v-data-table :headers="headers"
@@ -34,11 +34,11 @@
                             </td>
                             <td class="justify-center align-center layout px-0">
                                 <v-btn flat icon color="indigo" class="mr-2"
-                                       @click="createEditCar(props.item.id,false)">
+                                       @click="editCar(props.item.id,false)">
                                     <v-icon>edit</v-icon>
                                 </v-btn>
                                 <v-btn flat icon class="mr-2" color="red"
-                                       @click="deleteItem(props.item.id)">
+                                       @click="deleteCar(props.item.id)">
                                     <v-icon>delete</v-icon>
                                 </v-btn>
                             </td>
@@ -46,7 +46,7 @@
                     </v-data-table>
                 </v-flex>
             </v-layout>
-        </v-container>
+     
         <dialog v-bind:dialog="dialogState"></dialog>
     </div>
 </template>
@@ -64,10 +64,10 @@
                         sortable: true,
                         value: 'title'
                     },
-                    { align: 'center', text: 'тип авто', value: 'carType' },
+                    { align: 'center', text: 'тип', value: 'carType' },
                     { align: 'center', text: 'кол-во', value: 'quantity' },
-                    { align: 'center', text: 'дата создания', value: 'birthYear' },
-                    { align: 'center', text: 'тип двигателя', value: 'motor' },
+                    { align: 'center', text: 'год выпуска', value: 'birthYear' },
+                    { align: 'center', text: 'двигатель', value: 'motor' },
                     { align: 'center', text: 'видимось', value: 'visible' },
                     { text: '', value: 'name', sortable: false }
                 ],
@@ -83,13 +83,14 @@
             
         },
         methods: {
-            createEditCar(id, createOrEdit) {
-                this.$router.push({ name: 'adminEditCar', params: { id: id, createOrEdit: createOrEdit } })
-
-                
+            editCar(id, createOrEdit) {
+                this.$router.push({ name: 'adminEditCar', params: { id: id } })
             },      
-            deleteItem(id) {
+            deleteCar(id) {
                 console.log(id);
+            },
+            createCar() {
+                this.$router.push({ name: 'adminCreateCar', params: { id: '' }})
             }
 
 
