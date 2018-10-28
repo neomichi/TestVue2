@@ -1,4 +1,4 @@
-﻿import HomePage from 'components/home-page'
+import HomePage from 'components/home-page'
 import LoginPage from 'components/login'
 import Car from 'components/car'
 import AdminOrderList from 'components/admin/admin-order-list'
