@@ -5,25 +5,31 @@
                 <h1> {{CreateOrEdit}} модели  </h1>
             </v-layout>
         </v-container>
-        <v-container fluid grid-list-sm>
-            <v-layout row wrap align-start justify-space-around >
-            <v-flex d-flex xs12 sm4 md4>
-                    <v-layout row wrap justify-center>
-                        <v-flex d-flex style="height:240px;">
-                            <v-card elevation-5>
-                                <v-img :src="car.getImg" max-height="180" alt="аватар"
-                                       aspect-ratio="1" class="grey lighten-2"></v-img>
+
+        
+        <v-container fluid grid-list-md>
+            <v-layout row justify-center wrap>
+
+                <v-flex sm5 md4 lg3>
+                    <v-layout column row>
+                        <v-flex sm9 md6 lg8  >
+                            <v-card elevation-5 >
+                                <div style="padding:5px 15px;">
+                                    <v-img :src="car.getImg" alt="аватар" 
+                                           aspect-ratio="1.69" class="grey lighten-2"></v-img>
+                                </div>
                                 <v-card-actions>
-                                    <v-layout align-end justify-space-around style="margin-top:5px;">
+                                    <v-layout align-start justify-space-around>
                                         <v-btn v-if="imgIsChanged" v-on:click="imgReset">отмена</v-btn>
                                         <upload-btn title="загрузить" v-bind:fileChangedCallback="uploadFileFunction"></upload-btn>
                                     </v-layout>
+                                 
                                 </v-card-actions>
                             </v-card>
                         </v-flex>
-                        <v-flex d-flex style="margin-top:10px;">
+                        <v-flex xs12 sm9 md9 lg1  style="margin:15px 0;">
                             <v-layout row>
-                                <v-flex d-flex>
+                                <v-flex d-flex >
                                     <v-card elevation-5>
                                         <form id="updateCarForm2" @submit.prevent="onSubmit">
                                             <v-card-text>
@@ -31,9 +37,9 @@
                                                               v-validate="'required|min:1|max:60'"
                                                               :error-messages="errors.collect('car_title')"
                                                               autocomplete="off"
-                                                              data-vv-as="название"
+                                                              data-vv-as="имя"
                                                               v-on:change="changeText()"
-                                                              required prepend-icon="email" name="car_title" label="название"></v-text-field>
+                                                              required prepend-icon="email" name="car_title" label="имя"></v-text-field>
 
                                                 <v-textarea v-model="car.description"
                                                             v-validate="'required|min:1|max:600'"
@@ -43,7 +49,6 @@
                                                             v-on:change="changeText()"
                                                             required prepend-icon="email" name="car_description" label="описание"></v-textarea>
 
-
                                             </v-card-text>
                                         </form>
                                     </v-card>
@@ -52,103 +57,108 @@
                         </v-flex>
                     </v-layout>
                 </v-flex>
-            <v-flex  xs12 sm8 md6 lg5>
-                        <v-card elevation-5>
-                            <form id="updateCarForm" @submit.prevent="onSubmit">
-                                <v-card-text>
-                                    <v-text-field v-model="car.mileage"
-                                                  v-validate="'numeric|min_value:1|max_value:500000'"
-                                                  :error-messages="errors.collect('car_mileage')"
-                                                  autocomplete="off"
-                                                  data-vv-as="пробег"
-                                                  v-on:change="changeText()"
-                                                  required prepend-icon="email" name="car_mileage" label="пробег(км)"></v-text-field>
-
-                                    
-                                    <v-select v-model="car.carClass"
-                                              prepend-icon="email"
-                                              :items="carClass"
-                                              data-vv-as="клас авто"
+                <v-flex sm6 md6 lg6>
+                    <v-card elevation-5>
+                        <form id="updateCarForm" @submit.prevent="onSubmit">
+                            <v-card-text>
+                                <v-text-field v-model="car.mileage"
+                                              v-validate="'numeric|min_value:1|max_value:500000'"
+                                              :error-messages="errors.collect('car_mileage')"
+                                              autocomplete="off"
+                                              data-vv-as="пробег"
                                               v-on:change="changeText()"
-                                              label="клас авто"></v-select>
+                                              required prepend-icon="email" name="car_mileage" label="пробег(км)"></v-text-field>
+
+
+                                <v-select v-model="car.carType"
+                                          prepend-icon="email"
+                                          :items="carClass"
+                                          data-vv-as="клас авто"
+                                          v-on:change="changeText()"
+                                          label="клас авто"></v-select>
 
 
 
-                                    <v-text-field v-model="car.birthYear"
-                                                  v-validate="'numeric|min_value:1990|max_value:2018'"
-                                                  :error-messages="errors.collect('car_birthYear')"
-                                                  autocomplete="off"
-                                                  data-vv-as="год выпуска"
-                                                  v-on:change="changeText()"
-                                                  required prepend-icon="email" name="car_birthYear" label="год выпуска"></v-text-field>
-                                    <v-text-field v-model="car.quantity"
-                                                  v-validate="'numeric|min_value:1|max_value:100'"
-                                                  :error-messages="errors.collect('car_quantity')"
-                                                  autocomplete="off"
-                                                  data-vv-as="количество"
-                                                  v-on:change="changeText()"
-                                                  required prepend-icon="email" name="car_quantity" label="количество"></v-text-field>
-                                    <!--<v-text-field v-model="car.carCase"
-    v-validate="'required|min:1|max:60'"
-    :error-messages="errors.collect('car_carCase')"
-    autocomplete="off"
-    data-vv-as="кузов"
-    v-on:change="changeText()"
-    required prepend-icon="email" name="car_carCase" label="тип"></v-text-field>-->
-                                    <v-select v-model="car.carCase"
-                                              prepend-icon="email"
-                                              :items="carBodyType"
-                                              data-vv-as="кузов"
+                                <v-text-field v-model="car.birthYear"
+                                              v-validate="'numeric|min_value:1990|max_value:2018'"
+                                              :error-messages="errors.collect('car_birthYear')"
+                                              autocomplete="off"
+                                              data-vv-as="год выпуска"
                                               v-on:change="changeText()"
-                                              label="кузов"></v-select>
-                                    <v-text-field v-model="car.status"
-                                                  v-validate="'required|min:1|max:60'"
-                                                  :error-messages="errors.collect('car_status')"
-                                                  autocomplete="off"
-                                                  data-vv-as="статус"
-                                                  v-on:change="changeText()"
-                                                  required prepend-icon="email" name="car_status" label="статус"></v-text-field>
-
-                                    <v-select v-model="car.transmission"
-                                              prepend-icon="email"
-                                              :items="carTranmissionType"
+                                              required prepend-icon="email" name="car_birthYear" label="год выпуска"></v-text-field>
+                                <v-text-field v-model="car.quantity"
+                                              v-validate="'numeric|min_value:1|max_value:100'"
+                                              :error-messages="errors.collect('car_quantity')"
+                                              autocomplete="off"
+                                              data-vv-as="количество"
                                               v-on:change="changeText()"
-                                              label="коробка"></v-select>
-                                    <v-text-field v-model="car.color"
-                                                  v-validate="'required|min:1|max:60'"
-                                                  :error-messages="errors.collect('car_color')"
-                                                  autocomplete="off"
-                                                  data-vv-as="цвет"
-                                                  v-on:change="changeText()"
-                                                  required prepend-icon="email" name="car_color" label="цвет"></v-text-field>
-                                    <v-text-field v-model="car.motor"
-                                                  v-validate="'required|min:1|max:60'"
-                                                  :error-messages="errors.collect('car_motor')"
-                                                  autocomplete="off"
-                                                  data-vv-as="двигатель"
-                                                  v-on:change="changeText()"
-                                                  required prepend-icon="email" name="car_motor" label="двигатель"></v-text-field>
-                                    <v-checkbox v-model="car.visible"
-                                                label="показывать на сайте"
-                                                required></v-checkbox>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-spacer></v-spacer>
-                                    <router-link to="/admin/cars" tag="v-btn">назад</router-link>
+                                              required prepend-icon="email" name="car_quantity" label="количество"></v-text-field>
+                                <!--<v-text-field v-model="car.carCase"
+                    v-validate="'required|min:1|max:60'"
+                    :error-messages="errors.collect('car_carCase')"
+                    autocomplete="off"
+                    data-vv-as="кузов"
+                    v-on:change="changeText()"
+                    required prepend-icon="email" name="car_carCase" label="тип"></v-text-field>-->
+                                <v-select v-model="car.carClass"
+                                          prepend-icon="email"
+                                          :items="carBodyType"
+                                          data-vv-as="кузов"
+                                          v-on:change="changeText()"
+                                          label="кузов"></v-select>
+                                <v-text-field v-model="car.status"
+                                              v-validate="'required|min:1|max:60'"
+                                              :error-messages="errors.collect('car_status')"
+                                              autocomplete="off"
+                                              data-vv-as="статус"
+                                              v-on:change="changeText()"
+                                              required prepend-icon="email" name="car_status" label="статус"></v-text-field>
 
-                                    <v-btn :disabled="IsModification" type="submit" color="primary" :loading="loading" :disable="loading">Сохранить</v-btn>
-                                    <!--<v-btn :disabled="IsModification" type="submit" color="primary" :loading="loading" :disable="loading">Сохранить</v-btn>-->
-                                </v-card-actions>
-                            </form>
-                        </v-card>
-                    </v-flex>
+                                <v-select v-model="car.transmission"
+                                          prepend-icon="email"
+                                          v-validate="'required'"
+                                          :error-messages="errors.collect('car_transmission')"
+                                          :items="carTranmissionType"
+                                          v-on:change="changeText()"
+                                          data-vv-as="коробка"
+                                          name="car_transmission"
+                                          label="коробка"></v-select>
+                                <v-text-field v-model="car.color"
+                                              v-validate="'required|min:1|max:60'"
+                                              :error-messages="errors.collect('car_color')"
+                                              autocomplete="off"
+                                              data-vv-as="цвет"
+                                              v-on:change="changeText()"
+                                              required prepend-icon="email" name="car_color" label="цвет"></v-text-field>
+                                <v-text-field v-model="car.motor"
+                                              v-validate="'required|min:1|max:60'"
+                                              :error-messages="errors.collect('car_motor')"
+                                              autocomplete="off"
+                                              data-vv-as="двигатель"
+                                              v-on:change="changeText()"
+                                              required prepend-icon="email" name="car_motor" label="двигатель"></v-text-field>
+                                <v-checkbox v-model="car.visible"
+                                            label="показывать на сайте"
+                                            required></v-checkbox>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-spacer></v-spacer>
+                                <router-link to="/admin/cars" tag="v-btn">назад</router-link>
+
+                                <v-btn :disabled="IsModification" type="submit" color="primary" :loading="loading" :disable="loading">Сохранить</v-btn>
+                                <!--<v-btn :disabled="IsModification" type="submit" color="primary" :loading="loading" :disable="loading">Сохранить</v-btn>-->
+                            </v-card-actions>
+                        </form>
+                    </v-card>
+                </v-flex>
             </v-layout>
         </v-container>
     </div>
 </template>
 <script>
     import Vue from 'vue'
+    import axios from 'axios'
     import UploadButton from 'vuetify-upload-button';
     export default {
         $_veeValidate: {
@@ -165,7 +175,7 @@
                 carImgType: '',
                 carBodyType: ['Седан', 'Хэтчбек', 'Универсал', 'Лифтбэк', 'Купе', 'Кабриолет', 'Родстер', 'Тарга', 'Внедорожник'],
                 carTranmissionType: ['механическая', 'робот', 'автомат', 'вариатор'],
-                carClass:['легковые','грузовые'],
+                carClass: ['легковые', 'грузовые'],
             }
         },
         components: {
@@ -177,19 +187,17 @@
                 return this.$store.getters.Getloading;
             },
             imgIsChanged: function () {
-                cache: false;
-                return this.car.getImg != this.defaultImg;
+                return this.id == '' || this.id == undefined ?false 
+                    : this.car.getImg != this.defaultImg
             },
             CreateOrEdit() {
-                cache: false;
-                return this.id == '' ? 'Создание' : 'Редактирование';
+                return this.id == '' || this.id == undefined ? 'Создание' : 'Редактирование';
             }
         },
         beforeMount: function () {
             this.getCar();
         },
         methods: {
-
             changeText: () => {
 
             },
@@ -199,15 +207,26 @@
             onSubmit() {
 
                 this.$validator.validateAll().then((result) => {
-                    if (result) {
-                        var dbcar = this.car;
-                        dbcar.imgType = this.carImgType
-                        this.$store.dispatch('AddOrEditCar', { data: dbcar })
-                            .then(() => {
-                                this.getCar();
-                            });
-                    }
 
+
+
+                    if (result) {
+                        var data = { title: this.car.title, id: this.car.id };
+                        axios.post('/api/car/validate/title', data).then((result) => {
+                           
+                            if (result.data) {
+                                //var dbcar = this.car;
+                                //dbcar.imgType = this.carImgType
+                                //this.$store.dispatch('AddOrEditCar', { data: dbcar })
+                                //    .then(() => {
+                                //        this.getCar();
+                                //    });
+                               
+                            } else {
+                                this.$store.dispatch('SET_ERROR', "такое имя уже используется");
+                            }
+                        });
+                    }
                 });
                 return false;
             },

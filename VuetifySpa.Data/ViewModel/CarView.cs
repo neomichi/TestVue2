@@ -8,8 +8,10 @@ using Newtonsoft.Json.Serialization;
 namespace VuetifySpa.Data.ViewModel
 {
     public class CarView
-    {  
+    {
         public Guid Id { get; set; }
+        [Range(1,int.MaxValue)]
+        public int Mileage { get; set; }
 
         [MaxLength(120)]
         [Required]
@@ -43,9 +45,9 @@ namespace VuetifySpa.Data.ViewModel
 
         [MaxLength(120)]
         public string Motor { get; set; }
-       
+
         public string GetImg { get; set; }
-        
+
         public string ImgType { get; set; }
 
         public string Img { get; set; }

@@ -13,10 +13,10 @@
 
                             <v-text-field prepend-icon="email"
                                           v-validate="'required|email'"
-                                          :error-messages="errors.collect('email')"
+                                          :error-messages="errors.collect('login_email')"
                                           data-vv-name="email"
                                           required
-                                          v-model="login.email" name="email" label="Email" type="text"></v-text-field>
+                                          v-model="login.email" name="login_email" label="Email" type="text"></v-text-field>
                             <v-text-field prepend-icon="lock"
                                           v-validate="'required|min:6|max:20'"
                                           :error-messages="errors.collect('password')"
@@ -47,11 +47,11 @@
                         <v-card-text>
 
                             <v-text-field v-model="reg.email"
-                                          v-validate="'required|email|max:120'"
-                                          :error-messages="errors.collect('email')"
-                                          data-vv-name="email"
+                                          v-validate="'required|regex_email|unique_email|max:120'"
+                                          :error-messages="errors.collect('reg_email')"
                                           autocomplete="off"
-                                          required prepend-icon="email" name="reg_email" label="Email"></v-text-field>
+                                          data-vv-as="email"
+                                          required prepend-icon="email" name="reg_email" id="reg_email" label="Email"></v-text-field>
                             <v-text-field v-model="reg.firstName"
                                           v-validate="'required|min:3|max:60'"
                                           :error-messages="errors.collect('reg_firstName')"
@@ -97,12 +97,14 @@
 
 <script>
     import Vue from 'vue'
-    import VeeValidate from 'vee-validate'
+
     import { fail } from 'assert';
     import { HasEmptyJson } from "../app.js"
     import { isNullOrEmpty } from "../app.js"
-    import VeeValidateRu from 'vee-validate/dist/locale/ru'
-    Vue.use(VeeValidate);
+
+    import { test } from '../store/error_store.js';
+
+
 
 
     export default {
@@ -143,20 +145,22 @@
             },
         },
         mounted() {
-            this.$validator.localize('ru', VeeValidateRu)            
-           
-            console.log(this.returnUrl);
+
+            //this.$validator.localize('ru', VeeValidateRu)   
+
+
+
             if (this.$route.query.access != undefined) {
                 var message = "";
                 this.returnUrl = this.$route.query.returnUrl
                 if (this.$route.query.access == 'admin') {
                     message = "пожалуйста, вы должны авторизоваться под ролью админитратора";
                 } else
-                if (this.$route.query.access == 'user') {
-                    message = "пожалуйста, вы должны авторизоваться";
-                }
+                    if (this.$route.query.access == 'user') {
+                        message = "пожалуйста, вы должны авторизоваться";
+                    }
                 this.$store.dispatch('SET_ERROR', message);
-  
+
             }
         },
         methods: {
@@ -171,21 +175,21 @@
                         //    : { name: 'regAuth', data: this.reg }
 
                         var gg = this.$store.dispatch(formName, { data: formData });
-                        gg.then(() => {                              
-                                if (this.$store.state.authUser) {
-                                    var routerPath = "/"
-                                    if (!HasEmptyJson(this.$route.query.returnUrl)) {
-                                        routerPath = this.$route.query.returnUrl;
-                                    }
-                                    this.$router.push(routerPath);
+                        gg.then(() => {
+                            if (this.$store.state.authUser) {
+                                var routerPath = "/"
+                                if (!HasEmptyJson(this.$route.query.returnUrl)) {
+                                    routerPath = this.$route.query.returnUrl;
                                 }
-                            });
+                                this.$router.push(routerPath);
+                            }
+                        });
                     }
                 });
             }
         },
         created: function () {
-
+           
         }
     }
 </script>

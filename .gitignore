@@ -24,3 +24,9 @@ VuetifySpa\.Web/Properties/PublishProfiles/FolderZip\.pubxml
 VuetifySpa\.Web/wwwroot/
 
 VuetifySpa\.Web/package-lock\.json
+
+VuetifySpa\.Web/appsettings\.Development\.json
+
+VuetifySpa\.Web/Logs/
+
+VuetifySpa\.Web/appsettings\.server\.json

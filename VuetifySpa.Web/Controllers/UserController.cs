@@ -20,6 +20,7 @@ namespace VuetifySpa.Web.Controllers
     [Authorize]
     public class UserController : Controller
     {
+
         private IHostingEnvironment _hostingEnviroment;
         private MyDbContext _db;
         private SignInManager<ApplicationUser> _signInManager;
@@ -28,8 +29,7 @@ namespace VuetifySpa.Web.Controllers
         public UserController(MyDbContext db, IUserService userService, SignInManager<ApplicationUser> signInManager, IHostingEnvironment hostingEnviroment)
         {
             _db = db;
-            _signInManager = signInManager;
-            _hostingEnviroment = hostingEnviroment;
+            _signInManager = signInManager; 
             _userService = userService;
         }
 

@@ -7,8 +7,8 @@ using System.Text;
 namespace VuetifySpa.Data.Model
 {
     public class Car:Entity
-    {
-        [MaxLength(120)]
+    {   [Required]
+        [MaxLength(40)]
         public string Title { get; set; }
         [MaxLength(120)]
         public string CarClass { get; set; }
@@ -37,11 +37,7 @@ namespace VuetifySpa.Data.Model
         [MaxLength(120)]
         public string Motor { get; set; }
 
-        [NotMapped]
-        public string GetImg
-        {
-            get { return string.Format("/img/car/{0}?v={1:yyyyMMddHHmmssff}", Img, DateTime.Now); }
-        }
+      
 
         
     }

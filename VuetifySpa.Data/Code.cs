@@ -35,7 +35,7 @@ namespace VuetifySpa.Data
 
             if (img64.StartsWith("data:image", StringComparison.OrdinalIgnoreCase)) {
                 var filename = string.Format("{0}{1}", id, imageext);               
-                var physicalpath = System.IO.Path.Combine(rootpath, string.Format(@"img\{0}\{1}", folderType, filename));
+                var physicalpath = System.IO.Path.Combine(rootpath, string.Format(@"img{2}{0}{2}{1}", folderType, filename, System.IO.Path.DirectorySeparatorChar));
                 if (System.IO.File.Exists(physicalpath)) System.IO.File.Delete(physicalpath);
                 SaveBase64(img64, physicalpath);
                 return filename;

@@ -23,9 +23,11 @@ namespace VuetifySpa.Data
         public MyDbContext(DbContextOptions<MyDbContext> options)
             : base(options)
         {
-
+            
 
         }
+
+
 
         public DbSet<Car> Cars { get; set; }
 
@@ -36,13 +38,21 @@ namespace VuetifySpa.Data
                 .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
             builder.HasPostgresExtension("uuid-ossp");
-                              
-        
+            builder.Entity<Car>().HasIndex(u => u.Title).IsUnique();
+
             base.OnModelCreating(builder);
+
+
+
+
 
             builder.Entity<ApplicationUser>().ToTable("Users");
 
             builder.Entity<ApplicationRole>().ToTable("Roles");
+
+
+            
+
 
             //select uuid_generate_v4();
 

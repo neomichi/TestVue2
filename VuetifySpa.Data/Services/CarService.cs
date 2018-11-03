@@ -26,18 +26,39 @@ namespace VuetifySpa.Data.Services
             return _db.Cars.Where(x => x.Visible).ToList();
         }
 
-        public Car Update(CarView carView)
+        public Car CreateOrUpdate(CarView carView)
         {
             var car= GetCarFromCarView(carView);
-
+            var id = carView.Id;
             if (car.Id == Guid.Empty) {
                 _db.Cars.Add(car);
+                id = car.Id;
+            } else
+            {
+                _db.Cars.Update(car);
             }
-            car.Img = Code.SaveImage64(carView.Id, carView.GetImg, carView.ImgType, _hostingEnviroment.WebRootPath, "car");
-            _db.Cars.Update(car);
+            car.Img = Code.SaveImage64(id, carView.GetImg, carView.ImgType, _hostingEnviroment.WebRootPath, "car");          
             _db.SaveChanges();
             return car;
         }
+
+        public bool IsUniqueTitle(CarValidateView CarValidate)
+        {
+            if (!string.IsNullOrEmpty(CarValidate.Title))
+            {
+                if (!_db.Cars.Any(x => x.Id!=CarValidate.Id && x.Title.Equals(CarValidate.Title, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public List<CarView> GetAllCar ()
+        {
+           return _db.Cars.Where(x => x.Visible).ToList().Select(x => GetCarViewFromCar(x)).ToList();
+        }
+
 
         ///язнаючтонадопеределать
         CarView GetCarViewFromCar(Car car)
@@ -56,6 +77,8 @@ namespace VuetifySpa.Data.Services
                 Color = car.Color,
                 Quantity = car.Quantity,
                 Visible = car.Visible,
+                Mileage=car.Mileage,
+                GetImg= string.Format("/img/car/{0}?v={1:yyyyMMddHHmmssff}",car.Img, DateTime.Now)
             };
             return carview;
         }
@@ -76,9 +99,12 @@ namespace VuetifySpa.Data.Services
                 Color = car.Color,
                 Quantity = car.Quantity,
                 Visible = car.Visible,
+                Mileage = car.Mileage,
             };
             return car1;
         }
+
+        
 
     }
 }

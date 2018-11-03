@@ -11,21 +11,20 @@
                     </v-flex>
                 </v-layout>
             </v-container>           
-            <v-container fluid>
-                <v-layout align-center justify-space-around row  wrap>
-                    <v-flex v-for="car in getCar" v-bind:key="car.id" xs12 sm6 md3 style="padding:8px;">
-                        <v-card style="align-items:stretch">
-                            <v-img style="height:240px;" :src="car.getImg"
+            <v-container fluid wrap>
+                <div class="cars">
+                    <v-flex v-for="car in getCar" v-bind:key="car.id" xs12 sm6 md4 lg3>
+                        <v-card style="flex-basis:auto;margin:10px;">
+                            <v-img style="height:250px;" :src="car.getImg"
                                    aspect-ratio="2.75"></v-img>
-                            <v-card-title primary-title>
-                                <div style="height:8vw">
+                            <v-card-title primary-title style="min-height:17vh">
+                              
                                     <h3 class="headline mb-0">{{car.title}}</h3>
                                     <div>{{car.description}}</div>
-                                </div>
+                              
                             </v-card-title>
-                            <v-layout align-center justify-start row fill-height wrap>
+                            <v-layout align-center justify-content-around row>
                                 <v-card-actions>
-                                    <v-spacer></v-spacer>
 
                                     <v-btn v-on:click="viewCar(car.id)" flat color="orange">подробнее</v-btn>
                                     <v-btn raised color="primary">купить</v-btn>
@@ -34,10 +33,11 @@
                                 </v-card-actions>
                             </v-layout>
                         </v-card>
-
                     </v-flex>
-                  
-                </v-layout>
+                </div>
+
+                 
+               
             </v-container>
         </div>
 </template>
@@ -80,5 +80,16 @@
         },    
     }
 </script>
-<style>
+<style scoped>
+    .cars {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: stretch;
+        justify-content:space-around
+    }
 </style>

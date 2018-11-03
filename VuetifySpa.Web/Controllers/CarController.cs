@@ -16,13 +16,11 @@ namespace VuetifySpa.Web.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class CarController : Controller
-    {
-        private MyDbContext _db;
+    {        
         private ICarService _carService;
 
-        public CarController(MyDbContext db, ICarService carService)
-        {
-            _db = db;
+        public CarController(ICarService carService)
+        {           
             _carService = carService;
         }
 
@@ -32,29 +30,23 @@ namespace VuetifySpa.Web.Controllers
         [HttpGet]
         public IActionResult Get()
         {  
-            return Json(_db.Cars.Where(x=>x.Visible).ToList());
+            return Json(_carService.GetAllCar());
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(Guid Id)
-        {
- 
-            var car = _db.Cars.SingleOrDefault(x => x.Id == Id);
-            if (car != null)
-            {
-                return Json(car);
-            }
-            var message = "не найдена";
-            return BadRequest(message);
-        }
-
-        //// POST: api/Default1
-        // [HttpPost]
-        //public async Task<IActionResult> Post([FromBody]AuthLoginView authLoginView)
+        //[HttpGet("{id}")]
+        //public IActionResult Get(Guid Id)
         //{
-        //    _UserManager.
-        //    return await SignHelper(user);
+ 
+        //    var car = _db.Cars.SingleOrDefault(x => x.Id == Id);
+        //    if (car != null)
+        //    {
+        //        return Json(car);
+        //    }
+        //    var message = "не найдена";
+        //    return BadRequest(message);
         //}
+
+       
 
         //PUT: api/Default1/5
         [HttpPut]
@@ -62,36 +54,21 @@ namespace VuetifySpa.Web.Controllers
         {
             if (ModelState.IsValid)
             {    
-                return Json(_carService.Update(car));
-
+                return Json(_carService.CreateOrUpdate(car));
             }
             return Json("false");
         }
 
-        //// DELETE: api/ApiWithActions/5
-        //[HttpDelete]
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        //    return Ok();
-        //}
+        [HttpPost]
+        [Route("validate/title")]
+        public IActionResult Car([FromBody] CarValidateView carValidate)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(_carService.IsUniqueTitle(carValidate));
+            }
+            return Ok(false);
+        }
 
-        //private async Task<IActionResult> SignHelper(User user)
-        //{
-        //    if (user != null)
-        //    {
-        //        var claims = new List<Claim>
-        //        {
-        //         new Claim(ClaimTypes.Email, user.Email),
-        //         new Claim(ClaimTypes.Sid, user.Id.ToString()),
-        //         new Claim(ClaimTypes.Name, user.Fio),
-        //         new Claim(ClaimTypes.Role, user.IsAdmin.ToString())
-        //        };
-        //        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-        //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-        //        return Json(user);
-        //    }
-        //    return Json("");
-        //}
     }
 }
