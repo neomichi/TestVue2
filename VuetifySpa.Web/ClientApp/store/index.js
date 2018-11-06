@@ -33,10 +33,19 @@ const getters = {
     IsAdmin: state => {
         return !HasEmptyJson(state.authUser) && state.authUser.isAdminRole;
     },
+    GetCarByFilter: state => (type, value) => {  
+        var cars = state.cars.data;
+        var car = '';
+        if (cars != undefined && cars != '') {
+            for (var i = 0; i < cars.length; i++) {
+                if (cars[i][type] == value) {
+                    car = cars[i];
 
-
-
-
+                }
+            }
+        }  
+        return car;
+    }
 }
 
 
@@ -183,7 +192,7 @@ const actions = ({
         commit(CLEAR_ERROR);
         commit(SET_LOADING, true);
         try {
-          
+
             const car = await axios.put('/api/car', obj.data);
             commit(SET_LOADING, false);
             commit(ADD_EDIT_CAR_STATUS, car);
@@ -193,7 +202,7 @@ const actions = ({
             commit(SET_ERROR, error.response.data);
         }
     },
-   
+
 
 });
 

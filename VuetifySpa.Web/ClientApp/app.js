@@ -62,7 +62,13 @@ Validator.extend('unique_cartitle', {
     getMessage: field => 'указанное имя занято'
 });
 
-
+//Validator.extend('regex_password', {
+//    getMessage: field => 'укажите пароль(большая маленькая буква цифра символ)',
+//    validate: value => {
+//        var emailRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{5,}$/,
+//        return emailRegex.test(value);
+//    }
+//});
 
 
 

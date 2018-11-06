@@ -72,10 +72,13 @@
 
                                 <v-select v-model="car.carType"
                                           prepend-icon="email"
+                                          v-validate="'required'"
+                                          :error-messages="errors.collect('car_carType')"
+                                          name="car_carType"
                                           :items="carClass"
-                                          data-vv-as="клас авто"
+                                          data-vv-as="тип"
                                           v-on:change="changeText()"
-                                          label="клас авто"></v-select>
+                                          label="тип"></v-select>
 
 
 
@@ -191,6 +194,7 @@
                     : this.car.getImg != this.defaultImg
             },
             CreateOrEdit() {
+                console.log(this.id);
                 return this.id == '' || this.id == undefined ? 'Создание' : 'Редактирование';
             }
         },
@@ -249,14 +253,10 @@
                 }
             },
             getCar() {
-                var cars = this.$store.state.cars.data;
-                for (var i = 0; i < cars.length; i++) {
-                    if (cars[i].id === this.id) {
-                        this.car = cars[i];
-                        this.defaultImg = cars[i].getImg;
-                        return cars[i];
-                    }
-                }
+                var car= this.$store.getters.GetCarByFilter("id",this.id)
+                this.car = car;
+                this.defaultImg = car.getImg;
+                return car;
             },
 
         }

@@ -6,7 +6,7 @@ import AdminUserList from 'components/admin/admin-user-list'
 import AdminCarList from 'components/admin/admin-car-list'
 import AdminCarEditCreate from 'components/admin/admin-car-create-or-edit'
 import AdminHome from 'components/admin/admin-home'
-import GridData from 'components/grid-data'
+import About from 'components/about'
 import User from 'components/user/user'
 import cryptaData from 'components/crypta'
 import { AdminRules, UserRules, AuthRules } from './route-rules'
@@ -17,7 +17,7 @@ import { AdminRules, UserRules, AuthRules } from './route-rules'
 
 export const routes = [
     { path: '/', name: 'home', component: HomePage, display: 'Home', style: 'glyphicon glyphicon-th-list', icon: 'home' },
-    { path: '/grid', name: 'grid', component: GridData, display: 'таблица заказов' },
+    { path: '/about', name: 'about', component: About, display: 'обомне' },
     { path: '/crypta', name: 'crypta', component: cryptaData, display: 'курс крипты', style: 'glyphicon glyphicon-th-list' }
 
 ]
@@ -29,7 +29,7 @@ export const authRoutes = [
 
 
 export const carRoutes = [
-    { path: '/car/details/:id', name: 'car', component: Car, display: 'car' },
+    { path: '/car/:title', name: 'car', component: Car, display: 'car' },
 
 ]
 
@@ -41,7 +41,7 @@ export const userRoutes = [
 
 export const adminRoutes = [
     {
-        path: '/admin', name: 'adminHome', component: AdminHome, display: 'admin',
+        path: '/admin', name: 'adminHome', component: AdminHome, display: 'админка',
         beforeEnter: AdminRules,
         children: [
             { path: 'cars', name: 'adminCarlist', component: AdminCarList, display: 'список машин' },

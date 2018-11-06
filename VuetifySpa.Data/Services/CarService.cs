@@ -46,7 +46,13 @@ namespace VuetifySpa.Data.Services
         {
             if (!string.IsNullOrEmpty(CarValidate.Title))
             {
-                if (!_db.Cars.Any(x => x.Id!=CarValidate.Id && x.Title.Equals(CarValidate.Title, StringComparison.OrdinalIgnoreCase)))
+                var title2 = CarValidate.Title.Replace(" ", "");
+
+                if (!_db.Cars.Any(x => x.Id!=CarValidate.Id &&
+                (x.Title.Equals(CarValidate.Title, StringComparison.OrdinalIgnoreCase)
+              || x.Title.Equals(title2, StringComparison.OrdinalIgnoreCase))
+
+                ))
                 {
                     return true;
                 }
@@ -70,7 +76,7 @@ namespace VuetifySpa.Data.Services
                 BirthYear = car.BirthYear,
                 CarClass = car.CarClass,
                 CarType = car.CarType,
-                Title = car.Title,
+                Title = car.Title.ToLower(),/////to lower url
                 Transmission = car.Transmission,
                 Motor = car.Motor,
                 Description = car.Description,

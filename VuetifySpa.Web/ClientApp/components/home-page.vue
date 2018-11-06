@@ -17,11 +17,11 @@
                         <v-card style="flex-basis:auto;margin:10px;">
                             <v-img style="height:250px;" :src="car.getImg"
                                    aspect-ratio="2.75"></v-img>
-                            <v-card-title primary-title style="min-height:17vh">
-                              
+                            <v-card-title primary-title style="min-height:20vh">
+                                <div>
                                     <h3 class="headline mb-0">{{car.title}}</h3>
                                     <div>{{car.description}}</div>
-                              
+                                </div>
                             </v-card-title>
                             <v-layout align-center justify-content-around row>
                                 <v-card-actions>
@@ -43,11 +43,10 @@
 </template>
 <script>
 
-    import Vue from 'vue'
-    import Car from './car'
+    import Vue from 'vue'   
     import metaInfo from 'vue-meta'
 
-    Vue.component('car', Car, metaInfo);
+    Vue.component(  metaInfo);
     
     export default {
         data() {
@@ -64,24 +63,38 @@
             }
         },
 
-        beforeMount() {
-            this.$store.dispatch('UpateCarList');
-        },
+        //beforeMount() {
+        //    this.$store.dispatch('UpateCarList');
+        //},
         computed: {
-            getCar: function() {
+            getCar: function () {         
+               
                 cache: false;
                 return this.$store.state.cars.data
             }
         },
         methods: {
             viewCar: function (id) {
-                this.$router.push({ name: 'car', params: { id: id } })
+            
+                var cars = this.$store.state.cars.data;
+                var car = '';
+                for (var i = 0; i < cars.length; i++) {
+                    if (cars[i].id === id) {
+                        car = cars[i];
+                    }
+                }
+                if (car != undefined && car != '') {    
+                    console.log(car.title)
+                    this.$router.push({ name: 'car', params: { title: car.title.trim(), id: car.id }})
+                }
             }, 
         },    
     }
 </script>
 <style scoped>
     .cars {
+        display: -webkit-box;
+        display: -moz-box;
         display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;
@@ -89,7 +102,9 @@
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;
         flex-direction: row;
+        flex-direction: row;
+        flex-direction: row;
         align-items: stretch;
-        justify-content:space-around
+        justify-content: space-around
     }
 </style>

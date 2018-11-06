@@ -5,22 +5,22 @@
                 <v-flex xs10 sm4 md3 lg2>
                     <v-card elevation-5 height="240">
 
-                        <v-img :src="user.avatarUrl" max-height="180"  alt="аватар" 
+                        <v-img :src="user.avatarUrl" max-height="180" alt="аватар"
                                aspect-ratio="1" class="grey lighten-2"></v-img>
 
 
                         <v-card-actions>
                             <v-layout align-end justify-center style="margin-top:5px;">
-                           
-                                <upload-btn title="загрузить"  v-bind:fileChangedCallback="uploadFileFunction"  ></upload-btn>
+
+                                <upload-btn title="загрузить" v-bind:fileChangedCallback="uploadFileFunction"></upload-btn>
                             </v-layout>
 
                         </v-card-actions>
 
-                        
+
                     </v-card>
                 </v-flex>
-                <v-flex xs12 sm8 md6 lg4>
+                <v-flex xs12 sm6 md5 lg3>
                     <v-card elevation-5 height="240">
                         <form id="updateForm" @submit.prevent="onSubmit">
                             <v-card-text>
@@ -49,18 +49,17 @@
                         </form>
                     </v-card>
                 </v-flex>
-
+                <v-flex xs12 sm6 md4 lg2 >
+                    <v-date-picker v-model="picker2" locale="ru-ru" color="green lighten-1" header-color="primary"></v-date-picker>
+                </v-flex>
             </v-layout>
         </v-container>
     </div>
 </template>
 <script>
     import Vue from 'vue'
-    import VeeValidate from 'vee-validate'
-    import VeeValidateRu from 'vee-validate/dist/locale/ru'
     import axios from 'axios'
-    import UploadButton from 'vuetify-upload-button';
-    Vue.use(VeeValidate);
+    import UploadButton from 'vuetify-upload-button';   
     export default {
         $_veeValidate: {
             validator: 'new'
@@ -84,6 +83,7 @@
                     imgType:'',
                     id: this.$route.params.id
                 },
+                picker2: new Date().toISOString().substr(0, 10)
             }
         },
         computed: {

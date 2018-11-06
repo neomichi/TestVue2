@@ -1,7 +1,7 @@
 ﻿<template>
     <v-container fluid fill-height>
         <v-layout align-center justify-center>
-            <v-flex xs12 sm8 md6>
+            <v-flex xs12 sm7 md4 lg3>
 
                 <v-card v-if="loginPage" class="elevation-12">
                     <form id="login" @submit.prevent="onSubmit">
@@ -18,7 +18,7 @@
                                           required
                                           v-model="login.email" name="login_email" label="Email" type="text"></v-text-field>
                             <v-text-field prepend-icon="lock"
-                                          v-validate="'required|min:6|max:20'"
+                                          v-validate="'required|min:4|max:20'"
                                           :error-messages="errors.collect('password')"
                                           data-vv-name="password"
                                           data-vv-as="пароль"
@@ -29,13 +29,13 @@
 
                         <v-card-actions>
 
-                            <v-spacer></v-spacer>
-                            <v-btn type="submin" color="primary" :loading="loading" :disable="loading">войти</v-btn>
+                            <v-layout align-center justify-center wrap>
+                                <v-btn style="margin:15px;" type="submin" color="primary" :loading="loading" :disable="loading">войти</v-btn>
 
 
-                            <v-btn tag="a" v-on:click="$router.push({ name: 'register' })" color="yellow"> регистрация</v-btn>
-
-                        </v-card-actions>
+                                <v-btn tag="a" v-on:click="$router.push({ name: 'register' })" color="yellow"> регистрация</v-btn>
+                                </v-layout>
+</v-card-actions>
                     </form>
                 </v-card>
                 <v-card v-if="!loginPage" class="elevation-12">
@@ -65,7 +65,7 @@
                                           data-vv-as="фамилия"
                                           required prepend-icon="email" name="reg_lastName" id="reg_lastName" label="Фамилия"></v-text-field>
                             <v-text-field v-model="reg.password"
-                                          v-validate="'required|min:6|max:20'"
+                                          v-validate="'required|min:4|max:20'"
                                           :error-messages="errors.collect('password')"
                                           data-vv-name="password"
                                           data-vv-as="пароль"
@@ -84,9 +84,11 @@
                         </v-card-text>
 
                         <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn tag="a" v-on:click="$router.push({ name: 'login' })" color="yellow">войти c email и паролем</v-btn>
-                            <v-btn type="submit" color="primary" :loading="loading" :disable="loading">зарегистрироваться</v-btn>
+                            <v-layout align-center justify-center wrap>
+                           
+                                <v-btn style="margin:15px" tag="a" v-on:click="$router.push({ name: 'login' })" color="yellow">войти c email и паролем</v-btn> 
+                                <v-btn type="submit" color="primary" :loading="loading" :disable="loading">зарегистрироваться</v-btn>
+                                </v-layout>
                         </v-card-actions>
                     </form>
                 </v-card>
@@ -117,9 +119,10 @@
                 type: Boolean,
                 default: false,
             }
-        },
+        },  
         data() {
             return {
+           
                 login: {
                     email: 'admin@test.ru',
                     password: 'LikeMe123!',

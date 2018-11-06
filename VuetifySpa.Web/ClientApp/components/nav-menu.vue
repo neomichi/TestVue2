@@ -37,7 +37,7 @@
                       <v-list-tile-action  >
                       </v-list-tile-action>
                     <v-list-tile-content >
-                        admin   
+                        админка   
                     </v-list-tile-content>
                  </v-list-tile>
             </v-list>
