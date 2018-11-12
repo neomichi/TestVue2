@@ -10,7 +10,7 @@ using VuetifySpa.Data;
 namespace VuetifySpa.Data.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20181106053443_FixMessage")]
+    [Migration("20181106103046_FixMessage")]
     partial class FixMessage
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,6 +160,8 @@ namespace VuetifySpa.Data.Migrations
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<Guid>("FromUserId");
+
+                    b.Property<bool>("IsReaded");
 
                     b.Property<string>("Text")
                         .IsRequired()

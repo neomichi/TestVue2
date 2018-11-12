@@ -9,10 +9,10 @@ namespace VuetifySpa.Data.Services
     {
         Task<UserView> GetUserViewFromEmail(string email);
         Task<UserView> GetUserViewFromUser(ApplicationUser user);
-        Task<RegisterUserView> GetUserRegViewFromUser(ApplicationUser user);
-
-        ApplicationUser GetUserFromEmail(string email);
+        Task<RegisterUserView> GetUserRegViewFromUser(ApplicationUser user);   
         ApplicationUser GetUserFromAuthLogin(AuthLoginView authLogin);
+        Task<UserView> UpdateUser(UserView userView);
+        
 
 
     }

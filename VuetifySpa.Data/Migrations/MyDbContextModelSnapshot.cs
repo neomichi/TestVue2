@@ -159,6 +159,8 @@ namespace VuetifySpa.Data.Migrations
 
                     b.Property<Guid>("FromUserId");
 
+                    b.Property<bool>("IsReaded");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(600);

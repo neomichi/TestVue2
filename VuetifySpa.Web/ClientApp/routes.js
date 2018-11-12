@@ -8,6 +8,8 @@ import AdminCarEditCreate from 'components/admin/admin-car-create-or-edit'
 import AdminHome from 'components/admin/admin-home'
 import About from 'components/about'
 import User from 'components/user/user'
+import UserMessages from 'components/user/messages'
+
 import cryptaData from 'components/crypta'
 import { AdminRules, UserRules, AuthRules } from './route-rules'
 
@@ -35,8 +37,11 @@ export const carRoutes = [
 
 export const userRoutes = [
     {
-        path: '/user/:id', name: 'user', component: User, display: 'user', beforeEnter: UserRules,
-    },
+        path: '/user/:id', name: 'user', component: User, display: 'кабинет', beforeEnter: UserRules
+    }, {
+        path: '/user/message/:id', name: 'userMessages', component: UserMessages, display: 'мои сообщения', beforeEnter: UserRules
+    }
+  
 ]
 
 export const adminRoutes = [

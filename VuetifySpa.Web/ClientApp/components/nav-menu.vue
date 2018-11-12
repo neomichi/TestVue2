@@ -62,10 +62,10 @@
                         <v-btn :to="{ name: 'user', params: { id: authUser.id }}" tag="span" class="pointer" flat>{{authUser.firstName}}  {{authUser.lastName}} </v-btn>                      
                     </v-toolbar-title>                    
                     <v-list light dense>
-                        <v-list-tile style="" v-for="item in menuItems"
+                        <v-list-tile style="" v-for="item in userMenuRoutes"
                                      :key="item.id"                                     
-                                     @click="item.eventName({ name: 'user', params: { id: authUser.id }})">
-                            <v-list-tile-title v-text="item.title"></v-list-tile-title>
+                                     @click=gotoLK(item.urlparam);>
+                            <v-list-tile-title v-text="item.display"></v-list-tile-title>
                         </v-list-tile>
                     </v-list>
                 </v-menu>
@@ -96,21 +96,27 @@
             return {
                 carRoutes,
                 drawer: false,
-                user: '',
-                menuItems: [
-                    { title: 'Кабинет', id: 0, url: '', eventName: this.gotoLK },
-                    { title: 'Выйти', id: 1, url: '', eventName: this.logout },
-                    //{ title: '1', id: 1, url: 'info', eventName:''},
-                    //{ title: '2', id: 2, url: 'info', eventName:''},
-                    //{ title: '3', id: 3, url: 'info', eventName:''}
-                ],
+                user: '',               
             }
         },      
         computed: {
-            routes: function () {
+            userMenuRoutes() {             
+                var usermenuRoutes = userRoutes.map((item, i) =>
+                    ({
+                        display: item.display,
+                        id: i,
+                        name: name,
+                        urlparam: { name: item.name, params: { id: this.authUser.id }},                      
+                    }));
+                var logoutLk = { display: 'выйти', name: 'logout', urlparam: '', id: -1 };
+                usermenuRoutes.push(logoutLk)
+
+                return usermenuRoutes;
+            },
+            routes() {
                 return (this.authUser) ? routes : routes.concat(authRoutes);
             },           
-            authUser:function() {
+            authUser() {
                 return store.state.authUser;
             },
             isAdmin() {
@@ -122,15 +128,10 @@
         methods: {
             toggleCollapsed: function (event) {
                 this.collapsed = !this.collapsed;
-            },
-            logout: function () {
-                this.$store.dispatch('logOut');
-            },
-            gotoLK: function (obj) {
-                this.$router.push(obj);                
+            },        
+            gotoLK: function (obj) {     
+               return obj == ''? this.$store.dispatch('logOut'):this.$router.push(obj);
             }
-
-
         },
         created: () => {            
                     

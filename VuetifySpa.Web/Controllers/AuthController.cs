@@ -56,7 +56,7 @@ namespace VuetifySpa.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     var user = await _signInManager.UserManager.FindByEmailAsync(authLoginView.Email);
-                    var result = await _signInManager.PasswordSignInAsync(user, authLoginView.Password, authLoginView.RememberMe, false);
+                    var result = await _signInManager.PasswordSignInAsync(user, authLoginView.Password, authLoginView.RememberMe, true);
                     if (result.Succeeded)
                     {
                         return Json(await _userService.GetUserViewFromEmail(user.Email));

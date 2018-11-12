@@ -18,10 +18,10 @@ namespace VuetifySpa.Web.Controllers
         }
 
 
-        [HttpGet("id")]
-        public IActionResult Get(Guid Id)
+        [HttpGet]
+        public IActionResult Get()
         {
-            return Json(_messageService.GetMessages(Id));
+            return Json(_messageService.GetMessages());
         }
 
     }

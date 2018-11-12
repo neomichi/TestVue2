@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,22 @@ namespace VuetifySpa.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ForNpgsqlUseIdentityColumns();
+            //builder.Entity<IEn>().Property(e => e.SomeGuidProperty)
+            //    .HasDefaultValueSql("uuid_generate_v4()");
+            Type parent = typeof(Entity).GetType();
+
+
+            //var aa=builder.Model.GetEntityTypes()
+            //    .Where(x => x.ClrType.BaseType.Name == typeof(Entity).Name).ToList();
+
+        
+            
+
+
+
+             
+
 
             builder.HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")

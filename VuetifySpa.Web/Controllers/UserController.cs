@@ -29,7 +29,7 @@ namespace VuetifySpa.Web.Controllers
         public UserController(MyDbContext db, IUserService userService, SignInManager<ApplicationUser> signInManager, IHostingEnvironment hostingEnviroment)
         {
             _db = db;
-            _signInManager = signInManager; 
+            _signInManager = signInManager;
             _userService = userService;
         }
 
@@ -63,7 +63,7 @@ namespace VuetifySpa.Web.Controllers
 
         // PUT api/<controller>/5
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]UserView userView)
+        public async Task<IActionResult> Put([FromBody]UserView user)
         {
             var message = "";
 
@@ -71,23 +71,9 @@ namespace VuetifySpa.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                userView.Avatar = Code.SaveImage64(userView.Id, userView.AvatarUrl, userView.ImgType, _hostingEnviroment.WebRootPath, "avatar");
-                message = "плохие данные";
-
-                var user = _db.Users.SingleOrDefault(x => x.Id == userView.Id);
-                if (user != null)
-                {
-                    user.FirstName = userView.FirstName;
-                    user.LastName = userView.LastName;
-                    user.Avatar = userView.Avatar;
-                    _db.Update(user);
-                    _db.SaveChanges();
-                    return Json(await _userService.GetUserViewFromUser(user));
-                }
-                else
-                {
-                    message = "указаный пользователь не найден";
-                }
+                var userView = await _userService.UpdateUser(user);
+                if (userView != null) return Json(userView);
+                message = "указаный пользователь не найден";
             }
             return BadRequest(message);
         }

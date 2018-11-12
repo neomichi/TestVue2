@@ -17,9 +17,9 @@ namespace VuetifySpa.Data.Services
             _db = db;
         }
 
-        public List<MessageView> GetMessages(Guid userid)
+        public List<MessageView> GetMessages()
         {
-           return _db.Messages.Where(x => x.ToId == userid).AsNoTracking()
+           return _db.Messages.Include(x=>x.FromUser).AsNoTracking()
                 .OrderByDescending(x => x.IsReaded)
                 .ThenByDescending(x => x.CreatedAt)
                 .ToList().Select(x => GetFrom(x)).ToList();
@@ -55,7 +55,7 @@ namespace VuetifySpa.Data.Services
                 Text = message.Text,
                 FromId = message.FromUser.Id,
                 FromFio = string.Format("{0}", message.FromUser.FirstName, message.FromUser.LastName),
-                FromAvatarUrl = message.FromUser.Avatar,
+                FromAvatarUrl = string.Format("/img/avatar/{0}?v={1:yyyyMMddHHmmssff}", message.FromUser.Avatar, DateTime.Now),
                 CreatedAt = message.CreatedAt,
                 IsReaded = message.IsReaded
             };
@@ -65,6 +65,7 @@ namespace VuetifySpa.Data.Services
         {
             return new Message
             {
+                Id = message.Id,
                 ToId = message.ToId,
                 FromUserId = message.FromId,
                 Text = message.Text,

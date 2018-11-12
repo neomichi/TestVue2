@@ -6,7 +6,7 @@ namespace VuetifySpa.Data.Services
 {
     public interface IMessageService
     {
-        List<MessageView> GetMessages(Guid userid);
+        List<MessageView> GetMessages();
         void SendMessage(MessageView messageView);
         void SetReadedMessage(MessageView messageView);
     }

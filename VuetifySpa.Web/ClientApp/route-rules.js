@@ -3,7 +3,7 @@ import { HasEmptyJson } from "./app.js"
 
 
 export function AdminRules(to, from, next) {
-  
+    
     var rule = () => store.getters.IsAdmin;
     return defaultRules(to, from, next, rule, { name: 'login', query: { access: 'admin', returnUrl: to.path } });
 }

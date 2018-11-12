@@ -15,6 +15,7 @@ const CLEAR_ERROR = 'CLEAR_ERROR'
 const UPDATE_CARS_STATUS = 'UPDATE_CARS_STATUS'
 const ADD_EDIT_CAR_STATUS = 'ADD_EDIT_CAR_STATUS'
 const CAR_VALIDATE = 'CAR_VALIDATE'
+const MESSAGES_UPDATE ='MESSAGES_UPDATE'
 
 // STATE
 const state = {
@@ -22,6 +23,7 @@ const state = {
     loading: false,
     error: null,
     cars: '',
+    messages:'',
 }
 // GETTERS
 const getters = {
@@ -83,6 +85,9 @@ const mutations = {
             state.cars.data.push(obj.data);
         }
 
+    },
+    [MESSAGES_UPDATE](state, obj) {    
+        state.messages = obj;
     }
 
 }
@@ -124,6 +129,7 @@ const actions = ({
             const authUser = await axios.put('/api/auth', {
                 email: obj.data.email,
                 password: obj.data.password,
+                repassword: obj.data.password,
                 firstName: obj.data.firstName,
                 lastName: obj.data.lastName
             });
@@ -202,6 +208,18 @@ const actions = ({
             commit(SET_ERROR, error.response.data);
         }
     },
+
+    async GetMessages({commit}) {
+        try {
+         
+            const messages = await axios.get('/api/message');  
+            commit(MESSAGES_UPDATE, messages);
+        }
+        catch (error) {
+            commit(SET_LOADING, false);
+            commit(SET_ERROR, error.message );
+        }
+    }
 
 
 });

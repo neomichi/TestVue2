@@ -82,6 +82,7 @@ namespace VuetifySpa.Web
             services.AddTransient<RoleManager<ApplicationUser>>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<IMessageService, MessageService>();
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "neomichi.coockie";

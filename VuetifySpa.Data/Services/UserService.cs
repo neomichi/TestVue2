@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using VuetifySpa.Data.Models;
 using VuetifySpa.Data.ViewModel;
@@ -13,22 +14,36 @@ namespace VuetifySpa.Data.Services
     {
         private MyDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHostingEnvironment _hostingEnviroment;
 
-        public UserService(UserManager<ApplicationUser> userManager, MyDbContext db)
+        public UserService(UserManager<ApplicationUser> userManager, MyDbContext db, IHostingEnvironment hostingEnviroment)
         {
             _userManager = userManager;
             _db = db;
+            _hostingEnviroment = hostingEnviroment;
         }
 
 
-
-
-
-
-        public ApplicationUser GetUserFromEmail(string email)
+        public async Task<UserView>  UpdateUser(UserView userView)
         {
-            return _db.Users.SingleOrDefault(x => x.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            userView.Avatar = Code.SaveImage64(userView.Id, 
+                userView.AvatarUrl, userView.ImgType, _hostingEnviroment.WebRootPath, "avatar");
+       
+            var user = _db.Users.SingleOrDefault(x => x.Id == userView.Id);
+            if (user != null)
+            {
+                user.FirstName = userView.FirstName;
+                user.LastName = userView.LastName;
+                user.Avatar = userView.Avatar;
+                _db.Update(user);
+                _db.SaveChanges();
+                
+            }
+            return await GetUserViewFromUser(user);
         }
+
+        
+       
 
         public ApplicationUser GetUserFromAuthLogin(AuthLoginView authLogin)
         {
@@ -44,7 +59,7 @@ namespace VuetifySpa.Data.Services
         /// <returns></returns>
         public async Task<UserView> GetUserViewFromEmail(string email)
         {
-            return await GetUserViewFromUser(GetUserFromEmail(email));
+            return await GetUserViewFromUser(await _userManager.FindByEmailAsync(email));
         }
         /// <summary>
         /// Выдает UserView
@@ -95,6 +110,9 @@ namespace VuetifySpa.Data.Services
             };
 
         }
+
+
+
 
 
     }
