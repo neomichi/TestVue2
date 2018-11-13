@@ -75,7 +75,7 @@
 
                             <v-text-field v-model="reg.repassword"
                                           v-validate="'required|confirmed:reg_password'"
-                                          :error-messages="errors.collect('repassword')"
+                                          :error-messages="errors.collect('reg_repassword')"
                                           data-vv-name="repassword"
                                           autocomplete="off"
                                           data-vv-as="повторить пароль"

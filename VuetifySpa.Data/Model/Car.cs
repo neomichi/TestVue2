@@ -33,11 +33,10 @@ namespace VuetifySpa.Data.Model
 
         public bool Visible { get; set; } = false;
 
-
+        public bool ShowInMain { get; set; } = false;
         [MaxLength(120)]
         public string Motor { get; set; }
-
-      
+        public DateTime CreateIt { get; set; }
 
         
     }

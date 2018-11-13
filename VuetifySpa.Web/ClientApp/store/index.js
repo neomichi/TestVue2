@@ -35,6 +35,13 @@ const getters = {
     IsAdmin: state => {
         return !HasEmptyJson(state.authUser) && state.authUser.isAdminRole;
     },
+
+    GetCarOnMain: state => {
+        return HasEmptyJson(state.cars.data) ?
+            ""
+            :state.cars.data.filter(car=>car.showInMain);
+    },
+
     GetCarByFilter: state => (type, value) => {  
         var cars = state.cars.data;
         var car = '';
@@ -72,7 +79,7 @@ const mutations = {
     [UPDATE_CARS_STATUS](state, obj) {
         state.cars = obj;
     },
-    [ADD_EDIT_CAR_STATUS](state, obj) {
+    [ADD_EDIT_CAR_STATUS](state, obj) {      
         isFind = false;
         for (var i = 0; i < state.cars.data.length; i++) {
             if (state.cars.data[i].id == obj.data.id) {
@@ -205,7 +212,7 @@ const actions = ({
         }
         catch (error) {
             commit(SET_LOADING, false);
-            commit(SET_ERROR, error.response.data);
+            commit(SET_ERROR, error.response);
         }
     },
 

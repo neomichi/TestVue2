@@ -2,7 +2,11 @@
     <div>
         <v-container fluid fill-height>
             <v-layout align-start justify-center wrap fill-height>
-                <h1> {{CreateOrEdit}} модели  </h1>
+
+                
+                <h1 v-if="isCreate">Создание модели</h1>
+                <h1 v-else>Редактирование модели</h1>
+              
             </v-layout>
         </v-container>
 
@@ -97,12 +101,12 @@
                                               v-on:change="changeText()"
                                               required prepend-icon="email" name="car_quantity" label="количество"></v-text-field>
                                 <!--<v-text-field v-model="car.carCase"
-                    v-validate="'required|min:1|max:60'"
-                    :error-messages="errors.collect('car_carCase')"
-                    autocomplete="off"
-                    data-vv-as="кузов"
-                    v-on:change="changeText()"
-                    required prepend-icon="email" name="car_carCase" label="тип"></v-text-field>-->
+    v-validate="'required|min:1|max:60'"
+    :error-messages="errors.collect('car_carCase')"
+    autocomplete="off"
+    data-vv-as="кузов"
+    v-on:change="changeText()"
+    required prepend-icon="email" name="car_carCase" label="тип"></v-text-field>-->
                                 <v-select v-model="car.carClass"
                                           prepend-icon="email"
                                           :items="carBodyType"
@@ -140,9 +144,13 @@
                                               data-vv-as="двигатель"
                                               v-on:change="changeText()"
                                               required prepend-icon="email" name="car_motor" label="двигатель"></v-text-field>
-                                <v-checkbox v-model="car.visible"
-                                            label="показывать на сайте"
-                                            required></v-checkbox>
+                                <v-checkbox :disabled="hideIsMain"  v-model="car.showInMain"
+                                            label="показывать на главной"></v-checkbox>
+                                <v-checkbox v-model="car.visible" @change="HideMain()" 
+                                            label="показывать на сайте"  ></v-checkbox>
+
+                          
+                             
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -172,9 +180,8 @@
                 defaultImg: '',
                 uploadFileFunction: this.uploadFile,
                 id: this.$route.params.id,
-
                 IsModification: false,
-                car: {},
+                car: { getImg: '', showInMain: this.hideIsMain},
                 carImgType: '',
                 carBodyType: ['Седан', 'Хэтчбек', 'Универсал', 'Лифтбэк', 'Купе', 'Кабриолет', 'Родстер', 'Тарга', 'Внедорожник'],
                 carTranmissionType: ['механическая', 'робот', 'автомат', 'вариатор'],
@@ -193,10 +200,14 @@
                 return this.id == '' || this.id == undefined ?false 
                     : this.car.getImg != this.defaultImg
             },
-            CreateOrEdit() {
-                console.log(this.id);
-                return this.id == '' || this.id == undefined ? 'Создание' : 'Редактирование';
+            isCreate() {    
+                console.log(this.car);
+                return this.id == '' || this.id == undefined ? true : false;
+            },
+            hideIsMain() {           
+              return  this.car.visible== undefined || this.car.visible==false
             }
+
         },
         beforeMount: function () {
             this.getCar();
@@ -219,12 +230,14 @@
                         axios.post('/api/car/validate/title', data).then((result) => {
                            
                             if (result.data) {
-                                //var dbcar = this.car;
-                                //dbcar.imgType = this.carImgType
-                                //this.$store.dispatch('AddOrEditCar', { data: dbcar })
-                                //    .then(() => {
-                                //        this.getCar();
-                                //    });
+                                var dbcar = this.car;
+                                dbcar.imgType = this.carImgType
+                                this.$store.dispatch('AddOrEditCar', { data: dbcar })
+                                    .then(() => {
+                                        this.getCar();
+                                        this.$router.push({ name: 'adminCarlist' });
+                                       console.log(1);
+                                });
                                
                             } else {
                                 this.$store.dispatch('SET_ERROR', "такое имя уже используется");
@@ -235,6 +248,7 @@
                 return false;
             },
             uploadFile(e) {
+                console.log(e); 
                 var test = /^image\//gm.test(e.type) && e.size < 1024 * 1024;
                 if (test) {
                     this.imageName = e.name
@@ -250,15 +264,25 @@
                     });
 
 
+                } else {
+                    alert("не работает");
                 }
             },
             getCar() {
-                var car= this.$store.getters.GetCarByFilter("id",this.id)
-                this.car = car;
-                this.defaultImg = car.getImg;
-                return car;
+                if (!this.isCreate) {
+                    var car = this.$store.getters.GetCarByFilter("id", this.id)
+                    this.car = car;
+                    this.defaultImg = car.getImg;
+                    return car;
+                } return;
             },
-
+            HideMain() {
+                
+                if (!this.car.visible)
+                    this.car.showInMain = false;
+                 
+            }
+            
         }
     }
 </script>

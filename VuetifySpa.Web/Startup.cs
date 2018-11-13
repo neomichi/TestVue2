@@ -87,7 +87,8 @@ namespace VuetifySpa.Web
             {
                 options.Cookie.Name = "neomichi.coockie";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
-                options.SlidingExpiration = true;
+               
+          
 
             });
 

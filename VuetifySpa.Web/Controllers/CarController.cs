@@ -52,11 +52,12 @@ namespace VuetifySpa.Web.Controllers
         [HttpPut]
         public IActionResult Put([FromBody]CarView car)
         {
+            var message = "не правильные данные";
             if (ModelState.IsValid)
             {    
                 return Json(_carService.CreateOrUpdate(car));
             }
-            return Json("false");
+            return Json(message);
         }
 
         [HttpPost]

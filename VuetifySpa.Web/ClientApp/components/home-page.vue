@@ -45,8 +45,7 @@
 
     import Vue from 'vue'   
     import metaInfo from 'vue-meta'
-
-    Vue.component(  metaInfo);
+    Vue.component(metaInfo);
     
     export default {
         data() {
@@ -67,10 +66,10 @@
         //    this.$store.dispatch('UpateCarList');
         //},
         computed: {
-            getCar: function () {         
-               
+            getCar: function () { 
                 cache: false;
-                return this.$store.state.cars.data
+                var data = this.$store.getters.GetCarOnMain;                
+                return data;
             }
         },
         methods: {

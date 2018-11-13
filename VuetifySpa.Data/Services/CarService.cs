@@ -28,16 +28,20 @@ namespace VuetifySpa.Data.Services
 
         public Car CreateOrUpdate(CarView carView)
         {
-            var car= GetCarFromCarView(carView);
+            
+
+            var car= GetCar(carView);
             var id = carView.Id;
             if (car.Id == Guid.Empty) {
                 _db.Cars.Add(car);
                 id = car.Id;
+                car.CreateIt = new DateTime();
             } else
             {
                 _db.Cars.Update(car);
             }
-            car.Img = Code.SaveImage64(id, carView.GetImg, carView.ImgType, _hostingEnviroment.WebRootPath, "car");          
+            car.Img = Code.SaveImage64(id, carView.GetImg, carView.ImgType, _hostingEnviroment.WebRootPath, "car");   
+            
             _db.SaveChanges();
             return car;
         }
@@ -62,14 +66,14 @@ namespace VuetifySpa.Data.Services
 
         public List<CarView> GetAllCar ()
         {
-           return _db.Cars.Where(x => x.Visible).ToList().Select(x => GetCarViewFromCar(x)).ToList();
+           return _db.Cars.Where(x => x.Visible).ToList().Select(x => GetCarView(x)).ToList();
         }
 
 
         ///язнаючтонадопеределать
-        CarView GetCarViewFromCar(Car car)
+        CarView GetCarView(Car car)
         {
-            var carview = new CarView
+            return new CarView
             {
                 Id = car.Id,
                 Status = car.Status,
@@ -84,14 +88,15 @@ namespace VuetifySpa.Data.Services
                 Quantity = car.Quantity,
                 Visible = car.Visible,
                 Mileage=car.Mileage,
+                ShowInMain=car.ShowInMain,
+                CreateIt=car.CreateIt,
                 GetImg= string.Format("/img/car/{0}?v={1:yyyyMMddHHmmssff}",car.Img, DateTime.Now)
-            };
-            return carview;
+            };           
         }
         ///язнаючтонадопеределать
-        Car GetCarFromCarView(CarView car)
+        Car GetCar(CarView car)
         {
-            var car1 = new Car
+            return new Car
             {
                 Id = car.Id,
                 Status = car.Status,
@@ -106,11 +111,9 @@ namespace VuetifySpa.Data.Services
                 Quantity = car.Quantity,
                 Visible = car.Visible,
                 Mileage = car.Mileage,
-            };
-            return car1;
-        }
-
-        
+                ShowInMain = car.ShowInMain,
+            };             
+        }       
 
     }
 }

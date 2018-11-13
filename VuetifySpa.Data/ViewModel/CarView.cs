@@ -10,7 +10,7 @@ namespace VuetifySpa.Data.ViewModel
     public class CarView
     {
         public Guid Id { get; set; }
-        [Range(1,int.MaxValue)]
+        [Range(0,int.MaxValue)]
         public int Mileage { get; set; }
 
         [MaxLength(120)]
@@ -51,6 +51,10 @@ namespace VuetifySpa.Data.ViewModel
         public string ImgType { get; set; }
 
         public string Img { get; set; }
+
+        public bool ShowInMain { get; set; }
+
+        public DateTime CreateIt { get; set; }
 
 
     }
