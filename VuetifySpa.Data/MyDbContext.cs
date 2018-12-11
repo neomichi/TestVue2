@@ -29,8 +29,9 @@ namespace VuetifySpa.Data
         }
 
         public DbSet<Car> Cars { get; set; }
+        public DbSet<Transport>  Transports { get; set; }
 
-        public DbSet<Message> Messages { get; set; }
+    public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -67,8 +68,8 @@ namespace VuetifySpa.Data
 
             builder.Entity<ApplicationRole>().ToTable("Roles");
 
-
             
+
 
 
             //select uuid_generate_v4();

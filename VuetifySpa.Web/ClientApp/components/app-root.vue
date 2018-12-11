@@ -1,7 +1,8 @@
 ﻿<template>
-    <v-app>        
+    <v-app >        
+        
         <nav-menu></nav-menu>
-        <v-content>
+        <v-content id="main">
             <v-container fluid>
                 <router-view></router-view>
             </v-container>
@@ -96,5 +97,6 @@
         }
     }
 </script>   
-<style>
+<style scoped>
+   
 </style>

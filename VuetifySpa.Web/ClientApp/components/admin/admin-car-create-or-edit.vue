@@ -3,23 +3,23 @@
         <v-container fluid fill-height>
             <v-layout align-start justify-center wrap fill-height>
 
-                
+
                 <h1 v-if="isCreate">Создание модели</h1>
                 <h1 v-else>Редактирование модели</h1>
-              
+
             </v-layout>
         </v-container>
 
-        
+
         <v-container fluid grid-list-md>
             <v-layout row justify-center wrap>
 
                 <v-flex sm5 md4 lg3>
                     <v-layout column row>
-                        <v-flex sm9 md6 lg8  >
-                            <v-card elevation-5 >
+                        <v-flex sm9 md6 lg8>
+                            <v-card elevation-5>
                                 <div style="padding:5px 15px;">
-                                    <v-img :src="car.getImg" alt="аватар" 
+                                    <v-img :src="car.getImg" alt="аватар"
                                            aspect-ratio="1.69" class="grey lighten-2"></v-img>
                                 </div>
                                 <v-card-actions>
@@ -27,13 +27,13 @@
                                         <v-btn v-if="imgIsChanged" v-on:click="imgReset">отмена</v-btn>
                                         <upload-btn title="загрузить" v-bind:fileChangedCallback="uploadFileFunction"></upload-btn>
                                     </v-layout>
-                                 
+
                                 </v-card-actions>
                             </v-card>
                         </v-flex>
-                        <v-flex xs12 sm9 md9 lg1  style="margin:15px 0;">
+                        <v-flex xs12 sm9 md9 lg1 style="margin:15px 0;">
                             <v-layout row>
-                                <v-flex d-flex >
+                                <v-flex d-flex>
                                     <v-card elevation-5>
                                         <form id="updateCarForm2" @submit.prevent="onSubmit">
                                             <v-card-text>
@@ -74,18 +74,14 @@
                                               required prepend-icon="email" name="car_mileage" label="пробег(км)"></v-text-field>
 
 
-                                <v-select v-model="car.carType"
-                                          prepend-icon="email"
-                                          v-validate="'required'"
-                                          :error-messages="errors.collect('car_carType')"
-                                          name="car_carType"
-                                          :items="carClass"
-                                          data-vv-as="тип"
-                                          v-on:change="changeText()"
-                                          label="тип"></v-select>
-
-
-
+                                <v-combobox v-model="car.carType"
+                                            prepend-icon="email"
+                                            name="car_carType"
+                                            :items="carClass"
+                                            data-vv-as="тип"
+                                            v-validate="'required'"
+                                            :error-messages="errors.collect('car_carType')"
+                                            label="тип"></v-combobox> 
                                 <v-text-field v-model="car.birthYear"
                                               v-validate="'numeric|min_value:1990|max_value:2018'"
                                               :error-messages="errors.collect('car_birthYear')"
@@ -100,19 +96,17 @@
                                               data-vv-as="количество"
                                               v-on:change="changeText()"
                                               required prepend-icon="email" name="car_quantity" label="количество"></v-text-field>
-                                <!--<v-text-field v-model="car.carCase"
-    v-validate="'required|min:1|max:60'"
-    :error-messages="errors.collect('car_carCase')"
-    autocomplete="off"
-    data-vv-as="кузов"
-    v-on:change="changeText()"
-    required prepend-icon="email" name="car_carCase" label="тип"></v-text-field>-->
-                                <v-select v-model="car.carClass"
+               
+
+                                <v-combobox v-model="car.carClass"
                                           prepend-icon="email"
                                           :items="carBodyType"
                                           data-vv-as="кузов"
                                           v-on:change="changeText()"
-                                          label="кузов"></v-select>
+                                          v-validate="'required|min:1|max:60'"
+                                          :error-messages="errors.collect('car_car_class')"
+                                          name="car_car_class"
+                                          label="кузов"></v-combobox>
                                 <v-text-field v-model="car.status"
                                               v-validate="'required|min:1|max:60'"
                                               :error-messages="errors.collect('car_status')"
@@ -144,13 +138,13 @@
                                               data-vv-as="двигатель"
                                               v-on:change="changeText()"
                                               required prepend-icon="email" name="car_motor" label="двигатель"></v-text-field>
-                                <v-checkbox :disabled="hideIsMain"  v-model="car.showInMain"
+                                <v-checkbox :disabled="hideIsMain" v-model="car.showInMain"
                                             label="показывать на главной"></v-checkbox>
-                                <v-checkbox v-model="car.visible" @change="HideMain()" 
-                                            label="показывать на сайте"  ></v-checkbox>
+                                <v-checkbox v-model="car.visible" @change="HideMain()"
+                                            label="показывать на сайте"></v-checkbox>
 
-                          
-                             
+
+
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
@@ -181,7 +175,7 @@
                 uploadFileFunction: this.uploadFile,
                 id: this.$route.params.id,
                 IsModification: false,
-                car: { getImg: '', showInMain: this.hideIsMain},
+                car: { getImg: '', showInMain: this.hideIsMain },
                 carImgType: '',
                 carBodyType: ['Седан', 'Хэтчбек', 'Универсал', 'Лифтбэк', 'Купе', 'Кабриолет', 'Родстер', 'Тарга', 'Внедорожник'],
                 carTranmissionType: ['механическая', 'робот', 'автомат', 'вариатор'],
@@ -197,15 +191,15 @@
                 return this.$store.getters.Getloading;
             },
             imgIsChanged: function () {
-                return this.id == '' || this.id == undefined ?false 
+                return this.id == '' || this.id == undefined ? false
                     : this.car.getImg != this.defaultImg
             },
-            isCreate() {    
+            isCreate() {
                 console.log(this.car);
                 return this.id == '' || this.id == undefined ? true : false;
             },
-            hideIsMain() {           
-              return  this.car.visible== undefined || this.car.visible==false
+            hideIsMain() {
+                return this.car.visible == undefined || this.car.visible == false
             }
 
         },
@@ -228,7 +222,7 @@
                     if (result) {
                         var data = { title: this.car.title, id: this.car.id };
                         axios.post('/api/car/validate/title', data).then((result) => {
-                           
+
                             if (result.data) {
                                 var dbcar = this.car;
                                 dbcar.imgType = this.carImgType
@@ -236,9 +230,9 @@
                                     .then(() => {
                                         this.getCar();
                                         this.$router.push({ name: 'adminCarlist' });
-                                       console.log(1);
-                                });
-                               
+                                        console.log(1);
+                                    });
+
                             } else {
                                 this.$store.dispatch('SET_ERROR', "такое имя уже используется");
                             }
@@ -248,7 +242,7 @@
                 return false;
             },
             uploadFile(e) {
-                console.log(e); 
+                console.log(e);
                 var test = /^image\//gm.test(e.type) && e.size < 1024 * 1024;
                 if (test) {
                     this.imageName = e.name
@@ -277,12 +271,12 @@
                 } return;
             },
             HideMain() {
-                
+
                 if (!this.car.visible)
                     this.car.showInMain = false;
-                 
+
             }
-            
+
         }
     }
 </script>

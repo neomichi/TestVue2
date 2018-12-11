@@ -42,12 +42,12 @@
                  </v-list-tile>
             </v-list>
         </v-navigation-drawer>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark color="#F9FBE7" elevation-0>
             <v-toolbar-side-icon v-on:click="drawer=!drawer"
                                  class="hidden-md-and-up">
             </v-toolbar-side-icon>
             <v-toolbar-title>
-                <router-link to="/" tag="span" class="pointer">У нас хорошо {{user}}</router-link>
+                <router-link to="/" tag="span" class="pointer ">У нас хорошо {{user}}</router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
@@ -152,4 +152,16 @@
     .v-avatar .v-icon, .v-avatar .v-image, .v-avatar img {
         margin-bottom: 10px
     }
+    .v-toolbar .router-link-active {
+        color: #808080
+    }
+
+    .theme--dark.v-btn {
+        color: #808080;
+        text-decoration: none;
+    }
+    .v-btn--active.v-btn{
+        color: #ff6a00;
+    }
+    
 </style>

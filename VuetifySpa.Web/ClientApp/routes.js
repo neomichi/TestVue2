@@ -1,4 +1,5 @@
 import HomePage from 'components/home-page'
+import IndexPage from 'components/index'
 import LoginPage from 'components/login'
 import Car from 'components/car'
 import AdminOrderList from 'components/admin/admin-order-list'
@@ -18,7 +19,8 @@ import { AdminRules, UserRules, AuthRules } from './route-rules'
 
 
 export const routes = [
-    { path: '/', name: 'home', component: HomePage, display: 'Home', style: 'glyphicon glyphicon-th-list', icon: 'home' },
+    { path: '/', name: 'index', component: IndexPage, display: 'главная', style: 'glyphicon glyphicon-th-list', icon: 'home' },
+    { path: '/home', name: 'home', component: HomePage, display: 'машинки', style: 'glyphicon glyphicon-th-list', icon: 'home' },
     { path: '/about', name: 'about', component: About, display: 'обомне' },
     { path: '/crypta', name: 'crypta', component: cryptaData, display: 'курс крипты', style: 'glyphicon glyphicon-th-list' }
 
