@@ -31,25 +31,19 @@ namespace VuetifySpa.Web.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]DataTableTransportView dtv, IDataTablesRequest request, [FromBody]string sortBy)
         {
-            var db = _db.Transports.AsNoTracking();
+            var transports = _db.Transports.AsNoTracking();
 
-            var data = db.Skip((dtv.page - 1) * dtv.rowsPerPage).Take(dtv.rowsPerPage);
+            transports = dtv.descending
+                 ? transports.OrderByDescending(dtv.sortBy)
+                 : transports.OrderBy(dtv.sortBy);
+
+            var data= transports.Skip((dtv.page - 1) * dtv.rowsPerPage).Take(dtv.rowsPerPage);
+
+      
             return Json(new {
                 Items = data.ToList(),
-                Total = db.Count()
+                Total = transports.Count()
             });
-
-            var filteredData = String.IsNullOrWhiteSpace(request.Search.Value)
-            ? data
-            : data.Where(_item => _item.Id.ToString().StartsWith(request.Search.Value) || _item.Title.StartsWith(request.Search.Value));
-            
-            var orderColums = request.Columns.Where(x => x.Sort != null);
-
-            var dataPage = filteredData.OrderBy(orderColums).Skip(request.Start).Take(request.Length);
-
-            var response = DataTablesResponse.Create(request, data.Count(), filteredData.Count(), dataPage);
-
-            return new DataTablesJsonResult(response, true);
         }
     }
 }

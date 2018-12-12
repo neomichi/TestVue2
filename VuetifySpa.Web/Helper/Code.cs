@@ -1,31 +1,39 @@
-﻿using System;
-using DataTables.AspNet.Core;
-using System.Linq;
+﻿using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace VuetifySpa.Web.Helper
 {
     public static class Code
     {
-        public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, IEnumerable<IColumn> sortModels)
+       
+        private static IOrderedQueryable<T> OrderingHelper<T>(IQueryable<T> source, string propertyName, bool descending, bool anotherLevel)
         {
-            var expression = source.Expression;
-            int count = 0;
-            foreach (var item in sortModels)
-            {
-                var parameter = Expression.Parameter(typeof(T), "x");
-                var selector = Expression.PropertyOrField(parameter, item.Field);
-                var method = item.Sort.Direction == DataTables.AspNet.Core.SortDirection.Descending ?
-                    (count == 0 ? "OrderByDescending" : "ThenByDescending") :
-                    (count == 0 ? "OrderBy" : "ThenBy");
-                expression = Expression.Call(typeof(Queryable), method,
-                    new Type[] { source.ElementType, selector.Type },
-                    expression, Expression.Quote(Expression.Lambda(selector, parameter)));
-                count++;
-            }
-            return count > 0 ? source.Provider.CreateQuery<T>(expression) : source;
+            ParameterExpression param = Expression.Parameter(typeof(T), string.Empty); // I don't care about some naming
+            MemberExpression property = Expression.PropertyOrField(param, propertyName);
+            LambdaExpression sort = Expression.Lambda(property, param);
+            MethodCallExpression call = Expression.Call(
+                typeof(Queryable),
+                (!anotherLevel ? "OrderBy" : "ThenBy") + (descending ? "Descending" : string.Empty),
+                new[] { typeof(T), property.Type },
+                source.Expression,
+                Expression.Quote(sort));
+            return (IOrderedQueryable<T>)source.Provider.CreateQuery<T>(call);
+        }
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName)
+        {
+            return OrderingHelper(source, propertyName, false, false);
+        }
+        public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string propertyName)
+        {
+            return OrderingHelper(source, propertyName, true, false);
+        }
+        public static IOrderedQueryable<T> ThenBy<T>(this IOrderedQueryable<T> source, string propertyName)
+        {
+            return OrderingHelper(source, propertyName, false, true);
+        }
+        public static IOrderedQueryable<T> ThenByDescending<T>(this IOrderedQueryable<T> source, string propertyName)
+        {
+            return OrderingHelper(source, propertyName, true, true);
         }
     }
 }

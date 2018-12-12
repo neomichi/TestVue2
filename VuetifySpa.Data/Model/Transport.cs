@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace VuetifySpa.Data.Model
 {
     public class Transport : Entity
     {
+      
         public int CityMpg { get; set; }
         [StringLength(200)]
         public string Classification { get; set; }
@@ -43,6 +45,9 @@ namespace VuetifySpa.Data.Model
         public string Width { get; set; }
 
         public int Year {get;set;}
+
+        [NotMapped]
+        public bool Selected { get; set; }
 
     }
 }

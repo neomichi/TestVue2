@@ -10,21 +10,20 @@
         </v-container>
         <v-container fluid fill-height>
             <v-layout align-center justify-center>
-                <v-flex xs12 sm12 md10 lg8>
+                <v-flex xs12 sm12 md11 lg10>
                     <v-data-table :headers="headers"
                                   :items="transports"
                                   :pagination.sync="pagination"
                                   :total-items="totalTransports"
                                   :loading="loading"
+                                  select-all
                                   class="elevation-1">
                         <template slot="items" slot-scope="props">
-                            <th>
-                                <v-checkbox :input-value="props.all"
-                                            :indeterminate="props.indeterminate"
+                            <td>
+                                <v-checkbox v-model="props.selected"
                                             primary
-                                            hide-details
-                                            @click="toggleAll"></v-checkbox>
-                            </th>
+                                            hide-details></v-checkbox>
+                            </td>
                             <td class="">{{ props.item.brand }}</td>
                             <td class="">{{ props.item.cityMpg }}</td>
                             <td class="">{{ props.item.classification }}</td>
@@ -45,15 +44,15 @@
     export default {
         data() {
             return {
+                selected: [],
                 totalTransports: 0,
                 transports: [],
                 loading: true,
                 pagination: {},
-                headers: [
-                    { text: '#', value: 'Id' },
+                headers: [                   
                     { text: 'марка', value: 'brand' },
-                    { text: 'Миль на галлон', value: 'cityMpg' },
-                    { text: 'классификация', value: 'classification' },
+                    { text: 'миль на галлон', value: 'cityMpg' },
+                    { text: 'трансмисия', value: 'classification' },
                     { text: 'привод', value: 'criveline' },
                     { text: 'тип двигателя', value: 'engineType' },
                     { text: 'тип топлива', value: 'fuelType' },
@@ -83,7 +82,7 @@
         },
         methods: {
             toggleAll() {
-                
+                console.log(response.data);
             },
             getDataFromApi() {
                 this.loading = true;
@@ -106,7 +105,7 @@
                             items,
                             total
                         });
-                        console.log(response.data);
+                       
                     });
                 });
             }
