@@ -16,6 +16,7 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Logging;
 
 using Serilog;
+using DataTables.AspNet.AspNetCore;
 
 namespace VuetifySpa.Web
 {
@@ -91,7 +92,7 @@ namespace VuetifySpa.Web
           
 
             });
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddTransient<IDesignTimeDbContextFactory<MyDbContext>, MyDbContextDesignTimeDbContextFactory>();
 
             services.AddMvc()
@@ -109,6 +110,8 @@ namespace VuetifySpa.Web
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            services.RegisterDataTables();
+   
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

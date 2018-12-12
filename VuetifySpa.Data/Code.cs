@@ -48,8 +48,7 @@ namespace VuetifySpa.Data
                 return img64.Substring(start, length);
             }
            
-        }
-
+        }               
 
 
     }

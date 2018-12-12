@@ -8,12 +8,12 @@ import AdminCarList from 'components/admin/admin-car-list'
 import AdminCarEditCreate from 'components/admin/admin-car-create-or-edit'
 import AdminHome from 'components/admin/admin-home'
 import About from 'components/about'
+import DataTable from 'components/data-table'
 import User from 'components/user/user'
 import UserMessages from 'components/user/messages'
-
 import cryptaData from 'components/crypta'
 import { AdminRules, UserRules, AuthRules } from './route-rules'
-
+    
 
 
 
@@ -22,7 +22,8 @@ export const routes = [
     { path: '/', name: 'index', component: IndexPage, display: 'главная', style: 'glyphicon glyphicon-th-list', icon: 'home' },
     { path: '/home', name: 'home', component: HomePage, display: 'машинки', style: 'glyphicon glyphicon-th-list', icon: 'home' },
     { path: '/about', name: 'about', component: About, display: 'обомне' },
-    { path: '/crypta', name: 'crypta', component: cryptaData, display: 'курс крипты', style: 'glyphicon glyphicon-th-list' }
+    { path: '/crypta', name: 'crypta', component: cryptaData, display: 'курс крипты', style: 'glyphicon glyphicon-th-list' },
+    { path: '/data-table', name: 'dataTable', component: DataTable, display: 'таблица тест', style: 'glyphicon glyphicon-th-list' }
 
 ]
 
