@@ -9,7 +9,7 @@ namespace VuetifySpa.Data.Model
     public class Transport : Entity
     {
       
-        public int CityMpg { get; set; }
+        public double CityMpg { get; set; }
         [StringLength(200)]
         public string Classification { get; set; }
         [StringLength(200)]
@@ -48,6 +48,7 @@ namespace VuetifySpa.Data.Model
 
         [NotMapped]
         public bool Selected { get; set; }
+
 
     }
 }

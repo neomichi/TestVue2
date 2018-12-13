@@ -4,14 +4,15 @@
             <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md5>
                     <h1 style="overflow:hidden">DataTable и 5к данных </h1>
-                    <h4> server paging </h4>
+                    <h4>server paging</h4>
                 </v-flex>
             </v-layout>
         </v-container>
         <v-container fluid fill-height>
             <v-layout align-center justify-center>
                 <v-flex xs12 sm12 md11 lg10>
-                    <v-data-table :headers="headers"
+                    <v-data-table v-model="selected"
+                                  :headers="headers"
                                   :items="transports"
                                   :pagination.sync="pagination"
                                   :total-items="totalTransports"
@@ -19,18 +20,21 @@
                                   select-all
                                   class="elevation-1">
                         <template slot="items" slot-scope="props">
-                            <td>
-                                <v-checkbox v-model="props.selected"
-                                            primary
-                                            hide-details></v-checkbox>
-                            </td>
-                            <td class="">{{ props.item.brand }}</td>
-                            <td class="">{{ props.item.cityMpg }}</td>
-                            <td class="">{{ props.item.classification }}</td>
-                            <td class="">{{ props.item.driveline }}</td>
-                            <td class="">{{ props.item.engineType }}</td>
-                            <td class="">{{ props.item.fuelType }}</td>
+                            <tr :active="props.selected" @click="props.selected = !props.selected">
+                                <td>
+                                    <v-checkbox :input-value="props.selected"
+                                                primary
+                                                hide-details>
 
+                                    </v-checkbox>
+                                </td>
+                                <td class="">{{ props.item.brand }}</td>
+                                <td class="">{{ props.item.cityMpg }}</td>
+                                <td class="">{{ props.item.classification }}</td>
+                                <td class="">{{ props.item.driveline }}</td>
+                                <td class="">{{ props.item.engineType }}</td>
+                                <td class="">{{ props.item.fuelType }}</td>
+                            </tr>
                         </template>
                     </v-data-table>
                 </v-flex>
@@ -49,16 +53,16 @@
                 transports: [],
                 loading: true,
                 pagination: {},
-                headers: [                   
+                headers: [
                     { text: 'марка', value: 'brand' },
-                    { text: 'миль на галлон', value: 'cityMpg' },
+                    { text: 'литров на 100км', value: 'cityMpg' },
                     { text: 'трансмисия', value: 'classification' },
                     { text: 'привод', value: 'criveline' },
                     { text: 'тип двигателя', value: 'engineType' },
                     { text: 'тип топлива', value: 'fuelType' },
 
                 ],
-               
+
             }
         },
         watch: {
@@ -105,7 +109,7 @@
                             items,
                             total
                         });
-                       
+
                     });
                 });
             }
