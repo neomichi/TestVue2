@@ -15,12 +15,16 @@ namespace VuetifySpa.Data.Services
     public class TransportService : ITransportService
     {
         private IHostingEnvironment _hostingEnviroment;
+      
         private MyDbContext _db;
         public TransportService(MyDbContext db, IHostingEnvironment hostingEnviroment)
         {
             _db = db;
             _hostingEnviroment = hostingEnviroment;
+            
         }
+
+
 
         private IQueryable<Transport> GetTransport(TransportDataTableView transportView)
         {
@@ -45,11 +49,9 @@ namespace VuetifySpa.Data.Services
             var count = transports.Count();
             var data = transports.Skip((transportView.page - 1) * transportView.rowsPerPage).Take(transportView.rowsPerPage).ToList();
             return Tuple.Create(count, data);
-
         }
 
-
-        public byte[] ExportExcell(TransportDataTableView transportView)
+        public List<ExportDataView> ExportTable(TransportDataTableView transportView)
         {
             var transports = GetTransport(transportView);
 
@@ -82,10 +84,11 @@ namespace VuetifySpa.Data.Services
                         x.Driveline,
                         x.EngineType,
                         x.FuelType,
+                        x.Year.ToString()
                         }).ToList()
                     }
                 };
-            return Code.ExcellExport(export);
+            return export;
         }
     }
 }

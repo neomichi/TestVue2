@@ -35,26 +35,28 @@ namespace VuetifySpa.Data
         /// <param name="rootpath">webroot path</param>
         /// <param name="folderType">"тип папки (Avatar)"</param>
         /// <returns></returns>
-        public static string SaveImage64(Guid id, string img64, string imageext, string rootpath,string folderType)
+        public static string SaveImage64(Guid id, string img64, string imageext, string rootpath, string folderType)
         {
             ////img/avatar/2b4d3c9a-4519-414f-8d15-55c90fdf9288.jpg?v=2018102111301294
 
 
-            if (img64.StartsWith("data:image", StringComparison.OrdinalIgnoreCase)) {
-                var filename = string.Format("{0}{1}", id, imageext);               
+            if (img64.StartsWith("data:image", StringComparison.OrdinalIgnoreCase))
+            {
+                var filename = string.Format("{0}{1}", id, imageext);
                 var physicalpath = System.IO.Path.Combine(rootpath, string.Format(@"img{2}{0}{2}{1}", folderType, filename, System.IO.Path.DirectorySeparatorChar));
                 if (System.IO.File.Exists(physicalpath)) System.IO.File.Delete(physicalpath);
                 SaveBase64(img64, physicalpath);
                 return filename;
-              
-            } else
+
+            }
+            else
             {
 
                 var start = img64.IndexOf(id.ToString());
-                var length = id.ToString().Length + 4;              
+                var length = id.ToString().Length + 4;
                 return img64.Substring(start, length);
             }
-           
+
         }
         /// <summary>
         /// экспорт в excell 
@@ -152,5 +154,27 @@ namespace VuetifySpa.Data
         {
             return OrderingHelper(source, propertyName, true, true);
         }
+
+
+        public static void ExportToPdf()
+        {
+        }
+        //html = html.Replace("report_table", tableSb.ToString());
+        ////test_html
+        ////System.IO.File.WriteAllText(@"C:\temp\123.html", html);
+
+        //string wkhtmltopdfPath;
+        //if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+
+        //    wkhtmltopdfPath = Path.Combine(_hostingEviroment.ContentRootPath, "Lib", "wkhtmltopdf.exe");
+        //else
+        //    wkhtmltopdfPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "Lib", "wkhtmltopdf");
+
+        //var wkhtmltopdf = new FileInfo(wkhtmltopdfPath);
+        //var converter = new HtmlToPdfConverter(wkhtmltopdf);
+        //var pdfBytes = converter.ConvertToPdf(html);
+        //return pdfBytes;
+
     }
+
 }

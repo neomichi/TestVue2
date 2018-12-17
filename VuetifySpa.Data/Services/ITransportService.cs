@@ -9,7 +9,6 @@ namespace VuetifySpa.Data.Services
     public interface ITransportService
     {
         Tuple<int, List<Transport>> DataTableHandler(TransportDataTableView transportView);
-        
-        byte[] ExportExcell(TransportDataTableView transportView);
+        List<ExportDataView> ExportTable(TransportDataTableView transportView);
     }
 }

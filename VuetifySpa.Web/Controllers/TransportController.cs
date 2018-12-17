@@ -36,7 +36,10 @@ namespace VuetifySpa.Web.Controllers
             var data = _transportService.DataTableHandler(transportDataTableView);
             if (transportDataTableView.ExcelData != null)
             {
-                var bytes = _transportService.ExportExcell(transportDataTableView);
+                var table = _transportService.ExportTable(transportDataTableView);
+                var bytes= Code.ExcellExport(table)
+
+
                 return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "машины_и_водители.xlsx");
             }
 

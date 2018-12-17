@@ -1,28 +1,16 @@
 <template>
     <div>
-        <v-container fluid fill-height>
-            <v-layout align-center justify-center>
-                <v-flex xs12 sm8 md5>
-                    <h1 style="overflow:hidden">DataTable и 5к данных </h1>  <span>server paging</span>
 
-                </v-flex>
-            </v-layout>
-        </v-container>
-
+        <v-layout align-center justify-center>
+            <v-flex xs12 sm8 md5>
+                <h1 style="overflow:hidden">DataTable и 5к данных </h1>
+            </v-flex>
+        </v-layout>
 
         <v-container fluid fill-height>
             <v-layout align-center justify-end>
-                <div>
 
-                    <v-btn v-on:click="getDataFromApi(pdfExport=true)" class="export" fab small color="white">
-                        <img src="/img/icon/pdf.svg"
-                             alt="скачать в pdf" style="max-height:24px">
-                    </v-btn>
-                    <v-btn v-on:click="getDataFromApi(excellExport=true)" class="export" fab small color="white">
-                        <img src="/img/icon/xls.svg"
-                             alt="скачать в excell" style="max-height:24px;">
-                    </v-btn>
-
+                <div style="margin:0 1vw">
                     <v-text-field v-model="search"
                                   append-icon="search"
                                   label="поиск"
@@ -34,8 +22,20 @@
                                   data-vv-as="поиск"
                                   title="укажите больше 2 символов"
                                   hide-details v-on:change="validSearch()"></v-text-field>
-
                 </div>
+                <div>
+                    <v-btn v-on:click="getDataFromApi(pdfExport=true)" class="export" fab small color="white">
+                        <img src="/img/icon/pdf.svg"
+                             alt="скачать в pdf" style="max-height:24px">
+                    </v-btn>
+                </div>
+                <div>
+                    <v-btn v-on:click="getDataFromApi(excellExport=true)" class="export" fab small color="white">
+                        <img src="/img/icon/xls.svg"
+                             alt="скачать в excell" style="max-height:24px;">
+                    </v-btn>
+                </div>
+
             </v-layout>
         </v-container>
 
@@ -141,10 +141,7 @@
                 return new Promise((resolve, reject) => {
                     var exportList = this.selected.map(item => item.id);
                     let search = this.search.length > 2 ? this.search : '';
-
                     const { sortBy, descending, page, rowsPerPage } = this.pagination
-
-
 
                     var postData = {
                         sortBy: sortBy,
@@ -154,13 +151,9 @@
                         search: search
                     };
 
-
                     if (excellExport) {
-                        postData.excelData = exportList;
-
-                        SendPostData(postData,'/api/transport')
+                        postData.excelData = exportList;  
                     }
-
                     if (pdfExport) {
                         postData.pdfData = exportList;
                     }
@@ -169,37 +162,29 @@
                         url: '/api/transport',
                         method: 'post',
                         data: postData
+                    }).then(response => {
+                        if (excellExport) {
+                            saveAs(response.data, 'Export.xlsx');
+                        }
+                        if (pdfExport) {
+                            saveAs(response.data, 'Export.pdf');
+                        }
 
-
-                    }).then(response => {                       
                         var items = response.data.items;
                         var total = response.data.total;
                         resolve({
                             items,
                             total
                         });
-
                     });
 
-
-                });
+                })
             }
-        }     
+        }
+    }
 
-    }
-    function SendPostData(data, url) {
-        var form = document.createElement("form");
-        form.method = "POST";
-        form.action = url;  
-      
-        var element1 = document.createElement("input"); 
-        element1.value = data;
-        element1.name = 'Data';
-        form.appendChild(element1); 
-        document.body.appendChild(form);
-        form.submit();
-    }
-   
+
+
 </script>
 
 <style scoped>
