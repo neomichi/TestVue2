@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataTables.AspNet.AspNetCore;
 using DataTables.AspNet.Core;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,27 +22,37 @@ namespace VuetifySpa.Web.Controllers
     public class TransportController : Controller
     {
         private ITransportService _transportService;
-        private IHttpContextAccessor _httpContextAccessor;
+        private IHostingEnvironment _hostingEnvironment;
 
-        public TransportController(ITransportService transportService, IHttpContextAccessor httpContextAccessor)
+        public TransportController(ITransportService transportService, IHostingEnvironment hostingEnvironment)
         {
             _transportService = transportService;
-            _httpContextAccessor = httpContextAccessor;
+            _hostingEnvironment = hostingEnvironment;
         }
         // GET: api/Default1/5
 
         [HttpPost]
         public IActionResult Post([FromBody]TransportDataTableView transportDataTableView)
         {
-            var data = _transportService.DataTableHandler(transportDataTableView);
-            if (transportDataTableView.ExcelData != null)
+
+            if (transportDataTableView.ExportData != null)
             {
                 var table = _transportService.ExportTable(transportDataTableView);
-                var bytes= Code.ExcellExport(table)
 
+                if (transportDataTableView.ExportType == Data.Enum.ExportType.Excell)
+                {
+                    var bytes = Code.ExcellExport(table);
+                    return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+                }
+                if (transportDataTableView.ExportType == Data.Enum.ExportType.Pdf)
+                {
+                    var bytes=Code.ExportToPdf(table, _hostingEnvironment);
+                    return File(bytes, "application/pdf", "export.pdf");
+                }
 
-                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "машины_и_водители.xlsx");
             }
+
+           var data= _transportService.DataTableHandler(transportDataTableView);
 
             return Json(new
             {

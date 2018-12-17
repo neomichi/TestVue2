@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VuetifySpa.Data.Enum;
 
 namespace VuetifySpa.Data.ViewModel
 {
@@ -11,10 +12,9 @@ namespace VuetifySpa.Data.ViewModel
         public int page { get; set; }
         public int rowsPerPage { get; set; }
         public string Search { get; set; }
+        public Guid[] ExportData { get; set; }
+        public ExportType ExportType { get; set; }
 
-        public Guid[] ExcelData { get; set; }
-
-        public Guid[] PdfxcelData { get; set; }
     }
 
 

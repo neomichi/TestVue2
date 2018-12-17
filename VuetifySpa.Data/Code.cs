@@ -4,10 +4,13 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using VuetifySpa.Data.ViewModel;
+using WkWrap.Core;
 
 namespace VuetifySpa.Data
 {
@@ -84,8 +87,6 @@ namespace VuetifySpa.Data
 
 
                     var headerLength = exportData.Header.Count;
-                    worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     if (hipiStyle == 1)
                     {
                         // worksheet.Cells[rowIndex, headerLength].AutoFitColumns();
@@ -120,6 +121,8 @@ namespace VuetifySpa.Data
 
                         rowIndex++;
                     }
+                    worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
                 }
                 return package.GetAsByteArray();
@@ -156,25 +159,60 @@ namespace VuetifySpa.Data
         }
 
 
-        public static void ExportToPdf()
+        public static byte[] ExportToPdf(List<ExportDataView> exportDataView, IHostingEnvironment hostingEviroment)
         {
+            var html = "<html><head><meta charset='utf-8'>" +
+                "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>" +
+                "</head><body style='margin-top: 10px; text-align: center;'><h2 style='text-align: center;'>" +
+                " <style type='text/css'>thead{display:table-row-group}tr{page-break-inside:avoid}table {border-spacing:0px}table td,table th{padding:.8em;border:1px solid}table th{background-color:#F0F0F0;font-weight:700}</style>report_title</h2>" +
+                "<div style='display:inline-block;'>report_table</div></body></html>";
+
+            html = html.Replace("report_title", exportDataView[0].WorkSheetTitle);
+            var tables = new List<string>();
+            foreach (var tableData in exportDataView)
+            {
+                var tableHtml = new StringBuilder();
+                tableHtml.Append("<table style:'margin:20px 0'>");
+                tableHtml.Append("<thead><tr>");
+                foreach (var th in tableData.Header) 
+                {
+                    tableHtml.Append("<th>");
+                    tableHtml.Append(th);
+                    tableHtml.Append("</th>");
+                }
+                tableHtml.Append("</tr></thead><tbody>");
+                foreach (var tr in tableData.Data)
+                {
+                    tableHtml.Append("<tr>");
+                    foreach (var td in tr)
+                    {
+                        tableHtml.Append("<td>");
+                        tableHtml.Append(td);
+                        tableHtml.Append("</td>");
+                    }
+                    tableHtml.Append("<tr>");
+                }
+                tableHtml.AppendLine("</tbody></table></div><br><br>");
+                tables.Add(tableHtml.ToString());
+                
+            }
+            html = html.Replace("report_table", string.Join(" ",tables));
+
+          
+          
+
+            string wkhtmltopdfPath;
+             if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+
+                wkhtmltopdfPath = Path.Combine(hostingEviroment.WebRootPath, "dll", "wkhtmltopdf.exe");
+            else
+                wkhtmltopdfPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "Lib", "wkhtmltopdf");
+
+            var wkhtmltopdf = new FileInfo(wkhtmltopdfPath);
+            var converter = new HtmlToPdfConverter(wkhtmltopdf);
+            return converter.ConvertToPdf(html);
+           
         }
-        //html = html.Replace("report_table", tableSb.ToString());
-        ////test_html
-        ////System.IO.File.WriteAllText(@"C:\temp\123.html", html);
-
-        //string wkhtmltopdfPath;
-        //if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
-
-        //    wkhtmltopdfPath = Path.Combine(_hostingEviroment.ContentRootPath, "Lib", "wkhtmltopdf.exe");
-        //else
-        //    wkhtmltopdfPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "Lib", "wkhtmltopdf");
-
-        //var wkhtmltopdf = new FileInfo(wkhtmltopdfPath);
-        //var converter = new HtmlToPdfConverter(wkhtmltopdf);
-        //var pdfBytes = converter.ConvertToPdf(html);
-        //return pdfBytes;
-
     }
 
 }

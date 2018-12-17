@@ -24,13 +24,13 @@
                                   hide-details v-on:change="validSearch()"></v-text-field>
                 </div>
                 <div>
-                    <v-btn v-on:click="getDataFromApi(pdfExport=true)" class="export" fab small color="white">
+                    <v-btn v-on:click="getDataFromApi(false,true)" class="export" fab small color="white">
                         <img src="/img/icon/pdf.svg"
                              alt="скачать в pdf" style="max-height:24px">
                     </v-btn>
                 </div>
                 <div>
-                    <v-btn v-on:click="getDataFromApi(excellExport=true)" class="export" fab small color="white">
+                    <v-btn v-on:click="getDataFromApi(true)" class="export" fab small color="white">
                         <img src="/img/icon/xls.svg"
                              alt="скачать в excell" style="max-height:24px;">
                     </v-btn>
@@ -150,24 +150,25 @@
                         rowsPerPage: rowsPerPage,
                         search: search
                     };
+                    var exportData = excellExport || pdfExport;
+                   
 
-                    if (excellExport) {
-                        postData.excelData = exportList;  
+                    if (exportData) {
+                        postData.exportData = exportList;
+                        postData.exportType = excellExport ? 'excell' : 'pdf';
+                     
                     }
-                    if (pdfExport) {
-                        postData.pdfData = exportList;
-                    }
-
+                     
                     const tableData = axios({
                         url: '/api/transport',
                         method: 'post',
-                        data: postData
-                    }).then(response => {
-                        if (excellExport) {
-                            saveAs(response.data, 'Export.xlsx');
-                        }
-                        if (pdfExport) {
-                            saveAs(response.data, 'Export.pdf');
+                        data: postData,
+                        responseType: exportData ? 'blob' : 'text'
+                    }).then(response => {   
+                     
+                        if (exportData && response.data.size > 0) {
+                            var filename = excellExport ? 'Export.xlsx' : 'Export.pdf';
+                            saveAs(response.data, filename);
                         }
 
                         var items = response.data.items;

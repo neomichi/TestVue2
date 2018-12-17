@@ -51,21 +51,23 @@ namespace VuetifySpa.Data.Services
             return Tuple.Create(count, data);
         }
 
+
+
         public List<ExportDataView> ExportTable(TransportDataTableView transportView)
         {
             var transports = GetTransport(transportView);
 
-            if (transportView.ExcelData.Length>0)
+            if (transportView.ExportData.Length>0)
             {
-                transports = transports.Where(x => transportView.ExcelData.Contains(x.Id));
-            }
+                transports = transports.Where(x => transportView.ExportData.Contains(x.Id));
+            } 
 
             var export = new List<ExportDataView>
                 {
                     new ExportDataView()
                     {
-                        WorkSheetTitle = "список тчк",
-                        Title = "список тчк",
+                        WorkSheetTitle = "список транспорта",
+                        Title = "список транспорта",
                         Header = new List<string>()
                     {
                         "марка",
