@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using VuetifySpa.Data.ViewModel;
 
 namespace VuetifySpa.Data
 {
@@ -48,8 +55,102 @@ namespace VuetifySpa.Data
                 return img64.Substring(start, length);
             }
            
-        }               
+        }
+        /// <summary>
+        /// экспорт в excell 
+        /// </summary>
+        public static byte[] ExcellExport(List<ExportDataView> exportDataView, int hipiStyle = 0)
+        {
+            var data = new List<ExportDataView>();
 
 
+            if (exportDataView != null && exportDataView.Any())
+            {
+                data = exportDataView;
+            }
+
+            MemoryStream stream = new MemoryStream();
+            using (ExcelPackage package = new ExcelPackage(stream))
+            {
+                foreach (var exportData in exportDataView)
+                {
+
+                    var worksheet = package.Workbook.Worksheets.Add(exportData.WorkSheetTitle);
+
+                    var rowIndex = 1;
+
+
+
+                    var headerLength = exportData.Header.Count;
+                    worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    if (hipiStyle == 1)
+                    {
+                        // worksheet.Cells[rowIndex, headerLength].AutoFitColumns();
+
+                        worksheet.Row(1).Height = 55;
+                        worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.Font.Bold = true;
+                        //worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Merge = true;
+                        worksheet.Cells[rowIndex, 1, rowIndex, headerLength].Style.WrapText = true;
+
+                    }
+
+                    //worksheet.Cells[rowIndex, 1, rowIndex, length].Value = data[table].Title;
+
+                    //rowIndex++;
+
+
+                    for (var i = 0; i < headerLength; i++)
+                    {
+
+
+                        worksheet.Cells[rowIndex, i + 1].Value = exportData.Header[i];
+                    }
+
+                    rowIndex++;
+                    for (var i = 0; i < exportData.Data.Count(); i++)
+                    {
+                        for (var j = 0; j < exportData.Data[i].Count(); j++)
+                        {
+                            worksheet.Cells[rowIndex, j + 1].Value = exportData.Data[i][j];
+                        }
+
+                        rowIndex++;
+                    }
+                    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+                }
+                return package.GetAsByteArray();
+            }
+        }
+        private static IOrderedQueryable<T> OrderingHelper<T>(IQueryable<T> source, string propertyName, bool descending, bool anotherLevel)
+        {
+            ParameterExpression param = Expression.Parameter(typeof(T), string.Empty); // I don't care about some naming
+            MemberExpression property = Expression.PropertyOrField(param, propertyName);
+            LambdaExpression sort = Expression.Lambda(property, param);
+            MethodCallExpression call = Expression.Call(
+                typeof(Queryable),
+                (!anotherLevel ? "OrderBy" : "ThenBy") + (descending ? "Descending" : string.Empty),
+                new[] { typeof(T), property.Type },
+                source.Expression,
+                Expression.Quote(sort));
+            return (IOrderedQueryable<T>)source.Provider.CreateQuery<T>(call);
+        }
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName)
+        {
+            return OrderingHelper(source, propertyName, false, false);
+        }
+        public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string propertyName)
+        {
+            return OrderingHelper(source, propertyName, true, false);
+        }
+        public static IOrderedQueryable<T> ThenBy<T>(this IOrderedQueryable<T> source, string propertyName)
+        {
+            return OrderingHelper(source, propertyName, false, true);
+        }
+        public static IOrderedQueryable<T> ThenByDescending<T>(this IOrderedQueryable<T> source, string propertyName)
+        {
+            return OrderingHelper(source, propertyName, true, true);
+        }
     }
 }

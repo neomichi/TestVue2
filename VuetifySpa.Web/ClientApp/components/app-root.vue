@@ -1,12 +1,12 @@
 ﻿<template>
-    <v-app >        
-        
+    <v-app id="inspire">
+
         <nav-menu></nav-menu>
         <v-content id="main">
             <v-container fluid>
+         
                 <router-view></router-view>
             </v-container>
-
         </v-content>
         <v-footer dark
                   height="auto" style="width:100%">

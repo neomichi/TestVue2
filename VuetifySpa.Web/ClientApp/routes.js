@@ -23,7 +23,7 @@ export const routes = [
     { path: '/home', name: 'home', component: HomePage, display: 'машинки', style: 'glyphicon glyphicon-th-list', icon: 'home' },
     { path: '/about', name: 'about', component: About, display: 'обомне' },
     { path: '/crypta', name: 'crypta', component: cryptaData, display: 'курс крипты', style: 'glyphicon glyphicon-th-list' },
-    { path: '/data-table', name: 'dataTable', component: DataTable, display: 'таблица тест', style: 'glyphicon glyphicon-th-list' }
+    { path: '/data-table', name: 'dataTable', component: DataTable, display: 'тест DataTable', style: 'glyphicon glyphicon-th-list' }
 
 ]
 

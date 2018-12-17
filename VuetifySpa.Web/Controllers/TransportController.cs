@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VuetifySpa.Data;
+using VuetifySpa.Data.Services;
 using VuetifySpa.Data.ViewModel;
-using VuetifySpa.Web.Helper;
+
 
 namespace VuetifySpa.Web.Controllers
 {
@@ -18,31 +20,30 @@ namespace VuetifySpa.Web.Controllers
     [Route("api/[controller]")]
     public class TransportController : Controller
     {
-        private MyDbContext _db;
+        private ITransportService _transportService;
         private IHttpContextAccessor _httpContextAccessor;
 
-        public TransportController(MyDbContext db, IHttpContextAccessor httpContextAccessor)
+        public TransportController(ITransportService transportService, IHttpContextAccessor httpContextAccessor)
         {
-            _db = db;
+            _transportService = transportService;
             _httpContextAccessor = httpContextAccessor;
         }
         // GET: api/Default1/5
 
         [HttpPost]
-        public IActionResult Post([FromBody]DataTableTransportView dtv, IDataTablesRequest request, [FromBody]string sortBy)
+        public IActionResult Post([FromBody]TransportDataTableView transportDataTableView)
         {
-            var transports = _db.Transports.AsNoTracking();
+            var data = _transportService.DataTableHandler(transportDataTableView);
+            if (transportDataTableView.ExcelData != null)
+            {
+                var bytes = _transportService.ExportExcell(transportDataTableView);
+                return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "машины_и_водители.xlsx");
+            }
 
-            transports = dtv.descending
-                 ? transports.OrderByDescending(dtv.sortBy)
-                 : transports.OrderBy(dtv.sortBy);
-
-            var data= transports.Skip((dtv.page - 1) * dtv.rowsPerPage).Take(dtv.rowsPerPage);
-
-      
-            return Json(new {
-                Items = data.ToList(),
-                Total = transports.Count()
+            return Json(new
+            {
+                Items = data.Item2,
+                Total = data.Item1
             });
         }
     }

@@ -42,7 +42,7 @@
                  </v-list-tile>
             </v-list>
         </v-navigation-drawer>
-        <v-toolbar dark color="#F9FBE7" elevation-0>
+        <v-toolbar dark color="white" elevation-0>
             <v-toolbar-side-icon v-on:click="drawer=!drawer"
                                  class="hidden-md-and-up">
             </v-toolbar-side-icon>

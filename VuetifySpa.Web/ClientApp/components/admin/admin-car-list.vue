@@ -24,12 +24,12 @@
 
                             <td class="text-xs-center">
 
-                                <div class="checkbox-left">
-                                    <v-spacer></v-spacer>
-                                    <v-checkbox :readonly="true"
-                                                v-model="props.item.visible">
-                                    </v-checkbox>
+                                <div style="display:flex;justify-content:center;align-items:center">
+                                    <div class="checkbox-center">
+                                        <v-checkbox value disabled v-model="props.item.visible"></v-checkbox>
+                                    </div>
                                 </div>
+                             
 
                             </td>
                             <td class="justify-center align-center layout px-0">
@@ -99,20 +99,21 @@
 </script>
 <style>
     @media (min-width: 400px) {
-        .checkbox-left {
-            padding-left: 4vw;
+        .checkbox-center {
+            height: 2vw;
         }
     }
 
     @media (min-width: 700px) {
-        .checkbox-left {
-            padding-left: 3vw;
+        .checkbox-center {
+            height: 2vw;
         }
     }
 
     @media (min-width: 1000px) {
-        .checkbox-left {
-            padding-left: 2vw;
+        .checkbox-center {
+           height: 2vw;
+           
         }
     }
 </style>

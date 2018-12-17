@@ -84,6 +84,7 @@ namespace VuetifySpa.Web
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<ITransportService, TransportService>();
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "neomichi.coockie";
